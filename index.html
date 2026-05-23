@@ -1377,7 +1377,7 @@ async function analisarFinancas() {
   var rend = S.inv.reduce(function(a,b,i){return a+b*INV[i].rate/12;},0);
   var prompt = 'Você é um consultor financeiro especializado em pequenos escritórios criativos. Analise a situação financeira da Arckie Co., escritório boutique de arquitetura de Valdison Viana:\n\nSaldo disponível: $ ' + fmt(saldo()) + '\nPró-labore: $ 4.800 / 28 dias\nTotal investido: $ ' + fmt(tot) + '\nRendimento mensal projetado: $ ' + fmt(rend) + '\nParcelas ativas: ' + S.parcelas.filter(function(p){return !p.paga;}).length + '\nProjetos entregues: ' + S.projetos + '\nDia ' + S.dia + ', Mês ' + S.mes + '\n\nDê 3 sugestões práticas, diretas e personalizadas para fortalecer as finanças do escritório nesta fase. Responda em português, máximo 200 palavras.';
   try {
-    var res  = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:400, messages:[{role:'user',content:prompt}] }) });
+    var res  = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json','x-api-key':'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','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}, body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:400, messages:[{role:'user',content:prompt}] }) });
     var data = await res.json();
     out.innerHTML = (data.content[0].text||'').replace(/\n/g,'<br>');
   } catch(e) { out.innerHTML = '<span style="color:var(--red)">Erro de conexão. Tente novamente.</span>'; }
@@ -1397,7 +1397,7 @@ async function sendMsg() {
   var planoPub = pubAtivo ? (PUB.find(function(p){return p.id===pubAtivo;})||{}).name||'nenhum' : 'nenhum';
   var sys = 'Você é o assistente de gestão da Arckie Co., escritório boutique de arquitetura em San Myshuno (The Sims 4), fundado e operado por Valdison Viana. O escritório valoriza projetos com alma e identidade autoral — não quantidade. Ajude com: briefings de projetos em San Myshuno, análise financeira, estratégia de crescimento, captação de clientes, feedback criativo e planejamento de publicidade. Contexto: saldo $ ' + fmt(saldo()) + ', ' + S.projetos + ' projetos entregues, $ ' + fmt(tot) + ' investido, Dia ' + S.dia + ' Mês ' + S.mes + ', plano de publicidade: ' + planoPub + '. Seja objetivo, criativo e alinhado com a identidade boutique. Máximo 180 palavras. Responda em português.';
   try {
-    var res  = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:350, system:sys, messages:[{role:'user',content:text}] }) });
+    var res  = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json','x-api-key':'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','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}, body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:350, system:sys, messages:[{role:'user',content:text}] }) });
     var data = await res.json();
     var reply = (data.content[0].text||'Sem resposta.').replace(/\n/g,'<br>');
     document.getElementById('typing').style.display = 'none';
