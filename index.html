@@ -6,124 +6,231 @@
 <title>ARK — Sistema Interno</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #1C1914;
-  --cream: #F5F2EC;
-  --copper: #C4A882;
-  --warm-gray: #8C8880;
-  --sand: #D4CFC7;
-  --copper-light: #E8D9C4;
-  --ink-soft: #2E2A25;
-  --cream-dark: #EAE6DF;
+  --ink: #111110;
+  --white: #FFFFFF;
+  --off-white: #FAFAF8;
+  --copper: #B8924A;
+  --copper-light: #D4B07A;
+  --copper-pale: #F0E6D3;
+  --gray-100: #F5F5F3;
+  --gray-200: #E8E8E5;
+  --gray-300: #CECECA;
+  --gray-500: #8A8A85;
+  --gray-700: #4A4A46;
+  --ink-soft: #222220;
+  --cream: #FAFAF8;
+  --sand: #E8E8E5;
+  --warm-gray: #8A8A85;
+  --cream-dark: #F0F0ED;
+  --copper-light-bg: #F0E6D3;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Josefin Sans', sans-serif;
-  background: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  background: var(--off-white);
   color: var(--ink);
   min-height: 100vh;
   font-size: 14px;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ── LOGIN ── */
 #login-screen {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--ink);
   position: fixed;
   inset: 0;
   z-index: 9999;
 }
 
+.login-left {
+  flex: 1;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.login-right {
+  width: 52%;
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.login-right-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(184,146,74,0.12) 0%, transparent 50%),
+    linear-gradient(225deg, rgba(17,17,16,0.95) 0%, rgba(34,34,32,0.85) 100%);
+  z-index: 1;
+}
+
+/* Architectural line pattern */
+.login-right-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.06;
+  background-image:
+    linear-gradient(0deg, #fff 1px, transparent 1px),
+    linear-gradient(90deg, #fff 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.login-right-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 56px;
+}
+
+.login-right-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--copper);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.login-right-headline {
+  font-family: 'DM Serif Display', serif;
+  font-size: 40px;
+  line-height: 1.15;
+  color: var(--white);
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+.login-right-line {
+  width: 40px;
+  height: 1px;
+  background: var(--copper);
+  margin-bottom: 20px;
+}
+
+.login-right-caption {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  max-width: 320px;
+}
+
 .login-box {
-  width: 380px;
-  text-align: center;
+  width: 100%;
+  max-width: 360px;
+}
+
+.login-logo-wrap {
+  margin-bottom: 56px;
 }
 
 .login-logo {
-  font-family: 'Cormorant', serif;
-  font-size: 72px;
-  font-weight: 300;
-  color: var(--cream);
-  letter-spacing: 0.3em;
+  font-family: 'DM Serif Display', serif;
+  font-size: 52px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.18em;
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .login-sub {
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.35em;
-  color: var(--copper);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  color: var(--gray-500);
   text-transform: uppercase;
+}
+
+.login-heading {
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--ink);
   margin-bottom: 8px;
+  letter-spacing: -0.02em;
 }
 
-.login-rule {
-  width: 80px;
-  height: 0.5px;
-  background: var(--copper);
-  margin: 0 auto 48px;
-  position: relative;
-}
-.login-rule::before {
-  content: '';
-  position: absolute;
-  top: 3px;
-  left: 0;
-  right: 0;
-  height: 0.5px;
-  background: var(--copper);
-  opacity: 0.4;
+.login-heading-sub {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 40px;
+  font-weight: 300;
 }
 
-.login-form { display: flex; flex-direction: column; gap: 12px; }
+.login-form { display: flex; flex-direction: column; gap: 14px; }
+
+.login-field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--gray-700);
+  margin-bottom: 6px;
+}
 
 .login-form input {
-  background: transparent;
-  border: 0.5px solid rgba(196,168,130,0.4);
-  color: var(--cream);
-  padding: 14px 18px;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  width: 100%;
+  background: var(--gray-100);
+  border: 1.5px solid transparent;
+  color: var(--ink);
+  padding: 14px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  letter-spacing: -0.01em;
   outline: none;
-  transition: border-color 0.2s;
+  border-radius: 8px;
+  transition: all 0.2s;
 }
-
-.login-form input::placeholder { color: rgba(245,242,236,0.3); }
-.login-form input:focus { border-color: var(--copper); }
+.login-form input::placeholder { color: var(--gray-300); }
+.login-form input:focus {
+  background: var(--white);
+  border-color: var(--copper);
+  box-shadow: 0 0 0 3px rgba(184,146,74,0.1);
+}
 
 .login-btn {
   margin-top: 8px;
-  background: var(--copper);
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--white);
   border: none;
-  padding: 14px;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
+  padding: 15px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  transition: background 0.2s;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-.login-btn:hover { background: var(--copper-light); }
+.login-btn:hover { background: var(--gray-700); }
+.login-btn::after { content: '→'; font-size: 15px; }
 
 .login-error {
-  color: #c4554a;
-  font-size: 11px;
-  letter-spacing: 0.1em;
+  color: #c0392b;
+  font-size: 12px;
   margin-top: 8px;
   display: none;
+  background: #fdf0ef;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border-left: 3px solid #c0392b;
 }
 
 /* ── APP SHELL ── */
@@ -132,406 +239,432 @@ body {
 
 /* ── TOP HEADER ── */
 .app-header {
-  background: var(--ink);
-  padding: 0 40px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 0 48px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
-  border-bottom: 0.5px solid rgba(196,168,130,0.2);
+  height: 60px;
+  border-bottom: 1px solid var(--gray-200);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
 .header-logo {
-  font-family: 'Cormorant', serif;
-  font-size: 28px;
-  font-weight: 300;
-  color: var(--cream);
-  letter-spacing: 0.4em;
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.25em;
 }
 
 .header-nav { display: flex; gap: 0; }
 
 .nav-tab {
-  padding: 0 28px;
-  height: 64px;
+  padding: 0 22px;
+  height: 60px;
   display: flex;
   align-items: center;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: rgba(245,242,236,0.45);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--gray-500);
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: all 0.2s;
   white-space: nowrap;
 }
-.nav-tab:hover { color: var(--cream); }
+.nav-tab:hover { color: var(--ink); }
 .nav-tab.active {
-  color: var(--copper);
+  color: var(--ink);
   border-bottom-color: var(--copper);
+  font-weight: 500;
 }
 
 .header-user {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  color: var(--warm-gray);
+  font-size: 12px;
+  color: var(--gray-500);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 .logout-btn {
   background: none;
-  border: 0.5px solid rgba(196,168,130,0.3);
-  color: var(--copper);
-  padding: 6px 14px;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  border: 1px solid var(--gray-200);
+  color: var(--gray-700);
+  padding: 6px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
   cursor: pointer;
-  transition: background 0.2s;
+  border-radius: 6px;
+  transition: all 0.2s;
 }
-.logout-btn:hover { background: rgba(196,168,130,0.1); }
+.logout-btn:hover { background: var(--gray-100); border-color: var(--gray-300); }
 
 /* ── MAIN CONTENT ── */
-.app-main { flex: 1; }
-.tab-content { display: none; padding: 48px 40px; max-width: 1200px; margin: 0 auto; }
+.app-main { flex: 1; background: var(--off-white); }
+.tab-content { display: none; padding: 48px; max-width: 1240px; margin: 0 auto; }
 .tab-content.active { display: block; }
 
 /* ── SHARED COMPONENTS ── */
 .section-header {
-  margin-bottom: 32px;
-  padding-bottom: 16px;
-  border-bottom: 0.5px solid var(--sand);
+  margin-bottom: 40px;
 }
 .section-title {
-  font-family: 'Cormorant', serif;
-  font-size: 32px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 34px;
   font-weight: 400;
   color: var(--ink);
-  letter-spacing: 0.02em;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 .section-sub {
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  color: var(--warm-gray);
-  text-transform: uppercase;
-  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  color: var(--gray-500);
+  margin-top: 6px;
 }
 
 .card {
-  background: white;
-  border: 0.5px solid var(--sand);
-  padding: 24px;
-  margin-bottom: 24px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .card-title {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.25em;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--copper);
-  margin-bottom: 16px;
+  color: var(--gray-500);
+  margin-bottom: 20px;
 }
 
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
 
 .metric-box {
-  background: var(--cream);
-  border: 0.5px solid var(--sand);
+  background: var(--gray-100);
+  border-radius: 10px;
   padding: 20px;
   text-align: center;
 }
 .metric-label {
-  font-size: 9px;
-  letter-spacing: 0.3em;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--warm-gray);
+  color: var(--gray-500);
   display: block;
   margin-bottom: 8px;
 }
 .metric-value {
-  font-family: 'Cormorant', serif;
-  font-size: 32px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
   font-weight: 400;
   color: var(--ink);
   display: block;
+  letter-spacing: -0.02em;
 }
 .metric-value.copper { color: var(--copper); }
-.metric-value.green { color: #4a7c59; }
-.metric-value.red { color: #9e3e38; }
+.metric-value.green { color: #2d6a4a; }
+.metric-value.red { color: #b83232; }
 
-btn-primary, .btn {
-  display: inline-block;
-  padding: 10px 24px;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
   border: none;
-  transition: all 0.2s;
+  border-radius: 8px;
+  transition: all 0.18s;
 }
 .btn-copper {
   background: var(--copper);
-  color: var(--ink);
+  color: var(--white);
+  border: none;
 }
-.btn-copper:hover { background: var(--copper-light); }
+.btn-copper:hover { background: #a07d3e; }
 .btn-outline {
   background: transparent;
-  border: 0.5px solid var(--copper);
-  color: var(--copper);
+  border: 1px solid var(--gray-300);
+  color: var(--gray-700);
 }
-.btn-outline:hover { background: rgba(196,168,130,0.1); }
+.btn-outline:hover { background: var(--gray-100); border-color: var(--gray-500); }
 .btn-ink {
   background: var(--ink);
-  color: var(--cream);
+  color: var(--white);
 }
-.btn-ink:hover { background: var(--ink-soft); }
+.btn-ink:hover { background: var(--gray-700); }
 .btn-danger {
   background: transparent;
-  border: 0.5px solid #9e3e38;
-  color: #9e3e38;
+  border: 1px solid #e0a0a0;
+  color: #b83232;
 }
+.btn-danger:hover { background: #fdf0f0; }
 
 input[type=text], input[type=number], input[type=date], select, textarea {
   width: 100%;
-  background: var(--cream);
-  border: 0.5px solid var(--sand);
+  background: var(--gray-100);
+  border: 1.5px solid transparent;
   padding: 10px 14px;
-  font-family: 'Josefin Sans', sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.05em;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
   color: var(--ink);
   outline: none;
-  transition: border-color 0.2s;
+  border-radius: 8px;
+  transition: all 0.2s;
 }
-input:focus, select:focus, textarea:focus { border-color: var(--copper); }
+input:focus, select:focus, textarea:focus {
+  background: var(--white);
+  border-color: var(--copper);
+  box-shadow: 0 0 0 3px rgba(184,146,74,0.1);
+}
 
 .badge {
   display: inline-block;
   padding: 3px 10px;
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 500;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
 }
-.badge-copper { background: var(--copper-light); color: #7a5c38; }
-.badge-green { background: #d6e8db; color: #2d5e3a; }
-.badge-red { background: #f2d5d4; color: #7a2e2a; }
-.badge-gray { background: var(--sand); color: var(--warm-gray); }
+.badge-copper { background: var(--copper-pale); color: #7a5220; }
+.badge-green { background: #d4eddf; color: #1a5c35; }
+.badge-red { background: #fce8e8; color: #922020; }
+.badge-gray { background: var(--gray-200); color: var(--gray-500); }
 
 /* ── ABA 1: CARREIRA ── */
 .profile-hero {
   display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 24px;
+  grid-template-columns: 72px 1fr;
+  gap: 20px;
   align-items: start;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 .profile-avatar {
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
   background: var(--ink);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .profile-avatar span {
-  font-family: 'Cormorant', serif;
-  font-size: 28px;
-  font-weight: 300;
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  font-weight: 400;
   color: var(--copper);
-  letter-spacing: 0.1em;
 }
 .profile-name {
-  font-family: 'Cormorant', serif;
-  font-size: 36px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 .profile-role {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: var(--warm-gray);
-  text-transform: uppercase;
-  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gray-500);
+  margin-top: 4px;
 }
 .profile-loc {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--copper);
-  margin-top: 4px;
-  letter-spacing: 0.1em;
+  margin-top: 3px;
+  font-weight: 500;
 }
 
 .timeline-item {
   display: grid;
-  grid-template-columns: 12px 1fr;
+  grid-template-columns: 10px 1fr;
   gap: 16px;
-  padding: 16px 0;
-  border-bottom: 0.5px solid var(--cream-dark);
+  padding: 18px 0;
+  border-bottom: 1px solid var(--gray-100);
 }
 .timeline-dot {
   width: 8px;
   height: 8px;
   background: var(--copper);
   border-radius: 50%;
-  margin-top: 4px;
+  margin-top: 5px;
+  flex-shrink: 0;
 }
-.timeline-title { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; }
-.timeline-org { font-size: 11px; color: var(--copper); letter-spacing: 0.1em; margin: 2px 0; }
-.timeline-period { font-size: 10px; color: var(--warm-gray); letter-spacing: 0.15em; }
-.timeline-desc { font-size: 12px; color: var(--warm-gray); line-height: 1.6; margin-top: 8px; }
+.timeline-title { font-size: 14px; font-weight: 500; }
+.timeline-org { font-size: 12px; color: var(--copper); font-weight: 500; margin: 3px 0; }
+.timeline-period { font-size: 11px; color: var(--gray-500); }
+.timeline-desc { font-size: 13px; color: var(--gray-500); line-height: 1.65; margin-top: 8px; font-weight: 300; }
 
 /* candidatos */
-.candidates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.candidates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
 .candidate-card {
-  background: var(--cream);
-  border: 0.5px solid var(--sand);
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
   padding: 18px;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
-.candidate-card:hover { border-color: var(--copper); }
-.cand-name { font-size: 14px; font-weight: 600; letter-spacing: 0.05em; }
-.cand-role { font-size: 10px; color: var(--copper); letter-spacing: 0.2em; text-transform: uppercase; margin: 3px 0; }
-.cand-info { font-size: 11px; color: var(--warm-gray); }
-.cand-skill { font-size: 10px; margin-top: 8px; }
+.candidate-card:hover { background: var(--white); border-color: var(--copper); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.cand-name { font-size: 14px; font-weight: 500; }
+.cand-role { font-size: 11px; color: var(--copper); font-weight: 500; margin: 3px 0; }
+.cand-info { font-size: 11px; color: var(--gray-500); font-weight: 300; }
+.cand-skill { font-size: 10px; margin-top: 10px; }
 .cand-skill span {
   display: inline-block;
-  background: var(--sand);
+  background: var(--gray-200);
   padding: 2px 8px;
   margin: 2px 2px 0 0;
-  font-size: 9px;
-  letter-spacing: 0.1em;
+  font-size: 10px;
+  border-radius: 4px;
+  color: var(--gray-700);
 }
-.cand-salary { font-family: 'Cormorant', serif; font-size: 20px; color: var(--ink); margin-top: 8px; }
-.cand-salary small { font-family: 'Josefin Sans'; font-size: 9px; color: var(--warm-gray); letter-spacing: 0.1em; vertical-align: middle; }
+.cand-salary { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--ink); margin-top: 10px; letter-spacing: -0.02em; }
+.cand-salary small { font-family: 'DM Sans'; font-size: 10px; color: var(--gray-500); vertical-align: middle; margin-left: 2px; }
 
 /* ── ABA 2: ESCRITÓRIO ── */
-.tabs-inner { display: flex; gap: 0; border-bottom: 0.5px solid var(--sand); margin-bottom: 32px; }
+.tabs-inner { display: flex; gap: 0; border-bottom: 1px solid var(--gray-200); margin-bottom: 32px; }
 .inner-tab {
   padding: 12px 20px;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 400;
   cursor: pointer;
-  color: var(--warm-gray);
+  color: var(--gray-500);
   border-bottom: 2px solid transparent;
   transition: all 0.2s;
   white-space: nowrap;
 }
-.inner-tab.active { color: var(--copper); border-bottom-color: var(--copper); }
+.inner-tab.active { color: var(--ink); border-bottom-color: var(--copper); font-weight: 500; }
 .inner-content { display: none; }
 .inner-content.active { display: block; }
 
 /* crescimento */
-.phase-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 24px; }
+.phase-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 24px; }
 .phase-box {
-  border: 0.5px solid var(--sand);
-  padding: 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 20px;
   text-align: center;
   position: relative;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
+  background: var(--white);
 }
-.phase-box.active-phase { border-color: var(--copper); background: rgba(196,168,130,0.05); }
-.phase-box.completed-phase { background: var(--cream); border-color: var(--sand); opacity: 0.6; }
-.phase-num { font-family: 'Cormorant', serif; font-size: 36px; color: var(--sand); }
-.phase-name { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin: 4px 0; }
-.phase-stars { color: var(--copper); font-size: 14px; margin-bottom: 8px; }
-.phase-req { font-size: 10px; color: var(--warm-gray); line-height: 1.5; }
+.phase-box.active-phase { border-color: var(--copper); background: var(--copper-pale); }
+.phase-box.completed-phase { background: var(--gray-100); opacity: 0.6; }
+.phase-num { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--gray-300); letter-spacing: -0.02em; }
+.phase-name { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink); margin: 4px 0 8px; }
+.phase-stars { color: var(--copper); font-size: 13px; margin-bottom: 10px; }
+.phase-req { font-size: 11px; color: var(--gray-500); line-height: 1.6; font-weight: 300; }
 .phase-badge {
   position: absolute;
   top: -10px;
-  right: -10px;
+  right: 12px;
   background: var(--copper);
-  color: var(--ink);
+  color: var(--white);
   font-size: 8px;
   letter-spacing: 0.1em;
-  padding: 3px 8px;
+  padding: 3px 10px;
   font-weight: 600;
+  border-radius: 20px;
+  text-transform: uppercase;
 }
 
-.conquistas-box { background: var(--cream); border: 0.5px solid var(--sand); padding: 16px; margin-top: 16px; }
+.conquistas-box { background: var(--gray-100); border-radius: 10px; padding: 16px; margin-top: 16px; }
 .conquista-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 0;
-  border-bottom: 0.5px solid var(--cream-dark);
-  font-size: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 13px;
 }
 .conquista-item:last-child { border-bottom: none; }
-.conquista-check { width: 16px; height: 16px; border: 0.5px solid var(--sand); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-.conquista-check.done { background: var(--copper); border-color: var(--copper); color: var(--ink); font-size: 10px; }
+.conquista-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--gray-300);
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.conquista-check.done { background: var(--copper); border-color: var(--copper); color: white; font-size: 11px; }
 
 /* demandas */
 .district-card {
-  border: 0.5px solid var(--sand);
-  padding: 20px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 24px;
   margin-bottom: 16px;
-  position: relative;
+  background: var(--white);
 }
 .district-card.locked { opacity: 0.4; }
-.district-name { font-family: 'Cormorant', serif; font-size: 22px; margin-bottom: 4px; }
-.district-phase { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--copper); margin-bottom: 12px; }
-.projects-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 8px; }
+.district-name { font-family: 'DM Serif Display', serif; font-size: 22px; letter-spacing: -0.02em; margin-bottom: 4px; }
+.district-phase { font-size: 11px; font-weight: 500; color: var(--copper); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.projects-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 10px; }
 .project-item {
-  background: var(--cream);
-  border: 0.5px solid var(--sand);
-  padding: 10px 14px;
-  font-size: 11px;
+  background: var(--gray-100);
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 12px;
   cursor: pointer;
-  transition: border-color 0.2s;
-  position: relative;
+  transition: all 0.2s;
 }
-.project-item:hover { border-color: var(--copper); }
-.project-item.in-progress { border-color: var(--copper); background: rgba(196,168,130,0.08); }
-.project-item.done { opacity: 0.5; }
-.project-budget { font-family: 'Cormorant', serif; font-size: 18px; color: var(--copper); display: block; }
-.project-payment { font-size: 9px; color: var(--warm-gray); letter-spacing: 0.1em; }
+.project-item:hover { background: var(--white); border-color: var(--copper); }
+.project-item.done { opacity: 0.45; }
+.project-budget { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--copper); display: block; letter-spacing: -0.02em; }
+.project-payment { font-size: 10px; color: var(--gray-500); }
 
 /* relatório */
 table { width: 100%; border-collapse: collapse; }
 th {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--warm-gray);
-  padding: 10px 12px;
+  color: var(--gray-500);
+  padding: 10px 14px;
   text-align: left;
-  border-bottom: 0.5px solid var(--sand);
+  border-bottom: 1px solid var(--gray-200);
 }
 td {
-  padding: 12px;
-  font-size: 12px;
-  border-bottom: 0.5px solid var(--cream-dark);
+  padding: 13px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--gray-100);
 }
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: var(--cream); }
+tr:hover td { background: var(--gray-100); }
 
 /* publicidade */
 .pub-plan {
-  border: 0.5px solid var(--sand);
-  padding: 24px;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 28px 24px;
   text-align: center;
   cursor: pointer;
-  transition: border-color 0.2s;
-  position: relative;
+  transition: all 0.2s;
+  background: var(--white);
 }
-.pub-plan:hover { border-color: var(--copper); }
-.pub-plan.selected { border-color: var(--copper); background: rgba(196,168,130,0.05); }
-.pub-plan .plan-name { font-family: 'Cormorant', serif; font-size: 24px; margin-bottom: 8px; }
-.pub-plan .plan-price { font-size: 28px; font-family: 'Cormorant', serif; color: var(--copper); }
-.pub-plan .plan-period { font-size: 9px; color: var(--warm-gray); letter-spacing: 0.2em; }
-.pub-plan .plan-features { font-size: 11px; color: var(--warm-gray); margin-top: 12px; line-height: 1.8; }
+.pub-plan:hover { border-color: var(--copper); box-shadow: 0 4px 16px rgba(184,146,74,0.1); }
+.pub-plan.selected { border-color: var(--copper); background: var(--copper-pale); }
+.pub-plan .plan-name { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 8px; letter-spacing: -0.02em; }
+.pub-plan .plan-price { font-family: 'DM Serif Display', serif; font-size: 30px; color: var(--copper); letter-spacing: -0.02em; }
+.pub-plan .plan-period { font-size: 11px; color: var(--gray-500); font-weight: 300; }
+.pub-plan .plan-features { font-size: 12px; color: var(--gray-500); margin-top: 16px; line-height: 1.9; font-weight: 300; }
 
 /* folha */
 .payroll-row {
@@ -539,36 +672,38 @@ tr:hover td { background: var(--cream); }
   justify-content: space-between;
   align-items: center;
   padding: 14px 0;
-  border-bottom: 0.5px solid var(--cream-dark);
+  border-bottom: 1px solid var(--gray-100);
   font-size: 13px;
 }
-.payroll-row .name { font-size: 12px; }
-.payroll-row .amount { font-family: 'Cormorant', serif; font-size: 22px; color: var(--ink); }
+.payroll-row .name { font-size: 13px; font-weight: 500; }
+.payroll-row .amount { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--ink); letter-spacing: -0.02em; }
 .payroll-total {
   display: flex;
   justify-content: space-between;
   padding: 16px 0 0;
   font-weight: 600;
   font-size: 13px;
-  letter-spacing: 0.05em;
-  border-top: 1px solid var(--ink);
+  border-top: 1.5px solid var(--ink);
   margin-top: 8px;
 }
-.payroll-total .total-amount { font-family: 'Cormorant', serif; font-size: 28px; color: var(--ink); }
+.payroll-total .total-amount { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--ink); letter-spacing: -0.02em; }
 
 /* ── ABA 3: INVESTIMENTOS ── */
-.invest-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
 .invest-card {
-  border: 0.5px solid var(--sand);
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
   padding: 20px;
+  background: var(--white);
+  transition: all 0.2s;
 }
-.invest-name { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 4px; }
-.invest-ticker { font-size: 9px; color: var(--copper); letter-spacing: 0.15em; }
-.invest-price { font-family: 'Cormorant', serif; font-size: 28px; margin: 8px 0; }
-.invest-change { font-size: 11px; font-weight: 600; }
-.invest-change.up { color: #4a7c59; }
-.invest-change.down { color: #9e3e38; }
-.invest-applied { font-size: 11px; color: var(--warm-gray); margin-top: 4px; }
+.invest-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.invest-name { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+.invest-ticker { font-size: 10px; color: var(--copper); font-weight: 500; letter-spacing: 0.05em; }
+.invest-price { font-family: 'DM Serif Display', serif; font-size: 26px; margin: 10px 0 4px; letter-spacing: -0.02em; }
+.invest-change { font-size: 12px; font-weight: 600; }
+.invest-change.up { color: #2d6a4a; }
+.invest-change.down { color: #b83232; }
+.invest-applied { font-size: 11px; color: var(--gray-500); margin-top: 4px; }
 
 /* ── ABA 4: BANCO ── */
 .bank-header {
@@ -576,13 +711,16 @@ tr:hover td { background: var(--cream); }
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 32px;
-  padding-bottom: 24px;
-  border-bottom: 0.5px solid var(--sand);
+  padding: 32px;
+  background: var(--ink);
+  border-radius: 16px;
+  color: var(--white);
 }
-.bank-name { font-family: 'Cormorant', serif; font-size: 14px; font-style: italic; color: var(--warm-gray); letter-spacing: 0.1em; }
-.bank-balance-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm-gray); }
-.bank-balance { font-family: 'Cormorant', serif; font-size: 48px; font-weight: 300; color: var(--ink); line-height: 1; }
-.bank-balance.crisis { color: #9e3e38; }
+.bank-name { font-family: 'DM Serif Display', serif; font-size: 16px; color: rgba(255,255,255,0.5); }
+.bank-account { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 4px; }
+.bank-balance-label { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+.bank-balance { font-family: 'DM Serif Display', serif; font-size: 48px; font-weight: 400; color: var(--white); line-height: 1; letter-spacing: -0.02em; }
+.bank-balance.crisis { color: #ff8080; }
 
 .transaction-row {
   display: grid;
@@ -590,48 +728,52 @@ tr:hover td { background: var(--cream); }
   gap: 16px;
   align-items: center;
   padding: 14px 0;
-  border-bottom: 0.5px solid var(--cream-dark);
+  border-bottom: 1px solid var(--gray-100);
 }
-.tx-desc { font-size: 13px; }
-.tx-category { font-size: 10px; color: var(--warm-gray); letter-spacing: 0.1em; }
-.tx-date { font-size: 10px; color: var(--warm-gray); }
-.tx-amount { font-family: 'Cormorant', serif; font-size: 22px; text-align: right; }
-.tx-amount.credit { color: #4a7c59; }
-.tx-amount.debit { color: #9e3e38; }
+.tx-desc { font-size: 13px; font-weight: 500; }
+.tx-category { font-size: 11px; color: var(--gray-500); font-weight: 300; margin-top: 2px; }
+.tx-date { font-size: 11px; color: var(--gray-500); }
+.tx-amount { font-family: 'DM Serif Display', serif; font-size: 20px; text-align: right; letter-spacing: -0.02em; }
+.tx-amount.credit { color: #2d6a4a; }
+.tx-amount.debit { color: #b83232; }
 
 .crisis-alert {
-  background: rgba(158,62,56,0.08);
-  border: 0.5px solid rgba(158,62,56,0.4);
+  background: #fdf0f0;
+  border: 1px solid #f0c0c0;
+  border-radius: 10px;
   padding: 16px 20px;
   margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.crisis-alert .msg { font-size: 12px; color: #9e3e38; font-weight: 600; letter-spacing: 0.05em; }
+.crisis-alert .msg { font-size: 13px; color: #b83232; font-weight: 500; }
 
 /* parcelamento */
 .installment-card {
-  border: 0.5px solid var(--sand);
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
   padding: 16px;
   margin-bottom: 12px;
+  background: var(--white);
 }
-.inst-name { font-size: 13px; font-weight: 600; }
-.inst-info { font-size: 11px; color: var(--warm-gray); margin-top: 4px; }
+.inst-name { font-size: 14px; font-weight: 500; }
+.inst-info { font-size: 12px; color: var(--gray-500); margin-top: 4px; font-weight: 300; }
 .inst-progress {
-  height: 2px;
-  background: var(--sand);
-  margin-top: 10px;
-  position: relative;
+  height: 3px;
+  background: var(--gray-200);
+  border-radius: 2px;
+  margin-top: 12px;
 }
-.inst-progress-bar { height: 100%; background: var(--copper); transition: width 0.3s; }
-.inst-overdue { color: #9e3e38; font-size: 10px; margin-top: 6px; letter-spacing: 0.1em; }
+.inst-progress-bar { height: 100%; background: var(--copper); border-radius: 2px; transition: width 0.3s; }
+.inst-overdue { color: #b83232; font-size: 11px; margin-top: 6px; font-weight: 500; }
 
 /* modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(28,25,20,0.7);
+  background: rgba(17,17,16,0.5);
+  backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -640,19 +782,20 @@ tr:hover td { background: var(--cream); }
 }
 .modal-overlay.open { display: flex; }
 .modal-box {
-  background: var(--cream);
-  border: 0.5px solid var(--copper);
-  padding: 32px;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 36px;
   width: 480px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.18);
 }
-.modal-title { font-family: 'Cormorant', serif; font-size: 28px; margin-bottom: 8px; }
-.modal-sub { font-size: 10px; letter-spacing: 0.2em; color: var(--warm-gray); text-transform: uppercase; margin-bottom: 24px; }
+.modal-title { font-family: 'DM Serif Display', serif; font-size: 26px; margin-bottom: 4px; letter-spacing: -0.02em; }
+.modal-sub { font-size: 12px; color: var(--gray-500); font-weight: 300; margin-bottom: 28px; }
 .form-group { margin-bottom: 16px; }
-.form-label { font-size: 9px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--warm-gray); display: block; margin-bottom: 6px; }
+.form-label { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--gray-700); display: block; margin-bottom: 6px; text-transform: uppercase; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.modal-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+.modal-actions { display: flex; gap: 10px; margin-top: 24px; justify-content: flex-end; }
 
 /* toast */
 .toast {
@@ -660,49 +803,75 @@ tr:hover td { background: var(--cream); }
   bottom: 32px;
   right: 32px;
   background: var(--ink);
-  color: var(--cream);
-  padding: 14px 24px;
-  font-size: 11px;
-  letter-spacing: 0.1em;
+  color: var(--white);
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 400;
   z-index: 9000;
   opacity: 0;
   transform: translateY(8px);
   transition: all 0.3s;
   max-width: 320px;
-  border-left: 2px solid var(--copper);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+.toast::before { content: '●'; font-size: 8px; }
 .toast.show { opacity: 1; transform: translateY(0); }
-.toast.success { border-left-color: #4a7c59; }
-.toast.error { border-left-color: #9e3e38; }
+.toast.success::before { color: #4ade80; }
+.toast.error::before { color: #f87171; }
 
 /* scrollbar */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: var(--cream); }
-::-webkit-scrollbar-thumb { background: var(--sand); }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--gray-100); }
+::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
 
-/* responsive helper */
 @media (max-width: 900px) {
-  .grid-2, .grid-3, .grid-4, .phase-grid, .invest-summary { grid-template-columns: 1fr; }
+  .login-right { display: none; }
+  .login-left { padding: 40px 24px; }
+  .grid-2, .grid-3, .grid-4, .phase-grid { grid-template-columns: 1fr; }
   .candidates-grid { grid-template-columns: 1fr; }
-  .app-header { padding: 0 16px; }
-  .tab-content { padding: 24px 16px; }
-  .nav-tab { padding: 0 14px; font-size: 8px; }
+  .app-header { padding: 0 20px; }
+  .tab-content { padding: 24px 20px; }
+  .nav-tab { padding: 0 12px; font-size: 11px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ══════════ LOGIN ══════════ -->
 <div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">ARK</div>
-    <div class="login-sub">Escritório Boutique de Arquitetura</div>
-    <div class="login-rule"></div>
-    <div class="login-form">
-      <input type="text" id="login-user" placeholder="Usuário" autocomplete="off">
-      <input type="password" id="login-pass" placeholder="Senha">
-      <button class="login-btn" onclick="doLogin()">Acessar Sistema</button>
-      <div class="login-error" id="login-err">Credenciais inválidas</div>
+  <div class="login-left">
+    <div class="login-box">
+      <div class="login-logo-wrap">
+        <div class="login-logo">ARK</div>
+        <div class="login-sub">Escritório Boutique de Arquitetura</div>
+      </div>
+      <div class="login-heading">Bem-vindo de volta</div>
+      <div class="login-heading-sub">Acesse o sistema interno do escritório</div>
+      <div class="login-form">
+        <div>
+          <label class="login-field-label">Usuário</label>
+          <input type="text" id="login-user" placeholder="viana.valdison" autocomplete="off">
+        </div>
+        <div>
+          <label class="login-field-label">Senha</label>
+          <input type="password" id="login-pass" placeholder="••••••">
+        </div>
+        <button class="login-btn" onclick="doLogin()">Acessar Sistema</button>
+        <div class="login-error" id="login-err">Credenciais inválidas. Tente novamente.</div>
+      </div>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="login-right-pattern"></div>
+    <div class="login-right-bg"></div>
+    <div class="login-right-content">
+      <div class="login-right-eyebrow">San Myshuno · Desde o Mês 01</div>
+      <div class="login-right-headline">Arquitetura<br>com nome,<br>com história,<br>com alma.</div>
+      <div class="login-right-line"></div>
+      <div class="login-right-caption">A Ark não faz arquitetura em série. Cada projeto nasce de uma escuta genuína — entender quem habita o espaço antes de desenhar qualquer linha.</div>
     </div>
   </div>
 </div>
@@ -793,7 +962,7 @@ tr:hover td { background: var(--cream); }
           <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
               <div class="card-title" style="margin-bottom:0">Candidatos Disponíveis</div>
-              <button class="btn-copper" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans',sans-serif;font-weight:600;text-transform:uppercase;border:none;" onclick="refreshCandidates()">↻ Atualizar</button>
+              <button class="btn-copper" class="btn btn-copper" style=" onclick="refreshCandidates()">↻ Atualizar</button>
             </div>
             <div style="font-size:10px;color:var(--warm-gray);letter-spacing:0.1em;margin-bottom:16px;">Exibindo <span id="cand-count">5</span>/1.000 candidatos</div>
             <div class="candidates-grid" id="candidates-list"></div>
@@ -821,43 +990,74 @@ tr:hover td { background: var(--cream); }
       <div class="inner-content active" id="inner-crescimento">
         <div class="phase-grid" id="phases-grid"></div>
 
-        <div class="grid-2">
+        <!-- Canal YouTube + Fama -->
+        <div class="grid-2" style="margin-bottom:20px">
           <div class="card">
-            <div class="card-title">Status Atual</div>
-            <div class="grid-2">
+            <div class="card-title">Canal de Arquitetura · YouTube</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
               <div class="metric-box">
-                <span class="metric-label">Fase Atual</span>
-                <span class="metric-value copper" id="stat-phase">1</span>
+                <span class="metric-label">Vídeos Publicados</span>
+                <span class="metric-value" id="yt-videos">0</span>
               </div>
               <div class="metric-box">
-                <span class="metric-label">Estrelas de Fama</span>
-                <span class="metric-value" id="stat-stars">★ 1</span>
+                <span class="metric-label">Inscritos</span>
+                <span class="metric-value copper" id="yt-subs">0</span>
               </div>
               <div class="metric-box">
-                <span class="metric-label">Projetos Entregues</span>
-                <span class="metric-value" id="stat-projects">0</span>
-              </div>
-              <div class="metric-box">
-                <span class="metric-label">Clientes Ativos</span>
-                <span class="metric-value" id="stat-clients">0</span>
+                <span class="metric-label">Resp. ao Inscrito</span>
+                <span class="metric-value" id="yt-responses">0</span>
               </div>
             </div>
-            <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
-              <select id="fame-select" style="flex:1">
-                <option value="1">1 Estrela</option>
-                <option value="2">2 Estrelas</option>
-                <option value="3">3 Estrelas</option>
-                <option value="4">4 Estrelas</option>
-                <option value="5">5 Estrelas</option>
-              </select>
-              <button class="btn-copper" style="padding:10px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none" onclick="updateFame()">Atualizar Fama</button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+              <div>
+                <label class="form-label">Tipo de Vídeo</label>
+                <select id="yt-type">
+                  <option value="dica">Dica de Arquitetura</option>
+                  <option value="tour">Tour de Projeto</option>
+                  <option value="obra">Obra em Andamento</option>
+                  <option value="resposta">Resposta ao Inscrito</option>
+                  <option value="collab">Collab com Criador</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Novos Inscritos</label>
+                <input type="number" id="yt-new-subs" placeholder="Ex: 120">
+              </div>
             </div>
+            <button onclick="registerVideo()" style="width:100%;padding:11px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;background:var(--copper);color:white;border:none;border-radius:8px">+ Registrar Publicação</button>
           </div>
 
           <div class="card">
-            <div class="card-title">Registrar Conquista</div>
-            <div class="conquistas-box" id="conquistas-list"></div>
+            <div class="card-title">Nível de Fama</div>
+            <div style="margin-bottom:20px">
+              <div style="display:flex;align-items:center;gap:16px;padding:16px;background:var(--gray-100);border-radius:10px">
+                <div style="font-size:32px" id="fame-stars-display">★☆☆☆☆</div>
+                <div>
+                  <div style="font-size:13px;font-weight:500" id="fame-level-label">Nível 1 — Iniciante</div>
+                  <div style="font-size:11px;color:var(--gray-500);margin-top:2px">Fama cresce com vídeos e projetos</div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px">
+              <select id="fame-select" style="flex:1">
+                <option value="1">★ Nível 1 — Iniciante</option>
+                <option value="2">★★ Nível 2 — Reconhecido</option>
+                <option value="3">★★★ Nível 3 — Influente</option>
+                <option value="4">★★★★ Nível 4 — Celebridade</option>
+                <option value="5">★★★★★ Nível 5 — Ícone</option>
+              </select>
+              <button onclick="updateFame()" style="padding:10px 18px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;background:var(--ink);color:white;border:none;border-radius:8px;white-space:nowrap">Atualizar</button>
+            </div>
           </div>
+        </div>
+
+        <!-- Conquistas da fase atual -->
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div class="card-title" style="margin-bottom:0">Requisitos da Fase Atual — Marque ao Cumprir</div>
+            <span id="conquistas-progress" style="font-size:12px;color:var(--gray-500)">0/0 concluídos</span>
+          </div>
+          <div id="conquistas-list"></div>
         </div>
       </div>
 
@@ -872,7 +1072,7 @@ tr:hover td { background: var(--cream); }
           <div>
             <div style="font-size:12px;color:var(--warm-gray);">Projetos em andamento e finalizados</div>
           </div>
-          <button class="btn-copper" onclick="openModal('modal-delivery')" style="padding:10px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">+ Registrar Entrega</button>
+          <button class="btn-copper" onclick="openModal('modal-delivery')" style="padding:10px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">+ Registrar Entrega</button>
         </div>
 
         <div class="grid-4" style="margin-bottom:24px">
@@ -885,7 +1085,7 @@ tr:hover td { background: var(--cream); }
         <div class="card">
           <table id="delivery-table">
             <thead><tr>
-              <th>Projeto</th><th>Distrito</th><th>Entrega</th><th>Prazo</th><th>Status</th><th>Valor</th><th>Comissão</th>
+              <th>Projeto</th><th>Distrito</th><th>Entrega</th><th>Prazo</th><th>Status</th><th>Pagamento</th><th>RT Prefeitura</th><th>Comissão</th>
             </tr></thead>
             <tbody id="delivery-tbody"></tbody>
           </table>
@@ -924,7 +1124,7 @@ tr:hover td { background: var(--cream); }
             </div>
           </div>
           <div style="text-align:center">
-            <button class="btn-copper" onclick="subscribePlan()" style="padding:12px 32px;font-size:10px;letter-spacing:0.25em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Contratar Plano</button>
+            <button class="btn-copper" onclick="subscribePlan()" style="padding:12px 32px;font-size:10px;letter-spacing:0.25em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">Contratar Plano</button>
           </div>
         </div>
       </div>
@@ -939,7 +1139,7 @@ tr:hover td { background: var(--cream); }
             <span class="total-amount" id="payroll-total">§0</span>
           </div>
           <div style="margin-top:16px;display:flex;gap:12px">
-            <button class="btn-copper" onclick="processPayroll()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Processar Pagamento</button>
+            <button class="btn-copper" onclick="processPayroll()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">Processar Pagamento</button>
             <button class="btn-outline" onclick="openModal('modal-employee')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent">+ Funcionário</button>
           </div>
         </div>
@@ -962,8 +1162,8 @@ tr:hover td { background: var(--cream); }
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
         <div class="card-title" style="margin-bottom:0">Carteira de Ativos</div>
         <div style="display:flex;gap:12px">
-          <button class="btn-outline" onclick="updateMarket()" style="padding:8px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">↻ Atualizar Mercado</button>
-          <button class="btn-copper" onclick="openModal('modal-invest')" style="padding:8px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Movimentar</button>
+          <button class="btn-outline" onclick="updateMarket()" style="padding:8px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400;background:transparent;border:1px solid var(--gray-300);color:var(--gray-700);border-radius:8px">↻ Atualizar Mercado</button>
+          <button class="btn-copper" onclick="openModal('modal-invest')" style="padding:8px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">Movimentar</button>
         </div>
       </div>
 
@@ -985,7 +1185,7 @@ tr:hover td { background: var(--cream); }
       <div class="bank-header">
         <div>
           <div class="bank-name">SimCity Bank</div>
-          <div style="font-size:9px;letter-spacing:0.2em;color:var(--warm-gray);margin-top:4px">Ag. 0042 · C/C 88.801-7</div>
+          <div class="bank-account">Ag. 0042 · C/C 88.801-7</div>
         </div>
         <div style="text-align:right">
           <div class="bank-balance-label">Saldo Disponível</div>
@@ -998,7 +1198,7 @@ tr:hover td { background: var(--cream); }
         <div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
             <div class="card-title" style="margin-bottom:0">Extrato</div>
-            <button class="btn-copper" onclick="openModal('modal-transaction')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">+ Lançamento</button>
+            <button class="btn-copper" onclick="openModal('modal-transaction')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">+ Lançamento</button>
           </div>
           <div id="transactions-list"></div>
           <div style="text-align:center;padding:48px;color:var(--warm-gray);font-size:12px" id="tx-empty">Nenhuma transação registrada</div>
@@ -1008,7 +1208,7 @@ tr:hover td { background: var(--cream); }
         <div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
             <div class="card-title" style="margin-bottom:0">Cartão &amp; Parcelamentos</div>
-            <button class="btn-outline" onclick="openModal('modal-installment')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">+ Parcelar</button>
+            <button class="btn-outline" onclick="openModal('modal-installment')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400;background:transparent;border:1px solid var(--gray-300);color:var(--gray-700);border-radius:8px">+ Parcelar</button>
           </div>
           <div class="grid-2" style="margin-bottom:16px">
             <div class="metric-box"><span class="metric-label">Fatura Aberta</span><span class="metric-value" id="card-open">§0</span></div>
@@ -1027,9 +1227,9 @@ tr:hover td { background: var(--cream); }
 
 <!-- Modal Entrega -->
 <div class="modal-overlay" id="modal-delivery">
-  <div class="modal-box">
+  <div class="modal-box" style="width:560px;max-width:95vw">
     <div class="modal-title">Registrar Entrega</div>
-    <div class="modal-sub">Relatório de Projetos · Ark</div>
+    <div class="modal-sub">Memorial Descritivo · Projeto Executivo · Ark</div>
     <div class="form-group">
       <label class="form-label">Projeto</label>
       <select id="del-project"></select>
@@ -1040,18 +1240,31 @@ tr:hover td { background: var(--cream); }
         <input type="date" id="del-date">
       </div>
       <div class="form-group">
-        <label class="form-label">Prazo Final</label>
+        <label class="form-label">Prazo Contratual</label>
         <input type="date" id="del-deadline">
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label" style="display:flex;align-items:center;gap:8px">
-        <input type="checkbox" id="del-ontime"> Entregue antes do prazo (comissão de 10%)
-      </label>
+      <label class="form-label">Status da Entrega</label>
+      <select id="del-status" onchange="updateDeliveryStatus()">
+        <option value="ontime">✅ Dentro do Prazo — recebe RT da Prefeitura</option>
+        <option value="late">⚠️ Em Atraso — perde o RT</option>
+      </select>
+    </div>
+    <div id="del-rt-info" style="padding:12px 14px;background:var(--gray-100);border-radius:8px;font-size:12px;color:var(--gray-700);margin-bottom:4px;line-height:1.6">
+      ✅ <strong>Dentro do prazo:</strong> Pagamento base + RT da Prefeitura de San Myshuno serão creditados.
+    </div>
+    <div class="form-group" style="margin-top:16px">
+      <label class="form-label">Memorial Descritivo</label>
+      <textarea id="del-memorial" rows="5" style="resize:vertical" placeholder="Descreva o que foi executado: ambientes reformados, materiais utilizados, soluções de layout, adequações solicitadas pelo cliente, intervenções técnicas realizadas..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Observações ao Cliente</label>
+      <textarea id="del-obs" rows="2" style="resize:vertical" placeholder="Orientações de uso, garantias fornecidas, próximas etapas recomendadas..."></textarea>
     </div>
     <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-delivery')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
-      <button class="btn-copper" onclick="saveDelivery()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Confirmar Entrega</button>
+      <button onclick="closeModal('modal-delivery')" style="padding:10px 20px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400;background:transparent;border:1px solid var(--gray-300);color:var(--gray-700);border-radius:8px">Cancelar</button>
+      <button onclick="saveDelivery()" style="padding:10px 24px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;background:var(--copper);color:white;border:none;border-radius:8px">Confirmar Entrega</button>
     </div>
   </div>
 </div>
@@ -1086,8 +1299,8 @@ tr:hover td { background: var(--cream); }
       </div>
     </div>
     <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-employee')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
-      <button class="btn-copper" onclick="saveEmployee()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Adicionar</button>
+      <button class="btn-outline" onclick="closeModal('modal-employee')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400;background:transparent;border:1px solid var(--gray-300);color:var(--gray-700);border-radius:8px">Cancelar</button>
+      <button class="btn-copper" onclick="saveEmployee()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">Adicionar</button>
     </div>
   </div>
 </div>
@@ -1113,8 +1326,8 @@ tr:hover td { background: var(--cream); }
       <input type="number" id="inv-value" placeholder="0">
     </div>
     <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-invest')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
-      <button class="btn-copper" onclick="saveInvestment()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Confirmar</button>
+      <button class="btn-outline" onclick="closeModal('modal-invest')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400;background:transparent;border:1px solid var(--gray-300);color:var(--gray-700);border-radius:8px">Cancelar</button>
+      <button class="btn-copper" onclick="saveInvestment()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">Confirmar</button>
     </div>
   </div>
 </div>
@@ -1162,8 +1375,8 @@ tr:hover td { background: var(--cream); }
       </div>
     </div>
     <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-transaction')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
-      <button class="btn-copper" onclick="saveTransaction()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Lançar</button>
+      <button class="btn-outline" onclick="closeModal('modal-transaction')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400;background:transparent;border:1px solid var(--gray-300);color:var(--gray-700);border-radius:8px">Cancelar</button>
+      <button class="btn-copper" onclick="saveTransaction()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">Lançar</button>
     </div>
   </div>
 </div>
@@ -1189,13 +1402,35 @@ tr:hover td { background: var(--cream); }
     </div>
     <div style="font-size:11px;color:var(--warm-gray);margin-top:8px">Taxa: 2,99%/mês · Multa atraso: 2% + 1%/dia</div>
     <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-installment')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
-      <button class="btn-copper" onclick="saveInstallment()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Parcelar</button>
+      <button class="btn-outline" onclick="closeModal('modal-installment')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400;background:transparent;border:1px solid var(--gray-300);color:var(--gray-700);border-radius:8px">Cancelar</button>
+      <button class="btn-copper" onclick="saveInstallment()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">Parcelar</button>
     </div>
   </div>
 </div>
 
-<!-- Modal Rescue -->
+<!-- Modal Memorial -->
+<div class="modal-overlay" id="modal-memorial">
+  <div class="modal-box" style="width:560px;max-width:95vw">
+    <div class="modal-title" id="mem-project">—</div>
+    <div class="modal-sub" id="mem-district">Memorial Descritivo · Ark</div>
+    <div style="display:flex;gap:10px;align-items:center;margin-bottom:20px;flex-wrap:wrap">
+      <span id="mem-status"></span>
+      <span style="font-size:12px;color:var(--gray-500)">Entregue em: <strong id="mem-date">—</strong></span>
+      <span style="font-size:12px;color:var(--gray-500)">RT: <strong id="mem-rt">—</strong></span>
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="form-label" style="margin-bottom:8px">Memorial Descritivo</div>
+      <div id="mem-text" style="font-size:13px;color:var(--gray-700);line-height:1.8;padding:16px;background:var(--gray-100);border-radius:8px;white-space:pre-wrap"></div>
+    </div>
+    <div>
+      <div class="form-label" style="margin-bottom:8px">Observações ao Cliente</div>
+      <div id="mem-obs" style="font-size:13px;color:var(--gray-700);line-height:1.8;padding:14px;background:var(--gray-100);border-radius:8px;white-space:pre-wrap"></div>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeModal('modal-memorial')" style="padding:10px 24px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;background:var(--ink);color:white;border:none;border-radius:8px">Fechar</button>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="modal-rescue">
   <div class="modal-box">
     <div class="modal-title">Socorrer Caixa</div>
@@ -1206,8 +1441,8 @@ tr:hover td { background: var(--cream); }
       <input type="number" id="rescue-amount" placeholder="Mínimo §4.800">
     </div>
     <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('modal-rescue')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
-      <button class="btn-copper" onclick="doRescue()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Transferir</button>
+      <button class="btn-outline" onclick="closeModal('modal-rescue')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400;background:transparent;border:1px solid var(--gray-300);color:var(--gray-700);border-radius:8px">Cancelar</button>
+      <button class="btn-copper" onclick="doRescue()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;border:none;border-radius:8px">Transferir</button>
     </div>
   </div>
 </div>
@@ -1232,7 +1467,11 @@ const STATE = {
   officeBalance: 8000,
   totalInvested: 0,
   accumulatedReturn: 0,
-  conquistas: {}
+  conquistas: {},
+  ytVideos: 0,
+  ytSubs: 0,
+  ytResponses: 0,
+  ytCollabs: 0
 };
 
 // Supabase config
@@ -1284,25 +1523,65 @@ const PHASES = [
   {
     num: 1, name: 'Mãos Únicas',
     stars: 1, fameNeeded: 2,
-    reqs: ['Entregar 4 projetos', 'Atingir 1 estrela de fama', 'Atingir fama nível 2'],
+    reqs: [
+      'Entregar 4 projetos no Mercado das Especiarias',
+      'Publicar 5 vídeos no canal de arquitetura',
+      'Atingir 500 inscritos no canal',
+      'Gravar 1 vídeo de "Resposta ao Inscrito"',
+      'Atingir 1 estrela de fama pelo canal',
+      'Atingir fama nível 2 para avançar'
+    ],
     district: 'Mercado das Especiarias'
   },
   {
     num: 2, name: 'Primeiro Crescimento',
     stars: 2, fameNeeded: 3,
-    reqs: ['Entregar 8 projetos no total', 'Contratar 1 funcionário', 'Atingir 2 estrelas de fama', 'Adquirir plano de publicidade', 'Atingir fama nível 3'],
+    reqs: [
+      'Entregar 10 projetos no total',
+      'Publicar 15 vídeos no canal (dicas, tours, obras)',
+      'Atingir 5.000 inscritos no canal',
+      'Gravar 3 vídeos de "Resposta ao Inscrito"',
+      'Contratar 1 funcionário para o escritório',
+      'Adquirir plano de publicidade (mínimo Starter)',
+      'Receita acumulada acima de §80.000',
+      'Atingir 2 estrelas de fama pelo canal',
+      'Atingir fama nível 3 para avançar'
+    ],
     district: 'Quarteirão das Artes'
   },
   {
     num: 3, name: 'Escritório Estabelecido',
     stars: 3, fameNeeded: 4,
-    reqs: ['Entregar 15 projetos no total', 'Ter pelo menos 3 funcionários', 'Atingir 3 estrelas de fama', 'Receita acumulada acima de §200.000', 'Atingir fama nível 4'],
+    reqs: [
+      'Entregar 20 projetos no total',
+      'Publicar 35 vídeos no canal',
+      'Atingir 50.000 inscritos no canal',
+      'Gravar 5 vídeos de "Resposta ao Inscrito"',
+      'Ter pelo menos 3 funcionários contratados',
+      'Adquirir plano de publicidade Grow ou Premium',
+      'Receita acumulada acima de §300.000',
+      'Carteira de investimentos acima de §50.000',
+      'Atingir 3 estrelas de fama pelo canal',
+      'Atingir fama nível 4 para avançar'
+    ],
     district: 'Distrito da Moda'
   },
   {
     num: 4, name: 'Referência de Mercado',
     stars: 4, fameNeeded: 5,
-    reqs: ['Entregar 25 projetos no total', 'Ter pelo menos 6 funcionários', 'Atingir 4 estrelas de fama', 'Portfólio de §100.000 em investimentos', 'Atingir fama nível 5'],
+    reqs: [
+      'Entregar 30 projetos no total',
+      'Publicar 60 vídeos no canal',
+      'Atingir 500.000 inscritos no canal',
+      'Gravar 10 vídeos de "Resposta ao Inscrito"',
+      'Fazer 1 collab com outro criador de conteúdo',
+      'Ter pelo menos 6 funcionários contratados',
+      'Adquirir plano de publicidade Premium',
+      'Receita acumulada acima de §1.000.000',
+      'Carteira de investimentos acima de §200.000',
+      'Atingir 4 estrelas de fama pelo canal',
+      'Atingir fama nível 5 para expandir além de San Myshuno'
+    ],
     district: 'Cidade Alta'
   }
 ];
@@ -1428,8 +1707,8 @@ function renderCandidates() {
       <div class="cand-skill">${c.skills.map(s=>`<span>${s}</span>`).join('')}</div>
       <div class="cand-salary">§${c.salary.toLocaleString('pt-BR')} <small>/mês</small></div>
       <div style="margin-top:10px;display:flex;gap:8px">
-        <button onclick="hireCand('${c.name}','${c.role}',${c.salary})" style="flex:1;padding:7px;font-size:9px;letter-spacing:0.15em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:var(--copper);color:var(--ink);border:none">Contratar</button>
-        <button onclick="this.closest('.candidate-card').remove()" style="padding:7px 12px;font-size:9px;cursor:pointer;font-family:'Josefin Sans';font-weight:600;background:transparent;border:0.5px solid var(--sand);color:var(--warm-gray)">✕</button>
+        <button onclick="hireCand('${c.name}','${c.role}',${c.salary})" style="flex:1;padding:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;background:var(--copper);color:white;border:none;border-radius:6px">Contratar</button>
+        <button onclick="this.closest('.candidate-card').remove()" style="padding:8px 12px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;background:transparent;border:1px solid var(--gray-200);color:var(--gray-500);border-radius:6px">✕</button>
       </div>
     `;
     list.appendChild(card);
@@ -1495,7 +1774,23 @@ function toggleConquista(key, el) {
   if(STATE.conquistas[key]) toast('Conquista registrada!', 'success');
 }
 
-function updateFame() {
+function registerVideo() {
+  const type = document.getElementById('yt-type').value;
+  const newSubs = parseInt(document.getElementById('yt-new-subs').value) || 0;
+  STATE.ytVideos++;
+  STATE.ytSubs += newSubs;
+  if(type === 'resposta') STATE.ytResponses++;
+  if(type === 'collab') { STATE.ytCollabs++; STATE.ytVideos--; STATE.ytVideos++; }
+  document.getElementById('yt-videos').textContent = STATE.ytVideos;
+  document.getElementById('yt-subs').textContent = STATE.ytSubs.toLocaleString('pt-BR');
+  document.getElementById('yt-responses').textContent = STATE.ytResponses;
+  document.getElementById('yt-new-subs').value = '';
+  saveState();
+  const labels = {dica:'Dica publicada',tour:'Tour publicado',obra:'Atualização de obra publicada',resposta:'Resposta ao Inscrito publicada',collab:'Collab publicada'};
+  toast(`${labels[type]}! +${newSubs} inscritos`, 'success');
+}
+
+
   STATE.fame = parseInt(document.getElementById('fame-select').value);
   document.getElementById('stat-stars').textContent = '★'.repeat(STATE.fame) + '☆'.repeat(5-STATE.fame);
 
@@ -1573,21 +1868,46 @@ function openDeliveryFor(project, districtId) {
 // ════════════════════════════════════════
 // DELIVERIES
 // ════════════════════════════════════════
+function updateDeliveryStatus() {
+  const status = document.getElementById('del-status').value;
+  const info = document.getElementById('del-rt-info');
+  if(status === 'ontime') {
+    info.innerHTML = '✅ <strong>Dentro do prazo:</strong> Pagamento base + RT da Prefeitura de San Myshuno serão creditados.';
+    info.style.background = '#d4eddf';
+    info.style.color = '#1a5c35';
+  } else {
+    info.innerHTML = '⚠️ <strong>Em atraso:</strong> Apenas o pagamento base será creditado. O RT da Prefeitura é perdido.';
+    info.style.background = '#fce8e8';
+    info.style.color = '#922020';
+  }
+}
+
 function saveDelivery() {
   const project = document.getElementById('del-project').value;
   const date = document.getElementById('del-date').value;
   const deadline = document.getElementById('del-deadline').value;
-  const ontime = document.getElementById('del-ontime').checked;
-  if(!project || !date) { toast('Preencha todos os campos','error'); return; }
+  const status = document.getElementById('del-status').value;
+  const memorial = document.getElementById('del-memorial').value;
+  const obs = document.getElementById('del-obs').value;
+  if(!project || !date) { toast('Preencha projeto e data','error'); return; }
 
   const d = DISTRICTS.find(x => x.projects.includes(project));
+  const ontime = status === 'ontime';
+  // RT only received if on time
+  const rtReceived = ontime ? d.rt : 0;
+  // Commission from prefecture only if on time
   const commission = ontime ? d.commission : 0;
-  const total = d.payment + d.rt + commission;
+  const total = d.payment + rtReceived + commission;
 
-  STATE.deliveries.push({ project, date, deadline, ontime, district: d.id, payment: d.payment, rt: d.rt, commission, total });
+  STATE.deliveries.push({
+    project, date, deadline, ontime, status,
+    memorial, obs,
+    district: d.id, payment: d.payment,
+    rt: rtReceived, commission, total
+  });
 
-  // credit bank
   STATE.bankBalance += total;
+  STATE.officeBalance += total;
   STATE.transactions.push({
     desc: `Entrega: ${project}`,
     type: 'credit',
@@ -1603,10 +1923,7 @@ function saveDelivery() {
   renderDistricts();
   renderTransactions();
   updateBankUI();
-
-  const count = STATE.deliveries.length;
-  document.getElementById('stat-projects').textContent = count;
-  toast(`Projeto entregue! §${total.toLocaleString('pt-BR')} creditado.`, 'success');
+  toast(`Projeto entregue! §${total.toLocaleString('pt-BR')} creditado.${!ontime?' (sem RT — entrega em atraso)':''}`, ontime?'success':'error');
 }
 
 function renderDeliveries() {
@@ -1620,31 +1937,53 @@ function renderDeliveries() {
   }
   empty.style.display = 'none';
 
-  let totalRevenue = 0, totalComm = 0, onTimeCount = 0;
+  let totalRevenue = 0, totalComm = 0, totalRt = 0, onTimeCount = 0;
 
-  STATE.deliveries.forEach(d => {
+  STATE.deliveries.forEach((d, i) => {
     const dist = DISTRICTS.find(x => x.id === d.district);
-    totalRevenue += d.payment + d.rt;
-    totalComm += d.commission;
+    totalRevenue += d.payment;
+    totalRt += d.rt || 0;
+    totalComm += d.commission || 0;
     if(d.ontime) onTimeCount++;
 
     const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.title = 'Clique para ver memorial';
+    tr.onclick = () => showMemorial(i);
     tr.innerHTML = `
-      <td style="font-weight:600">${d.project}</td>
-      <td>${dist ? dist.name : d.district}</td>
-      <td>${d.date}</td>
-      <td>${d.deadline || '—'}</td>
-      <td>${d.ontime ? '<span class="badge badge-green">No Prazo</span>' : '<span class="badge badge-gray">Normal</span>'}</td>
-      <td style="font-family:'Cormorant',serif;font-size:18px">§${(d.payment+d.rt).toLocaleString('pt-BR')}</td>
-      <td style="color:${d.commission>0?'#4a7c59':'var(--warm-gray)'}">§${d.commission.toLocaleString('pt-BR')}</td>
+      <td>
+        <div style="font-weight:500">${d.project}</div>
+        ${d.memorial ? `<div style="font-size:10px;color:var(--copper);margin-top:2px">📄 Memorial anexado</div>` : ''}
+      </td>
+      <td style="font-size:12px">${dist ? dist.name : d.district}</td>
+      <td style="font-size:12px">${d.date}</td>
+      <td style="font-size:12px">${d.deadline || '—'}</td>
+      <td>${d.ontime ? '<span class="badge badge-green">No Prazo</span>' : '<span class="badge badge-red">Em Atraso</span>'}</td>
+      <td style="font-family:\'DM Serif Display\',serif;font-size:16px">§${d.payment.toLocaleString('pt-BR')}</td>
+      <td style="font-family:\'DM Serif Display\',serif;font-size:16px;color:${(d.rt||0)>0?'#2d6a4a':'var(--gray-300)'}">§${(d.rt||0).toLocaleString('pt-BR')}</td>
+      <td style="color:${(d.commission||0)>0?'var(--copper)':'var(--gray-300)'};font-size:13px">§${(d.commission||0).toLocaleString('pt-BR')}</td>
     `;
     tbody.appendChild(tr);
   });
 
   document.getElementById('delivered-count').textContent = STATE.deliveries.length;
   document.getElementById('on-time-count').textContent = onTimeCount;
-  document.getElementById('commissions-total').textContent = '§'+totalComm.toLocaleString('pt-BR');
-  document.getElementById('projects-revenue').textContent = '§'+totalRevenue.toLocaleString('pt-BR');
+  document.getElementById('commissions-total').textContent = '§'+(totalComm).toLocaleString('pt-BR');
+  document.getElementById('projects-revenue').textContent = '§'+(totalRevenue+totalRt+totalComm).toLocaleString('pt-BR');
+}
+
+function showMemorial(idx) {
+  const d = STATE.deliveries[idx];
+  if(!d.memorial && !d.obs) { toast('Sem memorial descritivo registrado','error'); return; }
+  const dist = DISTRICTS.find(x => x.id === d.district);
+  document.getElementById('mem-project').textContent = d.project;
+  document.getElementById('mem-district').textContent = dist ? dist.name : '';
+  document.getElementById('mem-date').textContent = d.date;
+  document.getElementById('mem-status').innerHTML = d.ontime ? '<span class="badge badge-green">No Prazo</span>' : '<span class="badge badge-red">Em Atraso</span>';
+  document.getElementById('mem-rt').textContent = d.ontime ? `§${(d.rt||0).toLocaleString('pt-BR')} (RT recebido)` : 'Não recebido (entrega em atraso)';
+  document.getElementById('mem-text').textContent = d.memorial || 'Não informado.';
+  document.getElementById('mem-obs').textContent = d.obs || 'Nenhuma observação adicional.';
+  openModal('modal-memorial');
 }
 
 // ════════════════════════════════════════
@@ -2116,11 +2455,15 @@ function logout() {
 async function initApp() {
   await loadState();
   initAssets();
+  const fameLabels = ['','Iniciante','Reconhecido','Influente','Celebridade','Ícone'];
   document.getElementById('fame-select').value = STATE.fame;
-  document.getElementById('stat-phase').textContent = STATE.phase;
-  document.getElementById('stat-stars').textContent = '★'.repeat(STATE.fame) + '☆'.repeat(5-STATE.fame);
-  document.getElementById('stat-projects').textContent = STATE.deliveries.length;
-  document.getElementById('stat-clients').textContent = STATE.deliveries.length;
+  const starsEl = document.getElementById('fame-stars-display');
+  const labelEl = document.getElementById('fame-level-label');
+  if(starsEl) starsEl.textContent = '★'.repeat(STATE.fame)+'☆'.repeat(5-STATE.fame);
+  if(labelEl) labelEl.textContent = `Nível ${STATE.fame} — ${fameLabels[STATE.fame]}`;
+  document.getElementById('yt-videos').textContent = STATE.ytVideos || 0;
+  document.getElementById('yt-subs').textContent = (STATE.ytSubs||0).toLocaleString('pt-BR');
+  document.getElementById('yt-responses').textContent = STATE.ytResponses || 0;
 
   refreshCandidates();
   renderPhases();
