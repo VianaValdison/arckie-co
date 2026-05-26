@@ -2,1656 +2,2137 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Arckie Co.</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARK — Sistema Interno</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Josefin+Sans:wght@200;300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-/* =========================================================
-   ARCKIE CO. v3 — Alto Padrão · Boutique de Arquitetura
-   Display: Cormorant (elegante, distinto, com caráter)
-   Corpo:   Josefin Sans (geométrico, refinado, sem serifa)
-   Dados:   DM Mono (financeiro, preciso)
-   Paleta:  Areia quente · Tinta sépia · Cobre envelhecido
-   Conceito: Atelier artesanal — feito em mãos únicas
-========================================================= */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg:       #F7F4EE;
-  --bg2:      #F0EDE6;
-  --bg3:      #E8E3DA;
-  --bg4:      #DDD7CC;
-  --ink:      #1C1914;
-  --ink2:     #302C25;
-  --ink3:     #48433A;
-  --muted:    #7A7468;
-  --muted2:   #A09891;
-  --muted3:   #C4BEB5;
-  --line:     rgba(28,25,20,.08);
-  --line2:    rgba(28,25,20,.14);
-  --line3:    rgba(28,25,20,.24);
-  --cop:      #6B4B1C;
-  --cop2:     #9A6C28;
-  --cop3:     #C89440;
-  --cop-bg:   rgba(107,75,28,.06);
-  --cop-bd:   rgba(107,75,28,.20);
-  --grn:      #1E4A2E;
-  --grn-bg:   rgba(30,74,46,.07);
-  --grn-bd:   rgba(30,74,46,.20);
-  --red:      #5C1E1E;
-  --red-bg:   rgba(92,30,30,.07);
-  --red-bd:   rgba(92,30,30,.20);
-  --sh:  0 1px 3px rgba(28,25,20,.05), 0 4px 18px rgba(28,25,20,.07);
-  --sh2: 0 2px 8px rgba(28,25,20,.09), 0 16px 48px rgba(28,25,20,.11);
-  --r: 4px; --r2: 8px;
+  --ink: #1C1914;
+  --cream: #F5F2EC;
+  --copper: #C4A882;
+  --warm-gray: #8C8880;
+  --sand: #D4CFC7;
+  --copper-light: #E8D9C4;
+  --ink-soft: #2E2A25;
+  --cream-dark: #EAE6DF;
 }
-html, body {
-  height: 100%; background: var(--bg); color: var(--ink);
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
   font-family: 'Josefin Sans', sans-serif;
-  -webkit-font-smoothing: antialiased; font-size: 13px; line-height: 1.55;
-}
-button, input, select, textarea { font-family: 'Josefin Sans', sans-serif; font-size: 13px; }
-::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-thumb { background: var(--bg4); }
-::selection { background: rgba(107,75,28,.15); }
-
-/* grain overlay */
-body::before {
-  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
-  opacity: .03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px;
-}
-#boot, #login, #app { position: relative; z-index: 1; }
-
-/* ── BOOT ───────────────────────────────────────── */
-#boot {
-  position: fixed; inset: 0; z-index: 9999; background: var(--ink);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity .9s ease;
-}
-#boot.out { opacity: 0; pointer-events: none; }
-.boot-mark {
-  font-family: 'Cormorant', serif; font-size: 52px; font-weight: 300;
-  letter-spacing: 12px; color: rgba(247,244,238,.88); line-height: 1;
-}
-.boot-mark em { color: rgba(200,148,64,.65); font-style: italic; }
-.boot-tag {
-  font-size: 9px; letter-spacing: 6px; text-transform: uppercase;
-  color: rgba(255,255,255,.18); font-weight: 300; margin: 10px 0 52px;
-}
-.boot-bar { width: 160px; height: 1px; background: rgba(255,255,255,.07); overflow: hidden; }
-.boot-bar::after {
-  content: ''; display: block; height: 1px; width: 60%;
-  background: linear-gradient(90deg, transparent, rgba(200,148,64,.8), transparent);
-  animation: bsweep 2s ease infinite;
-}
-@keyframes bsweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
-.boot-status {
-  font-size: 8px; letter-spacing: 4px; text-transform: uppercase;
-  color: rgba(255,255,255,.13); margin-top: 14px; font-weight: 300;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 14px;
+  letter-spacing: 0.02em;
 }
 
-/* ── LOGIN ─────────────────────────────────────── */
-#login {
-  position: fixed; inset: 0; z-index: 8888; background: var(--bg);
-  display: none; align-items: center; justify-content: center;
+/* ── LOGIN ── */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
 }
-.lg-wrap {
-  display: grid; grid-template-columns: 1fr 1fr;
-  width: 840px; max-width: 96vw; min-height: 460px;
-  border: 1px solid var(--line2); box-shadow: var(--sh2); overflow: hidden;
-}
-.lg-left {
-  background: var(--ink); padding: 52px 48px;
-  display: flex; flex-direction: column; justify-content: space-between;
-  position: relative; overflow: hidden;
-}
-.lg-left::before {
-  content: 'A'; position: absolute; right: -24px; bottom: -36px;
-  font-family: 'Cormorant', serif; font-size: 280px; font-weight: 300;
-  color: rgba(255,255,255,.025); line-height: 1; pointer-events: none;
-}
-.lg-brand {
-  font-family: 'Cormorant', serif; font-size: 40px; font-weight: 300;
-  letter-spacing: 6px; color: rgba(247,244,238,.9); line-height: 1;
-}
-.lg-brand em { color: rgba(200,148,64,.65); font-style: italic; }
-.lg-tagline {
-  font-size: 8px; letter-spacing: 5px; text-transform: uppercase;
-  color: rgba(255,255,255,.2); font-weight: 300; margin-top: 8px;
-}
-.lg-geo {
-  display: flex; align-items: center; justify-content: center;
-  flex: 1; padding: 28px 0;
-}
-.lg-geo svg { opacity: .14; width: 140px; height: 140px; }
-.lg-foot { font-size: 8px; letter-spacing: 2px; color: rgba(255,255,255,.12); text-transform: uppercase; }
 
-.lg-right {
-  background: var(--bg); padding: 52px 48px;
-  display: flex; flex-direction: column; justify-content: center;
+.login-box {
+  width: 380px;
+  text-align: center;
 }
-.lg-title {
-  font-family: 'Josefin Sans', sans-serif; font-size: 20px; font-weight: 300;
-  letter-spacing: 6px; text-transform: uppercase; color: var(--ink); margin-bottom: 4px;
+
+.login-logo {
+  font-family: 'Cormorant', serif;
+  font-size: 72px;
+  font-weight: 300;
+  color: var(--cream);
+  letter-spacing: 0.3em;
+  line-height: 1;
+  margin-bottom: 4px;
 }
-.lg-sub {
-  font-size: 8px; letter-spacing: 4px; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 44px; font-weight: 300;
-}
-.lg-lbl {
-  font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--muted); display: block; margin-bottom: 8px; font-weight: 400;
-}
-.lg-inp {
-  width: 100%; background: transparent; border: none;
-  border-bottom: 1px solid var(--line2); color: var(--ink);
-  padding: 10px 0; font-size: 13px; font-weight: 300; letter-spacing: .5px;
-  outline: none; transition: border-color .2s; margin-bottom: 22px;
+
+.login-sub {
   font-family: 'Josefin Sans', sans-serif;
-}
-.lg-inp:focus { border-bottom-color: var(--cop2); }
-.lg-inp::placeholder { color: var(--muted3); font-weight: 300; }
-.lg-btn {
-  width: 100%; margin-top: 10px; background: var(--ink); border: none;
-  color: var(--bg); padding: 14px; font-size: 8px; font-weight: 400;
-  letter-spacing: 6px; text-transform: uppercase; cursor: pointer;
-  font-family: 'Josefin Sans', sans-serif;
-  transition: background .2s, letter-spacing .25s;
-}
-.lg-btn:hover { background: var(--ink2); letter-spacing: 8px; }
-.lg-err {
-  color: var(--red); font-size: 10px; text-align: center;
-  margin-top: 14px; display: none; letter-spacing: .5px; font-weight: 300;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: var(--copper);
+  text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
-/* ── APP SHELL ──────────────────────────────────── */
+.login-rule {
+  width: 80px;
+  height: 0.5px;
+  background: var(--copper);
+  margin: 0 auto 48px;
+  position: relative;
+}
+.login-rule::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  height: 0.5px;
+  background: var(--copper);
+  opacity: 0.4;
+}
+
+.login-form { display: flex; flex-direction: column; gap: 12px; }
+
+.login-form input {
+  background: transparent;
+  border: 0.5px solid rgba(196,168,130,0.4);
+  color: var(--cream);
+  padding: 14px 18px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.login-form input::placeholder { color: rgba(245,242,236,0.3); }
+.login-form input:focus { border-color: var(--copper); }
+
+.login-btn {
+  margin-top: 8px;
+  background: var(--copper);
+  color: var(--ink);
+  border: none;
+  padding: 14px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.login-btn:hover { background: var(--copper-light); }
+
+.login-error {
+  color: #c4554a;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+  display: none;
+}
+
+/* ── APP SHELL ── */
 #app { display: none; min-height: 100vh; flex-direction: column; }
+#app.visible { display: flex; }
 
-/* TOPBAR */
-.topbar {
-  height: 52px; background: var(--bg); border-bottom: 1px solid var(--line);
-  display: flex; align-items: stretch; position: sticky; top: 0; z-index: 200;
+/* ── TOP HEADER ── */
+.app-header {
+  background: var(--ink);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  border-bottom: 0.5px solid rgba(196,168,130,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-.tb-brand {
-  font-family: 'Cormorant', serif; font-size: 18px; font-weight: 300;
-  letter-spacing: 5px; color: var(--ink); display: flex; align-items: center;
-  padding: 0 28px; border-right: 1px solid var(--line); white-space: nowrap;
+
+.header-logo {
+  font-family: 'Cormorant', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--cream);
+  letter-spacing: 0.4em;
 }
-.tb-brand em { color: var(--cop2); font-style: italic; }
-.tb-nav { display: flex; align-items: stretch; flex: 1; padding: 0 4px; }
-.ntab {
-  padding: 0 20px; font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--muted); cursor: pointer; border: none; background: none;
-  border-bottom: 1.5px solid transparent; font-weight: 400;
-  font-family: 'Josefin Sans', sans-serif; transition: color .15s; display: flex; align-items: center;
+
+.header-nav { display: flex; gap: 0; }
+
+.nav-tab {
+  padding: 0 28px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(245,242,236,0.45);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
-.ntab:hover { color: var(--ink2); }
-.ntab.on { color: var(--ink); border-bottom-color: var(--cop2); }
-.tb-right {
-  margin-left: auto; display: flex; align-items: center;
-  padding: 0 20px; gap: 12px; border-left: 1px solid var(--line);
+.nav-tab:hover { color: var(--cream); }
+.nav-tab.active {
+  color: var(--copper);
+  border-bottom-color: var(--copper);
 }
-.tb-av {
-  width: 28px; height: 28px; background: var(--bg3); border: 1px solid var(--line2);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Josefin Sans', sans-serif; font-size: 9px; color: var(--ink3);
-  letter-spacing: 1px; font-weight: 500;
+
+.header-user {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--warm-gray);
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-.tb-name { font-size: 9px; font-weight: 400; color: var(--ink); letter-spacing: 2px; text-transform: uppercase; }
-.tb-role { font-size: 8px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 1px; }
-.tb-sep { width: 1px; height: 18px; background: var(--line2); }
-.tb-chip {
-  font-size: 8px; color: var(--cop); letter-spacing: 2px; text-transform: uppercase;
-  background: var(--cop-bg); border: 1px solid var(--cop-bd); padding: 4px 10px; white-space: nowrap;
+.logout-btn {
+  background: none;
+  border: 0.5px solid rgba(196,168,130,0.3);
+  color: var(--copper);
+  padding: 6px 14px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
 }
-.tb-ctl {
-  background: none; border: 1px solid var(--line2); color: var(--muted);
-  padding: 5px 9px; font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-  cursor: pointer; font-family: 'Josefin Sans', sans-serif; transition: all .15s;
+.logout-btn:hover { background: rgba(196,168,130,0.1); }
+
+/* ── MAIN CONTENT ── */
+.app-main { flex: 1; }
+.tab-content { display: none; padding: 48px 40px; max-width: 1200px; margin: 0 auto; }
+.tab-content.active { display: block; }
+
+/* ── SHARED COMPONENTS ── */
+.section-header {
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 0.5px solid var(--sand);
 }
-.tb-ctl:hover { border-color: var(--line3); color: var(--ink); }
-
-/* PANELS */
-.panel { display: none; min-height: calc(100vh - 52px); }
-.panel.on { display: block; }
-.pi { padding: 32px 36px; }
-
-/* PAGE HEADER */
-.ph { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 26px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
-.ph-title { font-family: 'Cormorant', serif; font-size: 30px; font-weight: 300; letter-spacing: .5px; color: var(--ink); line-height: 1; }
-.ph-sub { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 6px; font-weight: 300; }
-
-/* GRID */
-.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-
-/* CARD */
-.card { background: var(--bg); border: 1px solid var(--line); padding: 22px; box-shadow: var(--sh); }
-.card:hover { border-color: var(--line2); transition: border-color .2s; }
-.cl { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 400; margin-bottom: 12px; }
-.cv { font-family: 'Cormorant', serif; font-size: 34px; font-weight: 300; letter-spacing: -.5px; color: var(--ink); line-height: 1; }
-
-/* FORMS */
-.fl { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 7px; font-weight: 400; }
-.fi {
-  width: 100%; background: transparent; border: none;
-  border-bottom: 1px solid var(--line2); color: var(--ink);
-  padding: 9px 0; font-size: 12px; font-weight: 300; letter-spacing: .3px;
-  outline: none; transition: border-color .15s; font-family: 'Josefin Sans', sans-serif;
+.section-title {
+  font-family: 'Cormorant', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.02em;
 }
-.fi:focus { border-bottom-color: var(--cop2); }
-.fi::placeholder { color: var(--muted3); }
-select.fi { background: var(--bg2); padding: 8px 6px; border: 1px solid var(--line2); border-radius: var(--r); }
-select.fi:focus { border-color: var(--cop2); background: var(--bg); }
-textarea.fi { border: 1px solid var(--line2); background: var(--bg2); padding: 10px 12px; resize: vertical; line-height: 1.65; border-radius: var(--r); }
-textarea.fi:focus { border-color: var(--cop2); background: var(--bg); }
-.fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-.fr { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
-
-/* BUTTONS */
-.btn {
-  border: 1px solid var(--line2); background: transparent; color: var(--ink2);
-  padding: 9px 18px; font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
-  cursor: pointer; font-weight: 400; font-family: 'Josefin Sans', sans-serif;
-  transition: all .15s; white-space: nowrap;
+.section-sub {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--warm-gray);
+  text-transform: uppercase;
+  margin-top: 4px;
 }
-.btn:hover { background: var(--bg2); border-color: var(--line3); color: var(--ink); }
-.btn-ink { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.btn-ink:hover { background: var(--ink2); color: #fff; }
-.btn-pos { background: var(--grn-bg); color: var(--grn); border-color: var(--grn-bd); }
-.btn-pos:hover { background: var(--grn); color: #fff; }
-.btn-neg { background: var(--red-bg); color: var(--red); border-color: var(--red-bd); }
-.btn-neg:hover { background: var(--red); color: #fff; }
-.btn-sm { padding: 7px 13px; font-size: 8px; }
 
-/* HERO SALDO */
-.hero {
-  background: var(--ink); padding: 32px 36px; position: relative; overflow: hidden;
+.card {
+  background: white;
+  border: 0.5px solid var(--sand);
+  padding: 24px;
+  margin-bottom: 24px;
 }
-.hero::before {
-  content: '$'; position: absolute; right: -15px; top: -15px;
-  font-family: 'Cormorant', serif; font-size: 240px; font-weight: 300;
-  color: rgba(255,255,255,.025); line-height: 1; pointer-events: none;
+.card-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 16px;
 }
-.h-lbl { font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: rgba(247,244,238,.25); margin-bottom: 10px; }
-.h-val { font-family: 'Cormorant', serif; font-size: 60px; font-weight: 300; letter-spacing: -1px; color: rgba(247,244,238,.95); line-height: 1; }
-.h-sym { font-size: 22px; color: rgba(200,148,64,.55); margin-right: 6px; vertical-align: middle; }
-.h-row { display: flex; gap: 36px; margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.07); }
-.h-stat { display: flex; flex-direction: column; gap: 3px; }
-.h-sl { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: rgba(247,244,238,.2); }
-.h-sv { font-family: 'Cormorant', serif; font-size: 19px; font-weight: 300; color: rgba(247,244,238,.72); }
-.h-aside { position: absolute; right: 36px; top: 50%; transform: translateY(-50%); text-align: right; }
-.h-al { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: rgba(247,244,238,.15); margin-bottom: 4px; }
-.h-av { font-family: 'Cormorant', serif; font-size: 17px; font-weight: 300; color: rgba(200,148,64,.45); }
 
-/* EXTRATO */
-.tx { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); }
-.tx:last-child { border-bottom: none; }
-.tx-ico { width: 30px; height: 30px; background: var(--bg2); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
-.tx-b { flex: 1; min-width: 0; }
-.tx-d { font-size: 12px; font-weight: 300; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: .3px; }
-.tx-m { font-size: 8px; color: var(--muted); margin-top: 1px; letter-spacing: .5px; text-transform: uppercase; }
-.tx-p { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--grn); font-size: 12px; white-space: nowrap; }
-.tx-n { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--red); font-size: 12px; white-space: nowrap; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
 
-/* PILLS */
-.pill { display: inline-flex; font-size: 8px; padding: 2px 8px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.6; }
-.p-cop { background: var(--cop-bg); color: var(--cop); border: 1px solid var(--cop-bd); }
-.p-grn { background: var(--grn-bg); color: var(--grn); border: 1px solid var(--grn-bd); }
-.p-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bd); }
-.p-def { background: var(--bg3); color: var(--muted); border: 1px solid var(--line2); }
-
-/* PROG */
-.prog { height: 1px; background: var(--line); position: relative; margin-top: 6px; }
-.prog-f { position: absolute; top: 0; left: 0; height: 1px; background: var(--ink); transition: width .5s ease; }
-.prog-f.cop { background: var(--cop2); }
-
-/* ── INVESTIMENTOS — BOLSA ──────────────────────── */
-.ticker {
-  background: var(--ink); overflow: hidden;
-  border-top: 1px solid rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.04);
+.metric-box {
+  background: var(--cream);
+  border: 0.5px solid var(--sand);
+  padding: 20px;
+  text-align: center;
 }
-.ticker-track { display: flex; width: max-content; animation: tick 38s linear infinite; }
-.ticker-track:hover { animation-play-state: paused; }
-@keyframes tick { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-.t-item {
-  display: flex; align-items: center; gap: 8px; padding: 9px 24px;
-  border-right: 1px solid rgba(255,255,255,.05); white-space: nowrap;
-  font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(247,244,238,.4);
+.metric-label {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  display: block;
+  margin-bottom: 8px;
 }
-.t-name { color: rgba(247,244,238,.85); font-weight: 500; letter-spacing: 1px; }
-.t-up { color: #5CAF7D; } .t-dn { color: #E07070; }
-
-.b-table { width: 100%; border-collapse: collapse; }
-.b-table th {
-  font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted);
-  font-weight: 400; text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line2);
+.metric-value {
+  font-family: 'Cormorant', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--ink);
+  display: block;
 }
-.b-table th.r { text-align: right; }
-.b-table td { padding: 13px 14px; border-bottom: 1px solid var(--line); font-size: 11px; color: var(--ink2); vertical-align: middle; }
-.b-table td.r { text-align: right; font-family: 'DM Mono', monospace; font-size: 11px; }
-.b-table tr:hover td { background: var(--bg2); }
-.mini-prog { height: 2px; background: var(--line); margin-top: 4px; border-radius: 1px; overflow: hidden; }
-.mini-f { height: 100%; border-radius: 1px; }
-.spark { display: inline-flex; gap: 1px; align-items: flex-end; height: 14px; margin-left: 4px; vertical-align: middle; }
-.spark span { width: 2px; border-radius: 1px; }
-.td-up { color: var(--grn); font-weight: 500; } .td-dn { color: var(--red); font-weight: 500; }
+.metric-value.copper { color: var(--copper); }
+.metric-value.green { color: #4a7c59; }
+.metric-value.red { color: #9e3e38; }
 
-/* ── ESCRITÓRIO ─────────────────────────────────── */
-.corp-shell { display: grid; grid-template-columns: 210px 1fr; min-height: calc(100vh - 52px); }
-.corp-side { background: var(--bg2); border-right: 1px solid var(--line); display: flex; flex-direction: column; }
-.cs-top { padding: 22px 18px 16px; border-bottom: 1px solid var(--line); }
-.cs-brand { font-family: 'Cormorant', serif; font-size: 17px; font-weight: 300; letter-spacing: 3px; color: var(--ink); }
-.cs-brand em { color: var(--cop2); font-style: italic; }
-.cs-fase { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 4px; font-weight: 300; }
-.cs-prof { padding: 16px 18px; border-bottom: 1px solid var(--line); }
-.cs-av {
-  width: 36px; height: 36px; background: var(--bg3); border: 1px solid var(--line2);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Josefin Sans', sans-serif; font-size: 9px; color: var(--ink2);
-  letter-spacing: 1px; font-weight: 500; margin-bottom: 10px;
+btn-primary, .btn {
+  display: inline-block;
+  padding: 10px 24px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
 }
-.cs-name { font-size: 9px; font-weight: 400; color: var(--ink); letter-spacing: 2px; text-transform: uppercase; }
-.cs-role { font-size: 8px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin: 2px 0 10px; }
-.cs-sl { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
-.cs-sv { font-family: 'Cormorant', serif; font-size: 18px; font-weight: 300; color: var(--cop2); }
-.cs-nav { flex: 1; padding: 8px 0; }
-.cs-sec { font-size: 7px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted3); padding: 14px 18px 4px; }
-.cs-item {
-  padding: 8px 18px; font-size: 8px; color: var(--muted); cursor: pointer;
-  border-left: 1.5px solid transparent; display: flex; align-items: center; gap: 8px;
-  transition: all .15s; letter-spacing: 2px; text-transform: uppercase;
+.btn-copper {
+  background: var(--copper);
+  color: var(--ink);
 }
-.cs-item:hover { color: var(--ink); background: rgba(28,25,20,.03); }
-.cs-item.on { color: var(--ink); border-left-color: var(--ink); background: rgba(28,25,20,.04); }
-.corp-main { background: var(--bg); display: flex; flex-direction: column; overflow: hidden; }
-
-/* corp panels */
-.cp { display: none; flex-direction: column; height: calc(100vh - 52px); overflow-y: auto; }
-.cp.on { display: flex; }
-.cp-inner { padding: 26px 30px; flex: 1; }
-
-/* CHAT */
-.chat-hd {
-  padding: 14px 22px; border-bottom: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0; background: var(--bg);
+.btn-copper:hover { background: var(--copper-light); }
+.btn-outline {
+  background: transparent;
+  border: 0.5px solid var(--copper);
+  color: var(--copper);
 }
-.chat-av {
-  width: 30px; height: 30px; background: var(--ink);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Josefin Sans', sans-serif; font-size: 9px;
-  color: rgba(247,244,238,.85); letter-spacing: 1px; font-weight: 500;
+.btn-outline:hover { background: rgba(196,168,130,0.1); }
+.btn-ink {
+  background: var(--ink);
+  color: var(--cream);
 }
-.chat-ti { font-size: 9px; font-weight: 400; color: var(--ink); letter-spacing: 2px; text-transform: uppercase; }
-.chat-su { font-size: 8px; color: var(--muted); margin-top: 1px; letter-spacing: 1.5px; text-transform: uppercase; }
-.chat-st { font-size: 8px; color: var(--muted); display: flex; align-items: center; gap: 5px; letter-spacing: 2px; text-transform: uppercase; }
-.cdot { width: 5px; height: 5px; background: var(--grn); border-radius: 50%; }
-.chat-area { flex: 1; overflow-y: auto; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; background: var(--bg2); }
-.msg-ia { align-self: flex-start; max-width: 80%; }
-.msg-eu { align-self: flex-end; max-width: 80%; }
-.mw { font-size: 8px; color: var(--muted); margin-bottom: 4px; letter-spacing: 2px; text-transform: uppercase; }
-.msg-eu .mw { text-align: right; }
-.mb { padding: 12px 16px; font-size: 12px; font-weight: 300; line-height: 1.8; }
-.msg-ia .mb { background: var(--bg); border: 1px solid var(--line); color: var(--ink2); border-radius: 0 var(--r2) var(--r2) var(--r2); }
-.msg-eu .mb { background: var(--ink); color: rgba(247,244,238,.9); border-radius: var(--r2) 0 var(--r2) var(--r2); }
-.typing-r { padding: 8px 22px; display: none; align-items: center; gap: 6px; font-size: 8px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
-.dots span { width: 3px; height: 3px; background: var(--muted3); border-radius: 50%; display: inline-block; margin: 0 1px; animation: dd 1.4s ease-in-out infinite; }
-.dots span:nth-child(2) { animation-delay: .2s; } .dots span:nth-child(3) { animation-delay: .4s; }
-@keyframes dd { 0%,80%,100% { opacity:.3; transform:scale(.6); } 40% { opacity:1; transform:scale(1); } }
-.chat-ft { border-top: 1px solid var(--line); padding: 12px 22px; display: flex; gap: 10px; background: var(--bg); flex-shrink: 0; }
-.chat-inp {
-  flex: 1; border: none; border-bottom: 1px solid var(--line2); background: transparent;
-  color: var(--ink); padding: 8px 0; font-size: 12px; font-weight: 300; letter-spacing: .3px;
-  font-family: 'Josefin Sans', sans-serif; outline: none; transition: border-color .15s;
+.btn-ink:hover { background: var(--ink-soft); }
+.btn-danger {
+  background: transparent;
+  border: 0.5px solid #9e3e38;
+  color: #9e3e38;
 }
-.chat-inp:focus { border-bottom-color: var(--cop2); }
-.chat-inp::placeholder { color: var(--muted3); }
 
-/* PUBLICIDADE */
-.pub-plan { border: 1px solid var(--line); padding: 20px; margin-bottom: 10px; cursor: pointer; transition: all .2s; position: relative; }
-.pub-plan:hover { border-color: var(--line2); background: var(--bg2); }
-.pub-plan.on { border-color: var(--cop-bd); background: var(--cop-bg); }
-.pub-name { font-family: 'Cormorant', serif; font-size: 20px; font-weight: 300; letter-spacing: 1px; color: var(--ink); margin-bottom: 3px; }
-.pub-price { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--cop2); margin-bottom: 8px; }
-.pub-desc { font-size: 11px; color: var(--muted); line-height: 1.7; font-weight: 300; }
-.pub-tags { margin-top: 10px; font-size: 9px; color: var(--muted2); letter-spacing: .5px; font-weight: 300; }
-.pub-badge { position: absolute; top: 14px; right: 14px; }
+input[type=text], input[type=number], input[type=date], select, textarea {
+  width: 100%;
+  background: var(--cream);
+  border: 0.5px solid var(--sand);
+  padding: 10px 14px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--copper); }
 
-/* FASES */
-.fase { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border: 1px solid var(--line); margin-bottom: 8px; transition: all .2s; }
-.fase.curr { border-color: var(--ink); background: var(--ink); }
-.fase.next { border-color: var(--cop-bd); background: var(--cop-bg); }
-.fase.lock { opacity: .3; }
-.fase-n { font-family: 'Cormorant', serif; font-size: 36px; font-weight: 300; color: var(--muted3); min-width: 40px; line-height: 1; }
-.fase.curr .fase-n { color: rgba(200,148,64,.5); }
-.fase.next .fase-n { color: var(--cop3); }
-.fase-info { flex: 1; }
-.fase-t { font-size: 13px; font-weight: 400; color: var(--ink); letter-spacing: .3px; }
-.fase.curr .fase-t { color: rgba(247,244,238,.9); }
-.fase-d { font-size: 10px; color: var(--muted); margin-top: 3px; font-weight: 300; }
-.fase.curr .fase-d { color: rgba(247,244,238,.35); }
-.fase-s { font-family: 'Cormorant', serif; font-size: 19px; font-weight: 300; color: var(--muted); text-align: right; white-space: nowrap; }
-.fase.next .fase-s { color: var(--cop2); }
-.fase.curr .fase-s { color: rgba(200,148,64,.55); }
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.badge-copper { background: var(--copper-light); color: #7a5c38; }
+.badge-green { background: #d6e8db; color: #2d5e3a; }
+.badge-red { background: #f2d5d4; color: #7a2e2a; }
+.badge-gray { background: var(--sand); color: var(--warm-gray); }
 
-/* REQUISITOS */
-.req-r { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--line); }
-.req-r:last-child { border-bottom: none; }
-.req-dot { width: 20px; height: 20px; border: 1px solid var(--line2); display: flex; align-items: center; justify-content: center; font-size: 9px; flex-shrink: 0; margin-top: 2px; color: var(--muted); }
-.req-dot.done { background: var(--ink); border-color: var(--ink); color: var(--bg); }
-.req-dot.half { background: var(--cop-bg); border-color: var(--cop-bd); color: var(--cop); }
-.req-n { font-size: 12px; color: var(--ink); font-weight: 400; }
-.req-h { font-size: 10px; color: var(--muted); margin-top: 2px; font-weight: 300; }
+/* ── ABA 1: CARREIRA ── */
+.profile-hero {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 32px;
+}
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-avatar span {
+  font-family: 'Cormorant', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--copper);
+  letter-spacing: 0.1em;
+}
+.profile-name {
+  font-family: 'Cormorant', serif;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+}
+.profile-role {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--warm-gray);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+.profile-loc {
+  font-size: 11px;
+  color: var(--copper);
+  margin-top: 4px;
+  letter-spacing: 0.1em;
+}
 
-/* FOLHA VAZIA */
-.fp-void { border: 1px dashed var(--line2); padding: 40px 32px; text-align: center; }
-.fp-void-t { font-family: 'Cormorant', serif; font-size: 24px; font-weight: 300; color: var(--muted); letter-spacing: 1px; margin-bottom: 12px; }
-.fp-void-b { font-size: 12px; color: var(--muted2); line-height: 1.9; font-weight: 300; }
-.fp-void-f { font-size: 8px; color: var(--muted3); letter-spacing: 3px; text-transform: uppercase; margin-top: 14px; }
+.timeline-item {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 0.5px solid var(--cream-dark);
+}
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--copper);
+  border-radius: 50%;
+  margin-top: 4px;
+}
+.timeline-title { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; }
+.timeline-org { font-size: 11px; color: var(--copper); letter-spacing: 0.1em; margin: 2px 0; }
+.timeline-period { font-size: 10px; color: var(--warm-gray); letter-spacing: 0.15em; }
+.timeline-desc { font-size: 12px; color: var(--warm-gray); line-height: 1.6; margin-top: 8px; }
 
-/* ── CARREIRA ───────────────────────────────────── */
-.li-cover { height: 80px; background: var(--ink); position: relative; overflow: hidden; }
-.li-cover::before { content: 'VV'; position: absolute; right: -16px; top: -20px; font-family: 'Cormorant', serif; font-size: 190px; font-weight: 300; color: rgba(255,255,255,.03); line-height: 1; letter-spacing: -8px; }
-.li-body { background: var(--bg); border: 1px solid var(--line); border-top: none; padding: 0 24px 24px; }
-.li-av { width: 62px; height: 62px; background: var(--bg); border: 2px solid var(--bg); display: flex; align-items: center; justify-content: center; font-family: 'Josefin Sans', sans-serif; font-size: 11px; color: var(--ink2); margin: -31px 0 14px; box-shadow: 0 2px 10px rgba(0,0,0,.1); letter-spacing: 2px; font-weight: 500; }
-.li-name { font-family: 'Cormorant', serif; font-size: 28px; font-weight: 300; letter-spacing: 2px; color: var(--ink); }
-.li-role { font-size: 11px; color: var(--ink2); margin-top: 3px; font-weight: 400; letter-spacing: .5px; }
-.li-loc { font-size: 9px; color: var(--muted); margin-top: 2px; letter-spacing: 1px; text-transform: uppercase; }
-.sk-tag { display: inline-block; font-size: 8px; padding: 4px 10px; border: 1px solid var(--line2); color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 300; margin: 3px 3px 0 0; }
-.exp-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
-.exp-item:last-child { border: none; padding-bottom: 0; }
-.exp-ico { width: 34px; height: 34px; background: var(--bg2); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-.exp-title { font-size: 13px; font-weight: 400; color: var(--ink); }
-.exp-co { font-size: 11px; color: var(--cop2); margin-top: 2px; letter-spacing: .3px; }
-.exp-period { font-size: 8px; color: var(--muted); margin-top: 1px; letter-spacing: 1.5px; text-transform: uppercase; }
-.exp-desc { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.75; font-weight: 300; }
+/* candidatos */
+.candidates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.candidate-card {
+  background: var(--cream);
+  border: 0.5px solid var(--sand);
+  padding: 18px;
+  transition: border-color 0.2s;
+}
+.candidate-card:hover { border-color: var(--copper); }
+.cand-name { font-size: 14px; font-weight: 600; letter-spacing: 0.05em; }
+.cand-role { font-size: 10px; color: var(--copper); letter-spacing: 0.2em; text-transform: uppercase; margin: 3px 0; }
+.cand-info { font-size: 11px; color: var(--warm-gray); }
+.cand-skill { font-size: 10px; margin-top: 8px; }
+.cand-skill span {
+  display: inline-block;
+  background: var(--sand);
+  padding: 2px 8px;
+  margin: 2px 2px 0 0;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+.cand-salary { font-family: 'Cormorant', serif; font-size: 20px; color: var(--ink); margin-top: 8px; }
+.cand-salary small { font-family: 'Josefin Sans'; font-size: 9px; color: var(--warm-gray); letter-spacing: 0.1em; vertical-align: middle; }
 
-/* CANDIDATOS */
-.cand { border: 1px solid var(--line); padding: 18px; margin-bottom: 10px; background: var(--bg); transition: all .2s; }
-.cand:hover { border-color: var(--line2); }
-.cand-area { font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.cand-name { font-family: 'Cormorant', serif; font-size: 20px; font-weight: 300; letter-spacing: 1px; color: var(--ink); margin-bottom: 2px; }
-.cand-spec { font-size: 11px; color: var(--ink2); margin-bottom: 6px; letter-spacing: .3px; }
-.cand-sal { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--cop2); margin-bottom: 8px; font-weight: 500; }
-.cand-bio { font-size: 11px; color: var(--muted); line-height: 1.7; font-weight: 300; margin-bottom: 12px; }
+/* ── ABA 2: ESCRITÓRIO ── */
+.tabs-inner { display: flex; gap: 0; border-bottom: 0.5px solid var(--sand); margin-bottom: 32px; }
+.inner-tab {
+  padding: 12px 20px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--warm-gray);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.inner-tab.active { color: var(--copper); border-bottom-color: var(--copper); }
+.inner-content { display: none; }
+.inner-content.active { display: block; }
 
-/* MODAL */
-.modal-ov { display: none; position: fixed; inset: 0; background: rgba(28,25,20,.6); z-index: 700; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
-.modal-ov.show { display: flex; }
-.modal-box { background: var(--bg); border: 1px solid var(--line2); width: 400px; max-width: 94vw; box-shadow: var(--sh2); }
-.modal-hd { padding: 20px 24px 16px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
-.modal-ti { font-family: 'Cormorant', serif; font-size: 22px; font-weight: 300; letter-spacing: 1px; color: var(--ink); }
-.modal-x { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 2px; transition: color .15s; }
-.modal-x:hover { color: var(--ink); }
-.modal-b { padding: 20px 24px; }
-.modal-f { padding: 14px 24px; border-top: 1px solid var(--line); display: flex; gap: 10px; justify-content: flex-end; }
+/* crescimento */
+.phase-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 24px; }
+.phase-box {
+  border: 0.5px solid var(--sand);
+  padding: 16px;
+  text-align: center;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.phase-box.active-phase { border-color: var(--copper); background: rgba(196,168,130,0.05); }
+.phase-box.completed-phase { background: var(--cream); border-color: var(--sand); opacity: 0.6; }
+.phase-num { font-family: 'Cormorant', serif; font-size: 36px; color: var(--sand); }
+.phase-name { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin: 4px 0; }
+.phase-stars { color: var(--copper); font-size: 14px; margin-bottom: 8px; }
+.phase-req { font-size: 10px; color: var(--warm-gray); line-height: 1.5; }
+.phase-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--copper);
+  color: var(--ink);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  font-weight: 600;
+}
 
-/* TOAST */
+.conquistas-box { background: var(--cream); border: 0.5px solid var(--sand); padding: 16px; margin-top: 16px; }
+.conquista-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 0.5px solid var(--cream-dark);
+  font-size: 12px;
+}
+.conquista-item:last-child { border-bottom: none; }
+.conquista-check { width: 16px; height: 16px; border: 0.5px solid var(--sand); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.conquista-check.done { background: var(--copper); border-color: var(--copper); color: var(--ink); font-size: 10px; }
+
+/* demandas */
+.district-card {
+  border: 0.5px solid var(--sand);
+  padding: 20px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.district-card.locked { opacity: 0.4; }
+.district-name { font-family: 'Cormorant', serif; font-size: 22px; margin-bottom: 4px; }
+.district-phase { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--copper); margin-bottom: 12px; }
+.projects-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 8px; }
+.project-item {
+  background: var(--cream);
+  border: 0.5px solid var(--sand);
+  padding: 10px 14px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  position: relative;
+}
+.project-item:hover { border-color: var(--copper); }
+.project-item.in-progress { border-color: var(--copper); background: rgba(196,168,130,0.08); }
+.project-item.done { opacity: 0.5; }
+.project-budget { font-family: 'Cormorant', serif; font-size: 18px; color: var(--copper); display: block; }
+.project-payment { font-size: 9px; color: var(--warm-gray); letter-spacing: 0.1em; }
+
+/* relatório */
+table { width: 100%; border-collapse: collapse; }
+th {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 0.5px solid var(--sand);
+}
+td {
+  padding: 12px;
+  font-size: 12px;
+  border-bottom: 0.5px solid var(--cream-dark);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--cream); }
+
+/* publicidade */
+.pub-plan {
+  border: 0.5px solid var(--sand);
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  position: relative;
+}
+.pub-plan:hover { border-color: var(--copper); }
+.pub-plan.selected { border-color: var(--copper); background: rgba(196,168,130,0.05); }
+.pub-plan .plan-name { font-family: 'Cormorant', serif; font-size: 24px; margin-bottom: 8px; }
+.pub-plan .plan-price { font-size: 28px; font-family: 'Cormorant', serif; color: var(--copper); }
+.pub-plan .plan-period { font-size: 9px; color: var(--warm-gray); letter-spacing: 0.2em; }
+.pub-plan .plan-features { font-size: 11px; color: var(--warm-gray); margin-top: 12px; line-height: 1.8; }
+
+/* folha */
+.payroll-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 0.5px solid var(--cream-dark);
+  font-size: 13px;
+}
+.payroll-row .name { font-size: 12px; }
+.payroll-row .amount { font-family: 'Cormorant', serif; font-size: 22px; color: var(--ink); }
+.payroll-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0 0;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  border-top: 1px solid var(--ink);
+  margin-top: 8px;
+}
+.payroll-total .total-amount { font-family: 'Cormorant', serif; font-size: 28px; color: var(--ink); }
+
+/* ── ABA 3: INVESTIMENTOS ── */
+.invest-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+.invest-card {
+  border: 0.5px solid var(--sand);
+  padding: 20px;
+}
+.invest-name { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 4px; }
+.invest-ticker { font-size: 9px; color: var(--copper); letter-spacing: 0.15em; }
+.invest-price { font-family: 'Cormorant', serif; font-size: 28px; margin: 8px 0; }
+.invest-change { font-size: 11px; font-weight: 600; }
+.invest-change.up { color: #4a7c59; }
+.invest-change.down { color: #9e3e38; }
+.invest-applied { font-size: 11px; color: var(--warm-gray); margin-top: 4px; }
+
+/* ── ABA 4: BANCO ── */
+.bank-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 0.5px solid var(--sand);
+}
+.bank-name { font-family: 'Cormorant', serif; font-size: 14px; font-style: italic; color: var(--warm-gray); letter-spacing: 0.1em; }
+.bank-balance-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm-gray); }
+.bank-balance { font-family: 'Cormorant', serif; font-size: 48px; font-weight: 300; color: var(--ink); line-height: 1; }
+.bank-balance.crisis { color: #9e3e38; }
+
+.transaction-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 0.5px solid var(--cream-dark);
+}
+.tx-desc { font-size: 13px; }
+.tx-category { font-size: 10px; color: var(--warm-gray); letter-spacing: 0.1em; }
+.tx-date { font-size: 10px; color: var(--warm-gray); }
+.tx-amount { font-family: 'Cormorant', serif; font-size: 22px; text-align: right; }
+.tx-amount.credit { color: #4a7c59; }
+.tx-amount.debit { color: #9e3e38; }
+
+.crisis-alert {
+  background: rgba(158,62,56,0.08);
+  border: 0.5px solid rgba(158,62,56,0.4);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.crisis-alert .msg { font-size: 12px; color: #9e3e38; font-weight: 600; letter-spacing: 0.05em; }
+
+/* parcelamento */
+.installment-card {
+  border: 0.5px solid var(--sand);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.inst-name { font-size: 13px; font-weight: 600; }
+.inst-info { font-size: 11px; color: var(--warm-gray); margin-top: 4px; }
+.inst-progress {
+  height: 2px;
+  background: var(--sand);
+  margin-top: 10px;
+  position: relative;
+}
+.inst-progress-bar { height: 100%; background: var(--copper); transition: width 0.3s; }
+.inst-overdue { color: #9e3e38; font-size: 10px; margin-top: 6px; letter-spacing: 0.1em; }
+
+/* modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(28,25,20,0.7);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--cream);
+  border: 0.5px solid var(--copper);
+  padding: 32px;
+  width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-title { font-family: 'Cormorant', serif; font-size: 28px; margin-bottom: 8px; }
+.modal-sub { font-size: 10px; letter-spacing: 0.2em; color: var(--warm-gray); text-transform: uppercase; margin-bottom: 24px; }
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 9px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--warm-gray); display: block; margin-bottom: 6px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+
+/* toast */
 .toast {
-  position: fixed; bottom: 24px; left: 50%;
-  transform: translateX(-50%) translateY(10px);
-  background: var(--ink); color: rgba(247,244,238,.9); padding: 11px 22px;
-  font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
-  opacity: 0; transition: all .25s; pointer-events: none; z-index: 999;
-  white-space: nowrap; box-shadow: var(--sh2); font-weight: 300;
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 14px 24px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  z-index: 9000;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.3s;
+  max-width: 320px;
+  border-left: 2px solid var(--copper);
 }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { border-left-color: #4a7c59; }
+.toast.error { border-left-color: #9e3e38; }
 
-/* UTILS */
-.row { display: flex; align-items: center; gap: 10px; }
-.rsb { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.empty { font-size: 9px; color: var(--muted2); padding: 22px 0; text-align: center; letter-spacing: 3px; text-transform: uppercase; font-weight: 300; }
-hr { border: none; border-top: 1px solid var(--line); margin: 16px 0; }
-.mb8{margin-bottom:8px} .mb12{margin-bottom:12px} .mb16{margin-bottom:16px} .mb20{margin-bottom:20px} .mb24{margin-bottom:24px}
+/* scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--sand); }
+
+/* responsive helper */
+@media (max-width: 900px) {
+  .grid-2, .grid-3, .grid-4, .phase-grid, .invest-summary { grid-template-columns: 1fr; }
+  .candidates-grid { grid-template-columns: 1fr; }
+  .app-header { padding: 0 16px; }
+  .tab-content { padding: 24px 16px; }
+  .nav-tab { padding: 0 14px; font-size: 8px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ── BOOT ── -->
-<div id="boot">
-  <div class="boot-mark">ARCKIE <em>Co.</em></div>
-  <div class="boot-tag">Sistema de Gestão</div>
-  <div class="boot-bar"></div>
-  <div class="boot-status" id="boot-msg">Inicializando…</div>
-</div>
-
-<!-- ── LOGIN ── -->
-<div id="login">
-  <div class="lg-wrap">
-    <div class="lg-left">
-      <div>
-        <div class="lg-brand">ARCKIE <em>Co.</em></div>
-        <div class="lg-tagline">Escritório Boutique de Arquitetura</div>
-      </div>
-      <div class="lg-geo">
-        <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="80,8 152,44 152,116 80,152 8,116 8,44" stroke="#F7F4EE" stroke-width="1" fill="none"/>
-          <polygon points="80,26 136,54 136,106 80,134 24,106 24,54" stroke="#F7F4EE" stroke-width=".5" fill="none"/>
-          <polygon points="80,44 120,64 120,96 80,116 40,96 40,64" stroke="#F7F4EE" stroke-width=".5" fill="none"/>
-          <line x1="80" y1="8" x2="80" y2="152" stroke="#F7F4EE" stroke-width=".3"/>
-          <line x1="8" y1="44" x2="152" y2="116" stroke="#F7F4EE" stroke-width=".3"/>
-          <line x1="152" y1="44" x2="8" y2="116" stroke="#F7F4EE" stroke-width=".3"/>
-          <circle cx="80" cy="80" r="3.5" fill="#C89440" opacity=".65"/>
-        </svg>
-      </div>
-      <div class="lg-foot">© 2026 · Arckie Co. · v3.0</div>
-    </div>
-    <div class="lg-right">
-      <div class="lg-title">ARCKIE Co.</div>
-      <div class="lg-sub">Acesso ao sistema</div>
-      <label class="lg-lbl">Usuário</label>
-      <input class="lg-inp" id="uid" placeholder="seu.usuario" autocomplete="off">
-      <label class="lg-lbl">Senha</label>
-      <input class="lg-inp" type="password" id="pw" placeholder="••••••">
-      <button class="lg-btn" onclick="doLogin()">Entrar</button>
-      <div class="lg-err" id="lerr">Credenciais inválidas</div>
+<!-- ══════════ LOGIN ══════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">ARK</div>
+    <div class="login-sub">Escritório Boutique de Arquitetura</div>
+    <div class="login-rule"></div>
+    <div class="login-form">
+      <input type="text" id="login-user" placeholder="Usuário" autocomplete="off">
+      <input type="password" id="login-pass" placeholder="Senha">
+      <button class="login-btn" onclick="doLogin()">Acessar Sistema</button>
+      <div class="login-error" id="login-err">Credenciais inválidas</div>
     </div>
   </div>
 </div>
 
-<!-- ── APP ── -->
+<!-- ══════════ APP ══════════ -->
 <div id="app">
-
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="tb-brand">ARCKIE <em>&nbsp;Co.</em></div>
-    <div class="tb-nav">
-      <button class="ntab on" onclick="go('banco')" id="tab-banco">Banco</button>
-      <button class="ntab" onclick="go('invest')" id="tab-invest">Investimentos</button>
-      <button class="ntab" onclick="go('corp')" id="tab-corp">Escritório</button>
-      <button class="ntab" onclick="go('carreira')" id="tab-carreira">Carreira</button>
+  <header class="app-header">
+    <div class="header-logo">ARK</div>
+    <nav class="header-nav">
+      <div class="nav-tab active" onclick="showTab('carreira')">Carreira</div>
+      <div class="nav-tab" onclick="showTab('escritorio')">Escritório</div>
+      <div class="nav-tab" onclick="showTab('investimentos')">Investimentos</div>
+      <div class="nav-tab" onclick="showTab('banco')">Banco SimCity</div>
+    </nav>
+    <div class="header-user">
+      <span>Valdison Viana</span>
+      <button class="logout-btn" onclick="logout()">Sair</button>
     </div>
-    <div class="tb-right">
-      <div><div class="tb-name">Valdison Viana</div><div class="tb-role">Fundador · Arckie Co.</div></div>
-      <div class="tb-av">VV</div>
-      <div class="tb-sep"></div>
-      <div class="tb-chip" id="daychip">Dia 01 · Mês 01</div>
-      <button class="tb-ctl" onclick="avancarDia(1)">+1 Dia</button>
-      <button class="tb-ctl" onclick="avancarDia(7)">+7 Dias</button>
-      <button class="tb-ctl" onclick="resetar()">⟳</button>
-    </div>
-  </div>
+  </header>
 
-  <!-- ══ BANCO ══ -->
-  <div class="panel on" id="p-banco">
-    <div class="hero">
-      <div class="h-aside"><div class="h-al">Próx. pró-labore</div><div class="h-av" id="v-dias">— dias</div></div>
-      <div class="h-lbl">Saldo disponível · Banco SimCity</div>
-      <div class="h-val"><span class="h-sym">$</span><span id="v-saldo">3.000</span></div>
-      <div class="h-row">
-        <div class="h-stat"><div class="h-sl">Entradas mês</div><div class="h-sv" id="v-ent">$ 0</div></div>
-        <div class="h-stat"><div class="h-sl">Saídas mês</div><div class="h-sv" id="v-sai">$ 0</div></div>
-        <div class="h-stat"><div class="h-sl">Pró-labore base</div><div class="h-sv">$ 4.800</div></div>
-        <div class="h-stat"><div class="h-sl">Ag. 0047 · Cta 2991-8</div><div class="h-sv">SimCity Bank</div></div>
-      </div>
-    </div>
-    <div class="pi" style="padding-top:0">
-      <div class="g2 mb16">
-        <div class="card">
-          <div class="cl">Lançar transação</div>
-          <div class="fg"><label class="fl">Categoria</label>
-            <select class="fi" id="tx-cat">
-              <option value="gasto">Alimentação</option>
-              <option value="moradia">Moradia / Aluguel</option>
-              <option value="gasto">Móveis e Decoração</option>
-              <option value="gasto">Vestuário</option>
-              <option value="gasto">Transporte</option>
-              <option value="gasto">Lazer</option>
-              <option value="gasto">Saúde</option>
-              <option value="receita">Receita de Projeto</option>
-              <option value="prolabore">Pró-labore</option>
-              <option value="outro">Outro</option>
-            </select>
-          </div>
-          <div class="fg"><label class="fl">Descrição</label><input class="fi" id="tx-desc" placeholder="Descreva a transação"></div>
-          <div class="fg"><label class="fl">Valor ($)</label><input class="fi" type="number" id="tx-val" placeholder="0" min="0"></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-            <button class="btn btn-neg btn-sm" onclick="addTx(false)">▼ Débito</button>
-            <button class="btn btn-pos btn-sm" onclick="addTx(true)">▲ Crédito</button>
-            <button class="btn btn-sm" onclick="abrirParcelar()">Parcelar</button>
-            <button class="btn btn-sm" onclick="creditarProlabore()" style="margin-left:auto">+ Pró-labore</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="cl">Parcelas em aberto</div>
-          <div id="parcelas-aberto"><div class="empty">Nenhuma parcela ativa</div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="rsb mb16">
-          <div class="cl" style="margin:0">Extrato</div>
-          <button class="btn btn-sm" onclick="limparExtrato()">Limpar</button>
-        </div>
-        <div id="extrato" style="max-height:320px;overflow-y:auto"><div class="empty">Nenhuma transação ainda</div></div>
-      </div>
-    </div>
-  </div>
+  <main class="app-main">
 
-  <!-- ══ INVESTIMENTOS ══ -->
-  <div class="panel" id="p-invest">
-    <div class="ticker"><div class="ticker-track" id="ticker-track"></div></div>
-    <div class="pi" style="padding-top:0">
-      <div class="ph rsb mb20">
-        <div><div class="ph-title">Carteira de Investimentos</div><div class="ph-sub">SimCity Bolsa · Mercado de capitais</div></div>
+    <!-- ══ ABA CARREIRA ══ -->
+    <div class="tab-content active" id="tab-carreira">
+      <div class="section-header">
+        <div class="section-title">Carreira</div>
+        <div class="section-sub">Perfil Profissional · San Myshuno</div>
       </div>
-      <div class="g3 mb20">
-        <div class="card"><div class="cl">Total aplicado</div><div class="cv" id="i-total" style="color:var(--cop2)">$ 0</div></div>
-        <div class="card"><div class="cl">Rendimento / mês</div><div class="cv" id="i-rend" style="color:var(--grn)">$ 0</div></div>
-        <div class="card"><div class="cl">Rendimento acumulado</div><div class="cv" id="i-acum">$ 0</div></div>
-      </div>
-      <div class="card mb20">
-        <div class="cl mb12">Posições em carteira</div>
-        <table class="b-table">
-          <thead><tr>
-            <th>Ativo</th><th>Tipo</th><th>Risco</th>
-            <th class="r">Taxa a.a.</th><th class="r">Aplicado</th>
-            <th class="r">Rend./mês</th><th class="r">Var. dia</th>
-          </tr></thead>
-          <tbody id="inv-tbody"></tbody>
-        </table>
-      </div>
-      <div class="g2">
-        <div class="card">
-          <div class="cl">Movimentar</div>
-          <div class="fg"><label class="fl">Ativo</label><select class="fi" id="inv-sel"></select></div>
-          <div class="fg"><label class="fl">Valor ($)</label><input class="fi" type="number" id="inv-val" placeholder="0"></div>
-          <div style="display:flex;gap:8px;margin-top:4px">
-            <button class="btn btn-pos btn-sm" onclick="movInv(true)">Aportar</button>
-            <button class="btn btn-neg btn-sm" onclick="movInv(false)">Resgatar</button>
-          </div>
-          <div id="inv-msg" style="display:none;margin-top:12px;font-size:11px;font-weight:300"></div>
-        </div>
-        <div class="card">
-          <div class="cl">Consultoria financeira — IA</div>
-          <div style="font-size:11px;color:var(--muted);line-height:1.75;margin-bottom:14px;font-weight:300">Análise personalizada da sua carteira com base em saldo, aportes e rendimentos reais.</div>
-          <button class="btn btn-ink btn-sm" id="btn-analise" onclick="analisarFinancas()">Solicitar análise</button>
-          <div id="analise-out" style="display:none;margin-top:14px;font-size:12px;color:var(--ink2);line-height:1.85;background:var(--bg2);border:1px solid var(--line);padding:14px;font-weight:300"></div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- ══ ESCRITÓRIO ══ -->
-  <div class="panel" id="p-corp" style="padding:0">
-    <div class="corp-shell">
-      <div class="corp-side">
-        <div class="cs-top">
-          <div class="cs-brand">ARCKIE <em>Co.</em></div>
-          <div class="cs-fase">Boutique · Fase 1 — Mãos Únicas</div>
-        </div>
-        <div class="cs-prof">
-          <div class="cs-av">VV</div>
-          <div class="cs-name">Valdison Viana</div>
-          <div class="cs-role" id="cargo-lbl">Fundador & Arquiteto</div>
-          <div style="margin-top:10px"><div class="cs-sl">Pró-labore</div><div class="cs-sv">$ 4.800</div></div>
-          <div style="margin-top:10px">
-            <div class="cs-sl">Projetos entregues</div>
-            <div style="font-size:12px;color:var(--ink);margin-bottom:5px;font-weight:400" id="proj-lbl">0 de 4</div>
-            <div class="prog"><div class="prog-f cop" id="proj-bar" style="width:0%"></div></div>
-          </div>
-        </div>
-        <div class="cs-nav">
-          <div class="cs-sec">Gestão</div>
-          <div class="cs-item on" onclick="cTab('demandas')" id="csi-demandas">Demandas & IA</div>
-          <div class="cs-item" onclick="cTab('relatorio')" id="csi-relatorio">Relatório de Entrega</div>
-          <div class="cs-item" onclick="cTab('publicidade')" id="csi-publicidade">Publicidade</div>
-          <div class="cs-item" onclick="cTab('crescimento')" id="csi-crescimento">Crescimento</div>
-          <div class="cs-item" onclick="cTab('folha')" id="csi-folha">Folha de Pagamento</div>
-        </div>
-      </div>
-      <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
-
-        <!-- DEMANDAS / CHAT -->
-        <div id="ct-demandas" style="display:flex;flex-direction:column;height:calc(100vh - 52px)">
-          <div class="chat-hd">
-            <div class="row" style="gap:12px">
-              <div class="chat-av">IA</div>
-              <div><div class="chat-ti">Arckie — Assistente de Gestão</div><div class="chat-su">Demandas · Briefings · Publicidade · Estratégia</div></div>
-            </div>
-            <div class="chat-st"><div class="cdot"></div>Disponível</div>
-          </div>
-          <div class="chat-area" id="chat-msgs">
-            <div class="msg-ia">
-              <div class="mw">Assistente Arckie</div>
-              <div class="mb">Bom dia, Valdison.<br><br>Bem-vindo ao sistema de gestão da <strong>Arckie Co.</strong><br><br>Cada projeto do escritório tem uma essência — e é exatamente isso que me cabe preservar com você. Estou aqui para gerar briefings com identidade, analisar captação de clientes, apoiar as campanhas de publicidade e ajudar a tomar decisões com mais clareza.<br><br>Como posso ajudar o escritório hoje?</div>
-            </div>
-          </div>
-          <div class="typing-r" id="typing"><div class="dots"><span></span><span></span><span></span></div>&nbsp;Processando</div>
-          <div class="chat-ft">
-            <input class="chat-inp" id="chat-in" placeholder="Demanda, briefing, estratégia, captação de cliente…">
-            <button class="btn btn-ink btn-sm" onclick="sendMsg()">Enviar</button>
-          </div>
-        </div>
-
-        <!-- RELATÓRIO -->
-        <div id="ct-relatorio" class="cp">
-          <div class="cp-inner">
-            <div class="cl mb12">Relatório de Entrega — Projeto Executivo</div>
-            <div class="fg"><label class="fl">Projeto</label><select class="fi" id="e-proj"></select></div>
-            <div class="fg"><label class="fl">Intervenções estruturais</label><textarea class="fi" id="e-estru" rows="3" placeholder="Reforma de estrutura, troca de piso, ampliação de janelas…"></textarea></div>
-            <div class="fg"><label class="fl">Conceito, decoração e mobiliário</label><textarea class="fi" id="e-deco" rows="3" placeholder="Estilo, paleta, peças selecionadas, atmosfera e identidade…"></textarea></div>
-            <div class="fr mb16">
-              <div class="fg" style="flex:1;margin-bottom:0"><label class="fl">Custo utilizado ($)</label><input class="fi" type="number" id="e-orc" placeholder="0"></div>
-              <div class="fg" style="margin-bottom:0"><label class="fl">Entregue no prazo?</label>
-                <select class="fi" id="e-prazo"><option value="1">Sim — receita integral</option><option value="0">Não — sem receita</option></select>
-              </div>
-            </div>
-            <button class="btn btn-ink" onclick="enviarRelatorio()">Entregar projeto</button>
-            <div id="e-ok" style="display:none;margin-top:14px;font-size:12px;background:var(--grn-bg);border:1px solid var(--grn-bd);padding:13px;line-height:1.7;color:var(--grn);font-weight:300"></div>
-          </div>
-        </div>
-
-        <!-- PUBLICIDADE -->
-        <div id="ct-publicidade" class="cp">
-          <div class="cp-inner">
-            <div class="rsb mb12">
+      <div class="grid-2" style="align-items:start">
+        <div>
+          <!-- Perfil -->
+          <div class="card">
+            <div class="profile-hero">
+              <div class="profile-avatar"><span>VV</span></div>
               <div>
-                <div class="cl" style="margin-bottom:4px">Publicidade & Captação</div>
-                <div style="font-size:11px;color:var(--muted);font-weight:300">A IA gerencia redes sociais e campanhas. Invista conforme o escritório cresce.</div>
+                <div class="profile-name">Valdison Viana</div>
+                <div class="profile-role">Fundador &amp; Arquiteto Principal · Ark</div>
+                <div class="profile-loc">San Myshuno · Arquitetura &amp; Urbanismo</div>
               </div>
             </div>
-            <div id="pub-plans"></div>
-            <div id="pub-status" style="display:none;border:1px solid var(--line);padding:16px;background:var(--bg2);margin-top:12px">
-              <div class="cl mb8">Plano ativo</div>
-              <div id="pub-nome" style="font-family:'Cormorant',serif;font-size:20px;font-weight:300;letter-spacing:1px;color:var(--ink);margin-bottom:4px"></div>
-              <div id="pub-desc-st" style="font-size:11px;color:var(--muted);line-height:1.7;font-weight:300"></div>
+            <div style="border-top:0.5px solid var(--cream-dark);padding-top:16px;">
+              <div class="card-title">Sobre</div>
+              <p style="font-size:13px;line-height:1.8;color:var(--warm-gray);">Arquiteto e urbanista formado pela Universidade de Britechester, fundador da Ark — escritório boutique de arquitetura com sede em San Myshuno. Cada projeto nasce de uma escuta genuína: entender quem habita o espaço antes de desenhar qualquer linha. A Ark não faz arquitetura em série. Faz arquitetura com nome, com história, com alma. Desde a fundação, o escritório é obra de mãos únicas — e assim cresce, devagar e com propósito.</p>
             </div>
           </div>
-        </div>
 
-        <!-- CRESCIMENTO -->
-        <div id="ct-crescimento" class="cp">
-          <div class="cp-inner">
-            <div class="cl mb16">Fases do escritório</div>
-            <div id="fase-track" class="mb20"></div>
-            <div class="rsb mb8">
-              <div class="cl" style="margin:0">Requisitos para a Fase 2</div>
-              <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink)" id="promo-pct">0 / 5</span>
-            </div>
-            <div class="prog mb20"><div class="prog-f" id="promo-bar" style="width:0%"></div></div>
-            <div class="card mb16" id="req-list"></div>
-            <div class="card">
-              <div class="fl mb8">Registrar conquista no jogo</div>
-              <div class="fr">
-                <select class="fi" id="req-sel" style="flex:1">
-                  <option value="r1">5 conteúdos publicados — Rumo à Fama</option>
-                  <option value="r2">Fama nível 2 no jogo</option>
-                  <option value="r3">10 mil seguidores — Rumo à Fama</option>
-                  <option value="r4">Evento de lançamento realizado</option>
-                </select>
-                <button class="btn btn-ink btn-sm" onclick="marcarReq()">Confirmar</button>
+          <!-- Formação -->
+          <div class="card">
+            <div class="card-title">Formação Acadêmica</div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">Arquitetura e Urbanismo — Bacharelado</div>
+                <div class="timeline-org">Universidade de Britechester</div>
+                <div class="timeline-period">2021 — 2026 · Britechester</div>
+                <div class="timeline-desc">Formação com ênfase em projetos residenciais e espaços urbanos. Participação no escritório-modelo da universidade como estagiário durante os dois últimos anos da graduação — base para a fundação da Ark.</div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- FOLHA -->
-        <div id="ct-folha" class="cp">
-          <div class="cp-inner">
-            <div class="cl mb16">Folha de pagamento</div>
-            <div class="fp-void">
-              <div class="fp-void-t">Apenas você, por enquanto.</div>
-              <div class="fp-void-b">A Arckie Co. nasce das suas mãos.<br>Cada traço, cada decisão — feitos com intenção e autoria.<br>Este é um escritório artesanal por escolha, não por limitação.</div>
-              <div class="fp-void-f">Quando contratar, o colaborador aparecerá aqui</div>
+          <!-- Experiência -->
+          <div class="card">
+            <div class="card-title">Experiência Profissional</div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">Estagiário de Arquitetura</div>
+                <div class="timeline-org">Escritório-Modelo — Universidade de Britechester</div>
+                <div class="timeline-period">2024 — 2025 · Britechester</div>
+                <div class="timeline-desc">Estágio curricular no escritório oficial da universidade. Projetos reais sob supervisão de professores-arquitetos. Experiência em reformas, interiores e apresentações a clientes.</div>
+              </div>
+            </div>
+            <div class="timeline-item" style="border-bottom:none">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">Fundador &amp; Arquiteto Principal</div>
+                <div class="timeline-org">Ark — Escritório Boutique de Arquitetura</div>
+                <div class="timeline-period">Mês 01 — Presente · San Myshuno</div>
+                <div class="timeline-desc">Fundação do escritório boutique independente. Responsável por toda a operação criativa, relação com clientes e gestão financeira. Cada projeto assinado com identidade e intenção.</div>
+              </div>
             </div>
           </div>
         </div>
 
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ CARREIRA ══ -->
-  <div class="panel" id="p-carreira">
-    <div class="pi">
-      <div class="ph rsb mb24">
-        <div><div class="ph-title">Perfil Profissional</div><div class="ph-sub">Trajetória · Portfólio · Talentos para o escritório</div></div>
-        <button class="btn btn-sm" onclick="novaRodada()">Atualizar candidatos</button>
-      </div>
-      <div class="g2">
+        <!-- Candidatos -->
         <div>
-          <div class="li-cover"></div>
-          <div class="li-body">
-            <div class="li-av">VV</div>
-            <div class="li-name">Valdison Viana</div>
-            <div class="li-role">Fundador & Arquiteto · Arckie Co.</div>
-            <div class="li-loc">📍 San Myshuno · Fundador desde o Mês 01</div>
-            <hr>
-            <div class="cl">Sobre</div>
-            <p style="font-size:12px;color:var(--muted);line-height:1.9;font-weight:300">Arquiteto e urbanista formado pela <strong style="color:var(--ink2);font-weight:400">Universidade de Britechester</strong>, fundador da <strong style="color:var(--ink2);font-weight:400">Arckie Co.</strong> — escritório boutique de arquitetura com sede em San Myshuno. Cada projeto nasce de uma escuta genuína: entender quem habita o espaço antes de desenhar qualquer linha. A Arckie não faz arquitetura em série. Faz arquitetura com nome, com história, com alma. Desde a fundação, o escritório é obra de mãos únicas — e assim cresce, devagar e com propósito.</p>
-            <hr>
-            <div class="cl">Competências</div>
-            <div class="mb16">
-              <span class="sk-tag">Arquitetura Residencial</span>
-              <span class="sk-tag">Design de Interiores</span>
-              <span class="sk-tag">Urbanismo</span>
-              <span class="sk-tag">Reforma & Retrofit</span>
-              <span class="sk-tag">Gestão de Obras</span>
-              <span class="sk-tag">Branding de Espaço</span>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+              <div class="card-title" style="margin-bottom:0">Candidatos Disponíveis</div>
+              <button class="btn-copper" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans',sans-serif;font-weight:600;text-transform:uppercase;border:none;" onclick="refreshCandidates()">↻ Atualizar</button>
             </div>
-            <hr>
-            <div class="cl">Formação</div>
-            <div class="exp-item">
-              <div style="display:flex;gap:12px">
-                <div class="exp-ico">🎓</div>
-                <div>
-                  <div class="exp-title">Arquitetura e Urbanismo — Bacharelado</div>
-                  <div class="exp-co">Universidade de Britechester</div>
-                  <div class="exp-period">2020 — 2024 · Britechester</div>
-                  <div class="exp-desc">Formação com ênfase em projetos residenciais e espaços urbanos. Participação no escritório-modelo da universidade como estagiário durante os dois últimos anos da graduação — base para a fundação da Arckie.</div>
-                </div>
-              </div>
-            </div>
-            <hr>
-            <div class="cl">Experiência</div>
-            <div id="exp-list">
-              <div class="exp-item">
-                <div style="display:flex;gap:12px">
-                  <div class="exp-ico">🏛</div>
-                  <div>
-                    <div class="exp-title">Fundador & Arquiteto Principal</div>
-                    <div class="exp-co">Arckie Co.</div>
-                    <div class="exp-period">Mês 01 — Presente · San Myshuno</div>
-                    <div class="exp-desc">Fundação do escritório boutique independente. Responsável por toda a operação criativa, relação com clientes e gestão financeira. Cada projeto assinado com identidade e intenção.</div>
-                  </div>
-                </div>
-              </div>
-              <div class="exp-item" style="border:none;padding-bottom:0">
-                <div style="display:flex;gap:12px">
-                  <div class="exp-ico">📐</div>
-                  <div>
-                    <div class="exp-title">Estagiário de Arquitetura</div>
-                    <div class="exp-co">Escritório-Modelo — Universidade de Britechester</div>
-                    <div class="exp-period">2022 — 2024 · Britechester</div>
-                    <div class="exp-desc">Estágio curricular no escritório oficial da universidade. Projetos reais sob supervisão de professores-arquitetos. Experiência em reformas, interiores e apresentações a clientes.</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div style="font-size:10px;color:var(--warm-gray);letter-spacing:0.1em;margin-bottom:16px;">Exibindo <span id="cand-count">5</span>/1.000 candidatos</div>
+            <div class="candidates-grid" id="candidates-list"></div>
           </div>
-        </div>
-        <div>
-          <div class="cl mb16">Candidatos ao escritório</div>
-          <div id="candidatos"><div class="empty">Nenhum candidato no momento</div></div>
         </div>
       </div>
     </div>
-  </div>
 
-</div><!-- #app -->
+    <!-- ══ ABA ESCRITÓRIO ══ -->
+    <div class="tab-content" id="tab-escritorio">
+      <div class="section-header">
+        <div class="section-title">Escritório</div>
+        <div class="section-sub">Gestão Operacional · Ark</div>
+      </div>
 
-<!-- MODAL PARCELAR -->
-<div class="modal-ov" id="modal-p">
+      <div class="tabs-inner">
+        <div class="inner-tab active" onclick="showInner('crescimento')">Crescimento</div>
+        <div class="inner-tab" onclick="showInner('demandas')">Demandas</div>
+        <div class="inner-tab" onclick="showInner('relatorio')">Relatório de Entregas</div>
+        <div class="inner-tab" onclick="showInner('publicidade')">Publicidade</div>
+        <div class="inner-tab" onclick="showInner('folha')">Folha de Pagamento</div>
+      </div>
+
+      <!-- Crescimento -->
+      <div class="inner-content active" id="inner-crescimento">
+        <div class="phase-grid" id="phases-grid"></div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Status Atual</div>
+            <div class="grid-2">
+              <div class="metric-box">
+                <span class="metric-label">Fase Atual</span>
+                <span class="metric-value copper" id="stat-phase">1</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Estrelas de Fama</span>
+                <span class="metric-value" id="stat-stars">★ 1</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Projetos Entregues</span>
+                <span class="metric-value" id="stat-projects">0</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Clientes Ativos</span>
+                <span class="metric-value" id="stat-clients">0</span>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+              <select id="fame-select" style="flex:1">
+                <option value="1">1 Estrela</option>
+                <option value="2">2 Estrelas</option>
+                <option value="3">3 Estrelas</option>
+                <option value="4">4 Estrelas</option>
+                <option value="5">5 Estrelas</option>
+              </select>
+              <button class="btn-copper" style="padding:10px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none" onclick="updateFame()">Atualizar Fama</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Registrar Conquista</div>
+            <div class="conquistas-box" id="conquistas-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demandas -->
+      <div class="inner-content" id="inner-demandas">
+        <div id="districts-list"></div>
+      </div>
+
+      <!-- Relatório -->
+      <div class="inner-content" id="inner-relatorio">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+          <div>
+            <div style="font-size:12px;color:var(--warm-gray);">Projetos em andamento e finalizados</div>
+          </div>
+          <button class="btn-copper" onclick="openModal('modal-delivery')" style="padding:10px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">+ Registrar Entrega</button>
+        </div>
+
+        <div class="grid-4" style="margin-bottom:24px">
+          <div class="metric-box"><span class="metric-label">Total Entregues</span><span class="metric-value" id="delivered-count">0</span></div>
+          <div class="metric-box"><span class="metric-label">No Prazo</span><span class="metric-value green" id="on-time-count">0</span></div>
+          <div class="metric-box"><span class="metric-label">Comissões Recebidas</span><span class="metric-value copper" id="commissions-total">§0</span></div>
+          <div class="metric-box"><span class="metric-label">Receita Projetos</span><span class="metric-value" id="projects-revenue">§0</span></div>
+        </div>
+
+        <div class="card">
+          <table id="delivery-table">
+            <thead><tr>
+              <th>Projeto</th><th>Distrito</th><th>Entrega</th><th>Prazo</th><th>Status</th><th>Valor</th><th>Comissão</th>
+            </tr></thead>
+            <tbody id="delivery-tbody"></tbody>
+          </table>
+          <div style="text-align:center;padding:48px;color:var(--warm-gray);font-size:12px" id="delivery-empty">Nenhuma entrega registrada</div>
+        </div>
+      </div>
+
+      <!-- Publicidade -->
+      <div class="inner-content" id="inner-publicidade">
+        <div id="pub-locked-msg" style="display:none" class="card">
+          <div style="text-align:center;padding:32px">
+            <div style="font-family:'Cormorant',serif;font-size:28px;color:var(--warm-gray);margin-bottom:8px">Bloqueado</div>
+            <div style="font-size:12px;color:var(--warm-gray)">A Agência de Relações Públicas é desbloqueada ao atingir Fama Nível 2 (2 Estrelas).</div>
+          </div>
+        </div>
+        <div id="pub-content">
+          <div style="margin-bottom:24px;font-size:12px;color:var(--warm-gray)">Plano atual: <span id="current-plan-name" style="color:var(--copper);font-weight:600">Nenhum</span></div>
+          <div class="grid-3" style="margin-bottom:32px">
+            <div class="pub-plan" onclick="selectPlan('starter')" id="plan-starter">
+              <div class="plan-name">Starter</div>
+              <div class="plan-price">§2.000</div>
+              <div class="plan-period">/mês</div>
+              <div class="plan-features">Presença básica em redes<br>1 publicação mensal<br>Alcance local</div>
+            </div>
+            <div class="pub-plan" onclick="selectPlan('grow')" id="plan-grow">
+              <div class="plan-name">Grow</div>
+              <div class="plan-price">§6.000</div>
+              <div class="plan-period">/mês</div>
+              <div class="plan-features">Gestão de reputação<br>3 publicações mensais<br>Alcance regional</div>
+            </div>
+            <div class="pub-plan" onclick="selectPlan('premium')" id="plan-premium">
+              <div class="plan-name">Premium</div>
+              <div class="plan-price">§10.000</div>
+              <div class="plan-period">/mês</div>
+              <div class="plan-features">Relações com imprensa<br>Publicações ilimitadas<br>Alcance nacional</div>
+            </div>
+          </div>
+          <div style="text-align:center">
+            <button class="btn-copper" onclick="subscribePlan()" style="padding:12px 32px;font-size:10px;letter-spacing:0.25em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Contratar Plano</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Folha -->
+      <div class="inner-content" id="inner-folha">
+        <div class="card">
+          <div class="card-title">Folha de Pagamento — Mês Atual</div>
+          <div id="payroll-rows"></div>
+          <div class="payroll-total">
+            <span>Total a Pagar</span>
+            <span class="total-amount" id="payroll-total">§0</span>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:12px">
+            <button class="btn-copper" onclick="processPayroll()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Processar Pagamento</button>
+            <button class="btn-outline" onclick="openModal('modal-employee')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent">+ Funcionário</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ABA INVESTIMENTOS ══ -->
+    <div class="tab-content" id="tab-investimentos">
+      <div class="section-header">
+        <div class="section-title">Investimentos</div>
+        <div class="section-sub">SimCity Bolsa · Carteira Pessoal</div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:32px">
+        <div class="metric-box"><span class="metric-label">Total Aplicado</span><span class="metric-value copper" id="inv-total">§0</span></div>
+        <div class="metric-box"><span class="metric-label">Rendimento/Mês</span><span class="metric-value green" id="inv-monthly">§0</span></div>
+        <div class="metric-box"><span class="metric-label">Rendimento Acumulado</span><span class="metric-value green" id="inv-accumulated">§0</span></div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <div class="card-title" style="margin-bottom:0">Carteira de Ativos</div>
+        <div style="display:flex;gap:12px">
+          <button class="btn-outline" onclick="updateMarket()" style="padding:8px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">↻ Atualizar Mercado</button>
+          <button class="btn-copper" onclick="openModal('modal-invest')" style="padding:8px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Movimentar</button>
+        </div>
+      </div>
+
+      <div id="assets-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px"></div>
+    </div>
+
+    <!-- ══ ABA BANCO ══ -->
+    <div class="tab-content" id="tab-banco">
+      <div class="section-header">
+        <div class="section-title">Banco SimCity</div>
+        <div class="section-sub">Conta Corrente Pessoal · Ag. San Myshuno</div>
+      </div>
+
+      <div id="crisis-banner" style="display:none" class="crisis-alert">
+        <div class="msg">⚠ Caixa do Escritório em Crise — Saldo abaixo de §4.800</div>
+        <button class="btn-danger" onclick="openModal('modal-rescue')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent">Socorrer Caixa</button>
+      </div>
+
+      <div class="bank-header">
+        <div>
+          <div class="bank-name">SimCity Bank</div>
+          <div style="font-size:9px;letter-spacing:0.2em;color:var(--warm-gray);margin-top:4px">Ag. 0042 · C/C 88.801-7</div>
+        </div>
+        <div style="text-align:right">
+          <div class="bank-balance-label">Saldo Disponível</div>
+          <div class="bank-balance" id="bank-balance">§0</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:32px;align-items:start">
+        <!-- Transações -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div class="card-title" style="margin-bottom:0">Extrato</div>
+            <button class="btn-copper" onclick="openModal('modal-transaction')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">+ Lançamento</button>
+          </div>
+          <div id="transactions-list"></div>
+          <div style="text-align:center;padding:48px;color:var(--warm-gray);font-size:12px" id="tx-empty">Nenhuma transação registrada</div>
+        </div>
+
+        <!-- Parcelamentos -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div class="card-title" style="margin-bottom:0">Cartão &amp; Parcelamentos</div>
+            <button class="btn-outline" onclick="openModal('modal-installment')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">+ Parcelar</button>
+          </div>
+          <div class="grid-2" style="margin-bottom:16px">
+            <div class="metric-box"><span class="metric-label">Fatura Aberta</span><span class="metric-value" id="card-open">§0</span></div>
+            <div class="metric-box"><span class="metric-label">Dívida Total</span><span class="metric-value red" id="card-debt">§0</span></div>
+          </div>
+          <div id="installments-list"></div>
+          <div style="text-align:center;padding:32px;color:var(--warm-gray);font-size:12px" id="inst-empty">Sem parcelamentos ativos</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════ MODAIS ═══════════════ -->
+
+<!-- Modal Entrega -->
+<div class="modal-overlay" id="modal-delivery">
   <div class="modal-box">
-    <div class="modal-hd"><div class="modal-ti">Parcelar no cartão</div><button class="modal-x" onclick="fecharModal()">✕</button></div>
-    <div class="modal-b">
-      <div class="fg"><label class="fl">Descrição do item</label><input class="fi" id="p-desc" placeholder="Ex: Cadeira de escritório"></div>
-      <div class="fr">
-        <div class="fg" style="flex:1;margin-bottom:0"><label class="fl">Valor total ($)</label><input class="fi" type="number" id="p-total" placeholder="0"></div>
-        <div class="fg" style="width:90px;margin-bottom:0"><label class="fl">Parcelas</label>
-          <select class="fi" id="p-num">
-            <option value="2">2×</option><option value="3">3×</option><option value="4">4×</option>
-            <option value="6">6×</option><option value="8">8×</option><option value="10">10×</option><option value="12">12×</option>
-          </select>
-        </div>
+    <div class="modal-title">Registrar Entrega</div>
+    <div class="modal-sub">Relatório de Projetos · Ark</div>
+    <div class="form-group">
+      <label class="form-label">Projeto</label>
+      <select id="del-project"></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Data de Entrega</label>
+        <input type="date" id="del-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Prazo Final</label>
+        <input type="date" id="del-deadline">
       </div>
     </div>
-    <div class="modal-f">
-      <button class="btn" onclick="fecharModal()">Cancelar</button>
-      <button class="btn btn-ink" onclick="confirmarParcelar()">Confirmar</button>
+    <div class="form-group">
+      <label class="form-label" style="display:flex;align-items:center;gap:8px">
+        <input type="checkbox" id="del-ontime"> Entregue antes do prazo (comissão de 10%)
+      </label>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-delivery')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveDelivery()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Confirmar Entrega</button>
     </div>
   </div>
 </div>
 
+<!-- Modal Funcionário -->
+<div class="modal-overlay" id="modal-employee">
+  <div class="modal-box">
+    <div class="modal-title">Novo Funcionário</div>
+    <div class="modal-sub">Folha de Pagamento · Ark</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Nome</label>
+        <input type="text" id="emp-name" placeholder="Nome completo">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cargo</label>
+        <input type="text" id="emp-role" placeholder="Ex: Designer">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Salário Mensal (§)</label>
+        <input type="number" id="emp-salary" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <select id="emp-type">
+          <option value="clt">CLT</option>
+          <option value="pj">PJ</option>
+          <option value="freelance">Freelance</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-employee')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveEmployee()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Investimento -->
+<div class="modal-overlay" id="modal-invest">
+  <div class="modal-box">
+    <div class="modal-title">Movimentar Ativo</div>
+    <div class="modal-sub">SimCity Bolsa · Carteira</div>
+    <div class="form-group">
+      <label class="form-label">Ativo</label>
+      <select id="inv-asset"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Operação</label>
+      <select id="inv-op">
+        <option value="aporte">Aportar</option>
+        <option value="resgate">Resgatar</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Valor (§)</label>
+      <input type="number" id="inv-value" placeholder="0">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-invest')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveInvestment()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Transação -->
+<div class="modal-overlay" id="modal-transaction">
+  <div class="modal-box">
+    <div class="modal-title">Novo Lançamento</div>
+    <div class="modal-sub">Banco SimCity · Extrato</div>
+    <div class="form-group">
+      <label class="form-label">Descrição</label>
+      <input type="text" id="tx-desc" placeholder="Ex: Aluguel do apartamento">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <select id="tx-type">
+          <option value="debit">Débito</option>
+          <option value="credit">Crédito</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Categoria</label>
+        <select id="tx-category">
+          <option>Moradia</option>
+          <option>Alimentação</option>
+          <option>Saúde</option>
+          <option>Transporte</option>
+          <option>Lazer</option>
+          <option>Educação</option>
+          <option>Escritório</option>
+          <option>Aluguel</option>
+          <option>Outro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Valor (§)</label>
+        <input type="number" id="tx-amount" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Data</label>
+        <input type="date" id="tx-date">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-transaction')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveTransaction()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Lançar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Parcelamento -->
+<div class="modal-overlay" id="modal-installment">
+  <div class="modal-box">
+    <div class="modal-title">Novo Parcelamento</div>
+    <div class="modal-sub">Cartão SimCity · Crédito</div>
+    <div class="form-group">
+      <label class="form-label">Descrição</label>
+      <input type="text" id="inst-desc" placeholder="Ex: Novo computador">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Valor Total (§)</label>
+        <input type="number" id="inst-total" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Parcelas</label>
+        <input type="number" id="inst-parcelas" placeholder="Ex: 12" min="1" max="60">
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--warm-gray);margin-top:8px">Taxa: 2,99%/mês · Multa atraso: 2% + 1%/dia</div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-installment')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveInstallment()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Parcelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Rescue -->
+<div class="modal-overlay" id="modal-rescue">
+  <div class="modal-box">
+    <div class="modal-title">Socorrer Caixa</div>
+    <div class="modal-sub">Transferência Pessoal → Escritório</div>
+    <div style="font-size:12px;color:var(--warm-gray);margin-bottom:16px">O caixa do escritório está em crise. Transfira da conta pessoal para cobrir.</div>
+    <div class="form-group">
+      <label class="form-label">Valor a Transferir (§)</label>
+      <input type="number" id="rescue-amount" placeholder="Mínimo §4.800">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-rescue')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="doRescue()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Transferir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
 <div class="toast" id="toast"></div>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-// =====================================================
-// ARCKIE CO. v3 — Supabase Integration
-// Dados persistidos na nuvem automaticamente
-// =====================================================
-const SUPA_URL = 'https://hjwrsnorvcrnxwvrnmow.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhqd3Jzbm9ydmNybnh3dnJubW93Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0OTg3MDIsImV4cCI6MjA5NTA3NDcwMn0.tdkviANBYbOtdU7bOBmPIIhog7KdCs_5eViaN3eE4qM';
-const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
-const SUPA_ID = 'viana.valdison';
-
-// Indicador visual de sync
-function showSync(ok) {
-  var chip = document.getElementById('daychip');
-  if (!chip) return;
-  var old = chip.textContent.replace(' ✓','').replace(' ⟳','').replace(' ✗','');
-  chip.textContent = old + (ok === true ? ' ✓' : ok === false ? ' ✗' : ' ⟳');
-}
-
-// Salva no Supabase (chama após cada alteração)
-async function saveToCloud(stateObj) {
-  try {
-    showSync(null); // syncing
-    var payload = {
-      id: SUPA_ID,
-      data: stateObj,
-      updated_at: new Date().toISOString()
-    };
-    var res = await supa.from('arckie_state').upsert(payload, { onConflict: 'id' });
-    if (res.error) throw res.error;
-    showSync(true);
-  } catch(e) {
-    console.warn('Supabase save error:', e);
-    showSync(false);
-  }
-}
-
-// Carrega do Supabase
-async function loadFromCloud() {
-  try {
-    var res = await supa.from('arckie_state').select('data').eq('id', SUPA_ID).single();
-    if (res.error) throw res.error;
-    if (res.data && res.data.data && Object.keys(res.data.data).length > 0) {
-      return res.data.data;
-    }
-    return null;
-  } catch(e) {
-    console.warn('Supabase load error:', e);
-    return null;
-  }
-}
-
-// =====================================================
-// JS PRINCIPAL
-// =====================================================
-// =====================================================
-// ARCKIE CO. v3 — JavaScript Completo
-// Etapa 2 de 4 — Cole este bloco antes de </body>
-// =====================================================
-
-const KEY = 'arckie_co_v3';
-
-const INV = [
-  { name:'CDB SimCity',          type:'Renda Fixa',        risk:'Baixo', rate:0.1350, liq:'D+1'  },
-  { name:'Tesouro SimCity IPCA+', type:'Renda Fixa',       risk:'Baixo', rate:0.1200, liq:'D+1'  },
-  { name:'FII Imobiliário SC',   type:'Fundo Imobiliário',  risk:'Médio', rate:0.0950, liq:'D+30' },
-  { name:'SimBolsa SMFS3',       type:'Renda Variável',     risk:'Alto',  rate:0.2200, liq:'D+0'  },
-  { name:'ETF Global SimCity',   type:'Renda Variável',     risk:'Alto',  rate:0.1800, liq:'D+0'  },
-  { name:'LCI/LCA SimCity',      type:'Renda Fixa',        risk:'Baixo', rate:0.1100, liq:'D+90' },
-];
-
-const CAT_ICO = {
-  gasto:'🛒', moradia:'🏠', receita:'📐',
-  prolabore:'💼', rendimento:'📈', parcela:'🔄', outro:'💳'
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
+const STATE = {
+  fame: 1,
+  phase: 1,
+  deliveries: [],
+  employees: [],
+  adPlan: null,
+  assets: [],
+  transactions: [],
+  installments: [],
+  bankBalance: 50000,
+  officeBalance: 8000,
+  totalInvested: 0,
+  accumulatedReturn: 0,
+  conquistas: {}
 };
 
-const PUB = [
-  {
-    id:'starter', name:'Starter', price:500,
-    desc:'Presença digital básica. Posts semanais, stories e cobertura de projetos entregues. Ideal para marcar território no início da Arckie.',
-    tags:'2 posts/semana · 1 story/dia · 1 reel/mês'
-  },
-  {
-    id:'grow', name:'Grow', price:1200,
-    desc:'Estratégia autoral. Reels de processo criativo, antes/depois e bastidores. Captação ativa via DM e enquetes de engajamento.',
-    tags:'4 posts/semana · stories diários · 4 reels/mês · gestão de DM'
-  },
-  {
-    id:'premium', name:'Premium', price:2800,
-    desc:'Campanha editorial completa. Identidade visual reforçada, parcerias com marcas, campanhas pagas segmentadas e PR digital.',
-    tags:'Conteúdo diário · campanhas pagas · editorial mensal · PR digital'
-  },
-];
+// Supabase config
+const SB_URL = 'https://hjwrsnorvcrnxwvrnmow.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhqd3Jzbm9ydmNybnh3dnJubW93Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0OTg3MDIsImV4cCI6MjA5NTA3NDcwMn0.tdkviANBYbOtdU7bOBmPIIhog7KdCs_5eViaN3eE4qM';
 
-const CANDS = [
-  { area:'Arquitetura',   name:'Isabela Mourão',  spec:'Arquiteta Plena · Residencial de Alto Padrão',      sal:'$ 7.200 / mês', exp:'5 anos', bio:'5 anos em escritórios boutique. Especialista em interiores contemporâneos e reformas com identidade visual forte. Formada pela USP.' },
-  { area:'Gestão',        name:'Felipe Andrade',  spec:'Gestor de Projetos · PMP certificado',              sal:'$ 6.500 / mês', exp:'7 anos', bio:'Controla cronogramas, orçamentos e fornecedores com precisão. Libera o arquiteto para criar sem perder o controle operacional.' },
-  { area:'Jurídico',      name:'Carla Sousa',     spec:'Advogada · Direito Imobiliário e Contratos',        sal:'$ 5.800 / mês', exp:'8 anos', bio:'Especialista em contratos de serviço arquitetônico, due diligence e proteção da propriedade intelectual criativa.' },
-  { area:'Financeiro',    name:'Marcos Tavares',  spec:'Analista Financeiro · Escritórios Criativos',       sal:'$ 5.200 / mês', exp:'4 anos', bio:'Domina fluxo de caixa, planejamento tributário e relatórios para captação de investidores em empresas criativas.' },
-  { area:'Arquitetura',   name:'Natália Fonseca', spec:'Arquiteta Jr · Design de Interiores',               sal:'$ 4.200 / mês', exp:'1 ano',  bio:'Recém-formada por Britechester, portfólio focado em espaços funcionais e aconchegantes. Grande potencial criativo.' },
-  { area:'Comunicação',   name:'Rafael Mota',     spec:'Produtor de Conteúdo · Arquitetura e Design',       sal:'$ 4.800 / mês', exp:'3 anos', bio:'Fotógrafo e videomaker especializado em projetos arquitetônicos. Transforma entregas em conteúdo editorial de impacto.' },
-  { area:'Tecnologia',    name:'Aline Corrêa',    spec:'BIM Manager · Modelagem e Compatibilização',        sal:'$ 6.000 / mês', exp:'5 anos', bio:'Gerencia o fluxo BIM do escritório: modelagem 3D, compatibilização de projetos e geração de quantitativos precisos.' },
-];
-
-const FASES = [
-  { n:1, t:'Fase 1 — Mãos Únicas',           d:'Você, o projeto, a entrega. Artesanal por essência.',                    s:'$ 4.800' },
-  { n:2, t:'Fase 2 — Primeiro Crescimento',   d:'Portfólio consolidado, primeira contratação, projetos de maior escala.', s:'$ 8.500' },
-  { n:3, t:'Fase 3 — Escritório Estabelecido', d:'Equipe pequena e coesa, identidade sólida em San Myshuno.',             s:'$ 14.000' },
-  { n:4, t:'Fase 4 — Referência de Mercado',  d:'Arckie Co. como assinatura desejada em San Myshuno e além.',             s:'$ 22.000+' },
-];
-
-const VARS = [0.83, -0.41, 1.24, -0.67, 2.10, 0.35];
-
-let candSlots = [0, 1, 2];
-let pubAtivo  = null;
-
-// ── ESTADO ────────────────────────────────────────
-function defaultState() {
-  return {
-    dia: 1, mes: 1,
-    inv: INV.map(() => 0),
-    invRendAcum: 0,
-    projetos: 0,
-    reqs: { r1:false, r2:false, r3:false, r4:false },
-    parcelas: [],
-    demandas: [
-      { id:'001', titulo:'Apto 3B — Arts Quarter', finalidade:'Locação', receita:1848, prazo:7,  diaInicio:1, mesInicio:1, entregue:false },
-      { id:'002', titulo:'Apto 7A — Spice Market',  finalidade:'Venda',   receita:2940, prazo:12, diaInicio:1, mesInicio:1, entregue:false },
-    ],
-    extrato: [
-      { desc:'Abertura de conta — Arckie Co.', cat:'prolabore', val:3000, dia:1, mes:1, ico:'💼' },
-    ],
-    candSlots: [0, 1, 2],
-    pubAtivo: null,
-  };
-}
-
-let S = (function() {
+async function sbGet(table) {
   try {
-    const r = localStorage.getItem(KEY);
-    if (!r) return defaultState();
-    const p = JSON.parse(r);
-    if (!p.extrato || !p.extrato.length) return defaultState();
-    if (!p.reqs)    p.reqs    = { r1:false, r2:false, r3:false, r4:false };
-    if (!p.inv || p.inv.length !== INV.length) p.inv = INV.map(() => 0);
-    if (p.invRendAcum == null) p.invRendAcum = 0;
-    if (!p.demandas)  p.demandas  = defaultState().demandas;
-    if (!p.parcelas)  p.parcelas  = [];
-    if (!p.candSlots) p.candSlots = [0, 1, 2];
-    if (p.pubAtivo === undefined) p.pubAtivo = null;
-    delete p.saldo;
-    return p;
-  } catch(e) { return defaultState(); }
-})();
-
-candSlots = S.candSlots || [0, 1, 2];
-pubAtivo  = S.pubAtivo  || null;
-
-function save() {
-  var t = Object.assign({}, S);
-  delete t.saldo;
-  t.candSlots = candSlots;
-  t.pubAtivo  = pubAtivo;
-  localStorage.setItem(KEY, JSON.stringify(t));
+    const r = await fetch(`${SB_URL}/rest/v1/${table}?select=*`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    return await r.json();
+  } catch(e) { return []; }
 }
 
-function resetar() {
-  if (!confirm('Resetar todos os dados?')) return;
-  localStorage.removeItem(KEY);
-  location.reload();
+async function sbUpsert(table, data) {
+  try {
+    await fetch(`${SB_URL}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': `Bearer ${SB_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify(data)
+    });
+  } catch(e) {}
 }
 
-// Saldo = soma de todo o extrato — única fonte de verdade
-function saldo() {
-  return Math.round(S.extrato.reduce(function(a, x) { return a + (Number(x.val) || 0); }, 0));
+async function saveState() {
+  await sbUpsert('ark_state', { id: 1, data: JSON.stringify(STATE) });
 }
 
-function fmt(n) { return Math.round(n).toLocaleString('pt-BR'); }
-
-// ── TOAST ────────────────────────────────────────
-function toast(msg) {
-  var el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(el._t);
-  el._t = setTimeout(function() { el.classList.remove('show'); }, 3000);
-}
-
-// ── BOOT & LOGIN ─────────────────────────────────
-window.addEventListener('DOMContentLoaded', function() {
-  var msgs = ['Inicializando sistema…', 'Carregando módulos…', 'Autenticando sessão…', 'Pronto.'];
-  var i = 0;
-  var bm = document.getElementById('boot-msg');
-  var iv = setInterval(function() {
-    if (i < msgs.length && bm) { bm.textContent = msgs[i++]; }
-    else clearInterval(iv);
-  }, 500);
-  setTimeout(function() {
-    var boot = document.getElementById('boot');
-    boot.classList.add('out');
-    setTimeout(function() {
-      boot.style.display = 'none';
-      document.getElementById('login').style.display = 'flex';
-    }, 900);
-  }, 2400);
-});
-
-function doLogin() {
-  var u = document.getElementById('uid').value.trim();
-  var p = document.getElementById('pw').value.trim();
-  if (u === 'viana.valdison' && p === '2802') {
-    var lg = document.getElementById('login');
-    lg.style.transition = 'opacity .4s';
-    lg.style.opacity = '0';
-    setTimeout(function() {
-      lg.style.display = 'none';
-      document.getElementById('app').style.display = 'flex';
-      renderTudo();
-    }, 400);
-  } else {
-    document.getElementById('lerr').style.display = 'block';
-    document.getElementById('pw').value = '';
-  }
-}
-
-document.addEventListener('keydown', function(e) {
-  var uid = document.getElementById('uid');
-  var pw  = document.getElementById('pw');
-  var lg  = document.getElementById('login');
-  var ci  = document.getElementById('chat-in');
-  if (lg && lg.style.display === 'flex') {
-    if (e.key === 'Enter') {
-      if (document.activeElement === uid) pw.focus();
-      else doLogin();
+async function loadState() {
+  try {
+    const rows = await sbGet('ark_state');
+    if (rows && rows[0] && rows[0].data) {
+      const loaded = JSON.parse(rows[0].data);
+      Object.assign(STATE, loaded);
     }
+  } catch(e) {}
+}
+
+// ════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════
+const PHASES = [
+  {
+    num: 1, name: 'Mãos Únicas',
+    stars: 1, fameNeeded: 2,
+    reqs: ['Entregar 4 projetos', 'Atingir 1 estrela de fama', 'Atingir fama nível 2'],
+    district: 'Mercado das Especiarias'
+  },
+  {
+    num: 2, name: 'Primeiro Crescimento',
+    stars: 2, fameNeeded: 3,
+    reqs: ['Entregar 8 projetos no total', 'Contratar 1 funcionário', 'Atingir 2 estrelas de fama', 'Adquirir plano de publicidade', 'Atingir fama nível 3'],
+    district: 'Quarteirão das Artes'
+  },
+  {
+    num: 3, name: 'Escritório Estabelecido',
+    stars: 3, fameNeeded: 4,
+    reqs: ['Entregar 15 projetos no total', 'Ter pelo menos 3 funcionários', 'Atingir 3 estrelas de fama', 'Receita acumulada acima de §200.000', 'Atingir fama nível 4'],
+    district: 'Distrito da Moda'
+  },
+  {
+    num: 4, name: 'Referência de Mercado',
+    stars: 4, fameNeeded: 5,
+    reqs: ['Entregar 25 projetos no total', 'Ter pelo menos 6 funcionários', 'Atingir 4 estrelas de fama', 'Portfólio de §100.000 em investimentos', 'Atingir fama nível 5'],
+    district: 'Cidade Alta'
   }
-  if (ci && document.activeElement === ci && e.key === 'Enter') sendMsg();
-});
+];
 
-// ── NAV ──────────────────────────────────────────
-function go(tab) {
-  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
-  document.querySelectorAll('.ntab').forEach(function(b) { b.classList.remove('on'); });
-  document.getElementById('p-' + tab).classList.add('on');
-  document.getElementById('tab-' + tab).classList.add('on');
-}
-
-function cTab(t) {
-  ['demandas','relatorio','publicidade','crescimento','folha'].forEach(function(id) {
-    var el = document.getElementById('ct-' + id);
-    if (el) { el.style.display = 'none'; el.classList.remove('on'); }
-    var si = document.getElementById('csi-' + id);
-    if (si) si.classList.remove('on');
-  });
-  var main = document.getElementById('ct-' + t);
-  if (main) {
-    main.style.display = 'flex';
-    if (t !== 'demandas') main.classList.add('on');
+const DISTRICTS = [
+  {
+    id: 'especiarias', name: 'Mercado das Especiarias', phase: 1,
+    budget: 20000, payment: 8000, rt: 2000, commission: 2000,
+    projects: ['Apartamentos Culpepper 17','Apartamentos Culpepper 18','Apartamentos Culpepper 19','Apartamentos Culpepper 20','Apartamentos da Jasmine 2A','Apartamentos da Jasmine 2B']
+  },
+  {
+    id: 'artes', name: 'Quarteirão das Artes', phase: 2,
+    budget: 50000, payment: 20000, rt: 10000, commission: 5000,
+    projects: ['Estúdio Medina 910','Estúdio Medina 920','Estúdio Medina 930','Casa do Hakim 121','Casa do Hakim 122']
+  },
+  {
+    id: 'moda', name: 'Distrito da Moda', phase: 3,
+    budget: 80000, payment: 32000, rt: 16000, commission: 8000,
+    projects: ['Rua Chique, 1310 – 21','Rua Chique, 1312 – 21','Rua Chique, 1313 – 21','Vista Zen 701','Vista Zen 7012']
+  },
+  {
+    id: 'alta', name: 'Cidade Alta', phase: 4,
+    budget: 500000, payment: 200000, rt: 100000, commission: 50000,
+    projects: ['Quero-Tudo-Que-É-Seu VIII','Quero-Tudo-Que-É-Seu IX','Apartamentos Altos 1.010','Apartamentos Altos 1.020','Apartamentos Pináculo 888']
   }
-  var si = document.getElementById('csi-' + t);
-  if (si) si.classList.add('on');
-  if (t === 'crescimento') { renderFases(); renderRequisitos(); }
-  if (t === 'publicidade') renderPublicidade();
-  if (t === 'relatorio')   renderSelectProjetos();
+];
+
+const ASSETS_DEF = [
+  { id: 'cdb', name: 'CDB SimCity', ticker: 'CDB-SC', type: 'Renda Fixa', rate: 0.008, price: 1000, risk: 'baixo' },
+  { id: 'tesouro', name: 'Tesouro SimCity IPCA+', ticker: 'TESC-IPCA', type: 'Título Público', rate: 0.009, price: 1050, risk: 'baixo' },
+  { id: 'fii', name: 'FII Imobiliário SC', ticker: 'FISC11', type: 'Fundo Imobiliário', rate: 0.012, price: 120, risk: 'médio' },
+  { id: 'acoes', name: 'SimBolsa SMFS3', ticker: 'SMFS3', type: 'Ações', rate: 0.02, price: 28.5, risk: 'alto' },
+  { id: 'etf', name: 'ETF Global SimCity', ticker: 'ETFG11', type: 'ETF', rate: 0.015, price: 85, risk: 'médio' },
+  { id: 'lci', name: 'LCI/LCA SimCity', ticker: 'LCI-SC', type: 'Renda Fixa', rate: 0.0075, price: 5000, risk: 'baixo' },
+  { id: 'ouro', name: 'Ouro SimCity (Onça-Troy)', ticker: 'OUSC1', type: 'Commodity', rate: 0.005, price: 9800, risk: 'médio' }
+];
+
+// ════════════════════════════════════════
+// CANDIDATES GENERATOR
+// ════════════════════════════════════════
+const FIRST_NAMES = ['Ana','Carlos','Fernanda','Lucas','Mariana','Rafael','Juliana','Bruno','Camila','Diego','Isabela','Thiago','Larissa','Felipe','Amanda','Rodrigo','Beatriz','Gustavo','Leticia','Vinicius','Patricia','Eduardo','Renata','Leonardo','Monique','André','Carla','Henrique','Aline','Ricardo','Natalia','Marcos','Viviane','Paulo','Danielle','Roberto','Priscila','Daniel','Cristina','Mateus','Vanessa','Jorge','Elaine','Fábio','Denise','Alexandre','Luciana','Sergio','Regina','Cláudio'];
+const LAST_NAMES = ['Silva','Santos','Oliveira','Souza','Rodrigues','Ferreira','Alves','Pereira','Lima','Gomes','Costa','Ribeiro','Martins','Carvalho','Almeida','Lopes','Sousa','Fernandes','Vieira','Barbosa','Rocha','Dias','Nascimento','Andrade','Moreira','Nunes','Marques','Machado','Mendes','Freitas','Cardoso','Ramos','Gonçalves','Araújo','Melo','Cavalcanti','Moura','Pinto','Medeiros','Batista','Azevedo','Teixeira','Pires','Castro','Campos','Borges','Cruz','Torres'];
+const ROLES = [
+  ['Arquiteto Jr','Arquitetura',3800,6500],
+  ['Arquiteto Pleno','Arquitetura',5500,8500],
+  ['Arquiteto Sênior','Arquitetura',8000,14000],
+  ['Designer de Interiores','Design',3500,7000],
+  ['Urbanista','Arquitetura',5000,9000],
+  ['Advogado Jr','Jurídico',4500,7000],
+  ['Advogado Pleno','Jurídico',7000,12000],
+  ['Especialista Jurídico','Jurídico',9000,16000],
+  ['Analista de Marketing','Marketing',3500,6000],
+  ['Gerente de Marketing','Marketing',6000,10000],
+  ['Social Media','Marketing',2500,4500],
+  ['Designer Gráfico','Design',3000,5500],
+  ['Fotógrafo de Arquitetura','Criativo',3500,6000],
+  ['Engenheiro Civil','Engenharia',7000,14000],
+  ['Engenheiro Estrutural','Engenharia',8000,15000],
+  ['Modelador 3D','Tecnologia',4000,7000],
+  ['Desenvolvedor BIM','Tecnologia',5500,10000],
+  ['Gestor Financeiro','Financeiro',6000,11000],
+  ['Analista Financeiro','Financeiro',4500,8000],
+  ['Secretária Executiva','Administrativo',2800,4800],
+  ['Assistente Administrativo','Administrativo',2200,3800],
+  ['Recepcionista','Administrativo',2000,3200],
+  ['RH Generalista','Recursos Humanos',4000,7000],
+  ['Gestor de Projetos','Gestão',6500,12000],
+  ['Estagiário de Arquitetura','Estágio',800,1200],
+  ['Estagiário de Marketing','Estágio',700,1000],
+  ['Assessor de Imprensa','Comunicação',5000,9000],
+  ['Produtor de Conteúdo','Comunicação',3000,5500],
+  ['Orçamentista','Engenharia',5000,9000],
+  ['Maqueteiro','Criativo',2500,4500],
+];
+const SKILLS_POOL = ['AutoCAD','Revit','SketchUp','Photoshop','InDesign','Excel','BIM','3ds Max','V-Ray','ArchiCAD','Lumion','Blender','Google Ads','SEO','Marketing Digital','Contrato de Obra','Direito Imobiliário','Direito Empresarial','Gestão de Equipes','Scrum','MS Project','Power BI','SAP','Quickbooks','Figma','Illustrator','Premiere','After Effects','Fotografia','Videomaking'];
+const UNIS = ['Univ. de Britechester','Inst. Técnico SimCity','Univ. San Myshuno','Faculdade Willow Creek','Univ. Strangerville','Escola de Design SC'];
+
+function genName() {
+  return FIRST_NAMES[Math.floor(Math.random()*FIRST_NAMES.length)] + ' ' + LAST_NAMES[Math.floor(Math.random()*LAST_NAMES.length)];
+}
+function genCandidate(seed) {
+  const rng = mulberry32(seed);
+  const roleData = ROLES[Math.floor(rng()*ROLES.length)];
+  const salary = Math.round((roleData[2] + rng()*(roleData[3]-roleData[2]))/100)*100;
+  const exp = Math.floor(rng()*12);
+  const uni = UNIS[Math.floor(rng()*UNIS.length)];
+  const skills = [];
+  const sk = [...SKILLS_POOL];
+  for(let i=0;i<3+Math.floor(rng()*3);i++){
+    const idx = Math.floor(rng()*sk.length);
+    skills.push(sk.splice(idx,1)[0]);
+  }
+  const fn = FIRST_NAMES[Math.floor(rng()*FIRST_NAMES.length)];
+  const ln = LAST_NAMES[Math.floor(rng()*LAST_NAMES.length)];
+  return { name: fn+' '+ln, role: roleData[0], area: roleData[1], salary, exp, uni, skills };
+}
+function mulberry32(a) {
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
 }
 
-// ── TEMPO ────────────────────────────────────────
-function avancarDia(n) {
-  S.dia += n;
-  while (S.dia > 28) { S.dia -= 28; S.mes++; }
-  S.parcelas.forEach(function(p) {
-    if (p.paga) return;
-    if ((p.mesVenc < S.mes) || (p.mesVenc === S.mes && p.diaVenc <= S.dia)) {
-      var tot = p.numParc || 1;
-      addExtrato(p.desc + ' (parcela ' + p.pagas + '/' + tot + ')', 'parcela', -p.valParc, S.dia, S.mes, '🔄');
-      p.pagas++;
-      if (p.pagas > tot) p.paga = true;
-      else { p.diaVenc += 28; if (p.diaVenc > 28) { p.diaVenc -= 28; p.mesVenc++; } }
-    }
+let candidateSeedBase = Date.now();
+function refreshCandidates() {
+  candidateSeedBase = Date.now() + Math.random()*999999;
+  renderCandidates();
+}
+function renderCandidates() {
+  const list = document.getElementById('candidates-list');
+  list.innerHTML = '';
+  for(let i=0;i<5;i++) {
+    const seed = Math.floor(candidateSeedBase) + i*1337;
+    const c = genCandidate(seed % 999983 + 1);
+    const card = document.createElement('div');
+    card.className = 'candidate-card';
+    card.innerHTML = `
+      <div class="cand-name">${c.name}</div>
+      <div class="cand-role">${c.role}</div>
+      <div class="cand-info">${c.area} · ${c.exp} anos exp. · ${c.uni}</div>
+      <div class="cand-skill">${c.skills.map(s=>`<span>${s}</span>`).join('')}</div>
+      <div class="cand-salary">§${c.salary.toLocaleString('pt-BR')} <small>/mês</small></div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button onclick="hireCand('${c.name}','${c.role}',${c.salary})" style="flex:1;padding:7px;font-size:9px;letter-spacing:0.15em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:var(--copper);color:var(--ink);border:none">Contratar</button>
+        <button onclick="this.closest('.candidate-card').remove()" style="padding:7px 12px;font-size:9px;cursor:pointer;font-family:'Josefin Sans';font-weight:600;background:transparent;border:0.5px solid var(--sand);color:var(--warm-gray)">✕</button>
+      </div>
+    `;
+    list.appendChild(card);
+  }
+}
+
+function hireCand(name, role, salary) {
+  STATE.employees.push({ name, role, salary, type: 'CLT' });
+  saveState();
+  renderPayroll();
+  toast(`${name} contratado(a)!`, 'success');
+  refreshCandidates();
+}
+
+// ════════════════════════════════════════
+// PHASES
+// ════════════════════════════════════════
+function renderPhases() {
+  const grid = document.getElementById('phases-grid');
+  grid.innerHTML = '';
+  PHASES.forEach(p => {
+    const isActive = p.num === STATE.phase;
+    const isDone = p.num < STATE.phase;
+    const stars = '★'.repeat(p.stars) + '☆'.repeat(4-p.stars);
+    const div = document.createElement('div');
+    div.className = 'phase-box' + (isActive ? ' active-phase' : '') + (isDone ? ' completed-phase' : '');
+    div.innerHTML = `
+      ${isActive ? '<div class="phase-badge">ATUAL</div>' : ''}
+      ${isDone ? '<div class="phase-badge" style="background:var(--sand);color:var(--warm-gray)">CONCLUÍDA</div>' : ''}
+      <div class="phase-num">${p.num}</div>
+      <div class="phase-name">${p.name}</div>
+      <div class="phase-stars">${stars}</div>
+      <div class="phase-req">${p.reqs.join('<br>')}<br><br><em style="color:var(--copper);font-size:9px">Fama nível ${p.fameNeeded} para avançar</em></div>
+    `;
+    grid.appendChild(div);
   });
-  save(); renderTudo();
-  toast('Dia ' + String(S.dia).padStart(2,'0') + ' · Mês ' + S.mes);
+
+  // conquistas
+  const conquistasList = document.getElementById('conquistas-list');
+  conquistasList.innerHTML = '';
+  const currentPhase = PHASES[STATE.phase - 1];
+  currentPhase.reqs.forEach((req, i) => {
+    const key = `p${STATE.phase}_r${i}`;
+    const done = STATE.conquistas[key];
+    const item = document.createElement('div');
+    item.className = 'conquista-item';
+    item.innerHTML = `
+      <div class="conquista-check ${done?'done':''}" onclick="toggleConquista('${key}',this)">${done?'✓':''}</div>
+      <span style="color:${done?'var(--warm-gray)':'var(--ink)'};text-decoration:${done?'line-through':''}">${req}</span>
+    `;
+    conquistasList.appendChild(item);
+  });
 }
 
-function addExtrato(desc, cat, val, dia, mes, ico) {
-  S.extrato.unshift({ desc:desc, cat:cat, val:Number(val), dia:dia, mes:mes, ico: ico || CAT_ICO[cat] || '💳' });
-  if (S.extrato.length > 200) S.extrato.length = 200;
+function toggleConquista(key, el) {
+  STATE.conquistas[key] = !STATE.conquistas[key];
+  el.className = 'conquista-check' + (STATE.conquistas[key] ? ' done' : '');
+  el.textContent = STATE.conquistas[key] ? '✓' : '';
+  const span = el.nextElementSibling;
+  span.style.color = STATE.conquistas[key] ? 'var(--warm-gray)' : 'var(--ink)';
+  span.style.textDecoration = STATE.conquistas[key] ? 'line-through' : '';
+  saveState();
+  if(STATE.conquistas[key]) toast('Conquista registrada!', 'success');
 }
 
-// ── RENDER GERAL ─────────────────────────────────
-function renderTudo() {
-  renderBanco();
-  renderInvestimentos();
-  renderCandidatos();
-  renderRequisitos();
-  renderFases();
+function updateFame() {
+  STATE.fame = parseInt(document.getElementById('fame-select').value);
+  document.getElementById('stat-stars').textContent = '★'.repeat(STATE.fame) + '☆'.repeat(5-STATE.fame);
+
+  // check phase advance
+  const cp = PHASES[STATE.phase - 1];
+  if(STATE.fame >= cp.fameNeeded && STATE.phase < 4) {
+    STATE.phase++;
+    toast(`🏆 Avançou para a Fase ${STATE.phase}: ${PHASES[STATE.phase-1].name}!`, 'success');
+  }
+  document.getElementById('stat-phase').textContent = STATE.phase;
+  saveState();
+  renderPhases();
+  renderDistricts();
   renderPublicidade();
-  renderSelectProjetos();
+  renderPayroll();
 }
 
-// ── BANCO ────────────────────────────────────────
-function renderBanco() {
-  var sal = saldo();
-  document.getElementById('v-saldo').textContent = fmt(sal);
-  document.getElementById('daychip').textContent = 'Dia ' + String(S.dia).padStart(2,'0') + ' · Mês ' + String(S.mes).padStart(2,'0');
-  var dias = 28 - S.dia;
-  document.getElementById('v-dias').textContent = dias <= 0 ? 'Hoje' : dias + ' dias';
-  var ent = S.extrato.filter(function(x) { return x.mes === S.mes && Number(x.val) > 0; }).reduce(function(a,x) { return a + Number(x.val); }, 0);
-  var sai = S.extrato.filter(function(x) { return x.mes === S.mes && Number(x.val) < 0; }).reduce(function(a,x) { return a + Math.abs(Number(x.val)); }, 0);
-  document.getElementById('v-ent').textContent = '$ ' + fmt(ent);
-  document.getElementById('v-sai').textContent = '$ ' + fmt(sai);
+// ════════════════════════════════════════
+// DISTRICTS
+// ════════════════════════════════════════
+function renderDistricts() {
+  const list = document.getElementById('districts-list');
+  list.innerHTML = '';
+  DISTRICTS.forEach(d => {
+    const locked = d.phase > STATE.phase;
+    const div = document.createElement('div');
+    div.className = 'district-card' + (locked ? ' locked' : '');
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="district-name">${d.name}</div>
+          <div class="district-phase">Fase ${d.phase} · ${locked ? 'Bloqueado' : 'Desbloqueado'}</div>
+          <div style="font-size:11px;color:var(--warm-gray);margin-bottom:12px">
+            Orçamento: <strong>§${d.budget.toLocaleString('pt-BR')}</strong> · 
+            Pagamento: <strong>§${d.payment.toLocaleString('pt-BR')}</strong> + RT §${d.rt.toLocaleString('pt-BR')} · 
+            Comissão: <span style="color:var(--copper)">§${d.commission.toLocaleString('pt-BR')}</span>
+          </div>
+        </div>
+        ${!locked ? `<span class="badge badge-green">Ativo</span>` : `<span class="badge badge-gray">Fase ${d.phase}</span>`}
+      </div>
+      <div class="projects-list">
+        ${d.projects.map(p => {
+          const del = STATE.deliveries.find(x => x.project === p);
+          return `<div class="project-item ${del?'done':''}" onclick="${locked?'':'openDeliveryFor(`'+p+'`,`'+d.id+'`)'}" title="${p}">
+            <div style="font-size:11px;font-weight:600;margin-bottom:4px">${p}</div>
+            <span class="project-budget">§${d.payment.toLocaleString('pt-BR')}</span>
+            <span class="project-payment">+ RT §${d.rt.toLocaleString('pt-BR')}</span>
+            ${del ? '<div style="margin-top:6px"><span class="badge badge-green">Entregue</span></div>' : ''}
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+    list.appendChild(div);
+  });
 
-  var el = document.getElementById('extrato');
-  el.innerHTML = S.extrato.length === 0
-    ? '<div class="empty">Nenhuma transação ainda</div>'
-    : S.extrato.slice(0,40).map(function(x) {
-        var pos = Number(x.val) >= 0;
-        return '<div class="tx">'
-          + '<div class="tx-ico">' + (x.ico||'💳') + '</div>'
-          + '<div class="tx-b">'
-          + '<div class="tx-d">' + x.desc + '</div>'
-          + '<div class="tx-m">' + x.cat + ' · Dia ' + x.dia + ', Mês ' + x.mes + '</div>'
-          + '</div>'
-          + '<span class="' + (pos ? 'tx-p' : 'tx-n') + '">' + (pos ? '+ ' : '− ') + '$ ' + fmt(Math.abs(Number(x.val))) + '</span>'
-          + '</div>';
-      }).join('');
-
-  var pa = S.parcelas.filter(function(p) { return !p.paga; });
-  document.getElementById('parcelas-aberto').innerHTML = pa.length === 0
-    ? '<div class="empty">Nenhuma parcela ativa</div>'
-    : pa.map(function(p) {
-        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)">'
-          + '<div><div style="font-size:12px;color:var(--ink);font-weight:300">' + p.desc + '</div>'
-          + '<div style="font-size:8px;color:var(--muted);margin-top:2px;letter-spacing:.5px;text-transform:uppercase">' + p.pagas + '/' + p.numParc + ' pagas · Dia ' + p.diaVenc + ', Mês ' + p.mesVenc + '</div></div>'
-          + '<span class="tx-n">$ ' + fmt(p.valParc) + '</span>'
-          + '</div>';
-      }).join('');
-
-  renderRequisitos();
+  // populate delivery select
+  const sel = document.getElementById('del-project');
+  sel.innerHTML = '';
+  DISTRICTS.filter(d => d.phase <= STATE.phase).forEach(d => {
+    d.projects.filter(p => !STATE.deliveries.find(x => x.project === p)).forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p;
+      opt.dataset.district = d.id;
+      opt.textContent = p;
+      sel.appendChild(opt);
+    });
+  });
 }
 
-function addTx(credito) {
-  var desc = document.getElementById('tx-desc').value.trim();
-  var val  = parseFloat(document.getElementById('tx-val').value);
-  var cat  = document.getElementById('tx-cat').value;
-  if (!desc || isNaN(val) || val <= 0) { toast('Preencha descrição e valor.'); return; }
-  if (!credito && saldo() < val) { toast('Saldo insuficiente.'); return; }
-  addExtrato(desc, cat, credito ? val : -val, S.dia, S.mes, CAT_ICO[cat]||'💳');
-  save(); renderBanco();
-  toast((credito ? 'Crédito' : 'Débito') + ' de $ ' + fmt(val) + ' registrado.');
-  document.getElementById('tx-desc').value = '';
-  document.getElementById('tx-val').value  = '';
+function openDeliveryFor(project, districtId) {
+  document.getElementById('del-project').value = project;
+  openModal('modal-delivery');
 }
 
-function creditarProlabore() {
-  addExtrato('Pró-labore Arckie Co. — Mês ' + S.mes, 'prolabore', 4800, S.dia, S.mes, '💼');
-  save(); renderBanco(); toast('Pró-labore de $ 4.800 creditado!');
+// ════════════════════════════════════════
+// DELIVERIES
+// ════════════════════════════════════════
+function saveDelivery() {
+  const project = document.getElementById('del-project').value;
+  const date = document.getElementById('del-date').value;
+  const deadline = document.getElementById('del-deadline').value;
+  const ontime = document.getElementById('del-ontime').checked;
+  if(!project || !date) { toast('Preencha todos os campos','error'); return; }
+
+  const d = DISTRICTS.find(x => x.projects.includes(project));
+  const commission = ontime ? d.commission : 0;
+  const total = d.payment + d.rt + commission;
+
+  STATE.deliveries.push({ project, date, deadline, ontime, district: d.id, payment: d.payment, rt: d.rt, commission, total });
+
+  // credit bank
+  STATE.bankBalance += total;
+  STATE.transactions.push({
+    desc: `Entrega: ${project}`,
+    type: 'credit',
+    category: 'Escritório',
+    amount: total,
+    date,
+    auto: true
+  });
+
+  saveState();
+  closeModal('modal-delivery');
+  renderDeliveries();
+  renderDistricts();
+  renderTransactions();
+  updateBankUI();
+
+  const count = STATE.deliveries.length;
+  document.getElementById('stat-projects').textContent = count;
+  toast(`Projeto entregue! §${total.toLocaleString('pt-BR')} creditado.`, 'success');
 }
 
-function limparExtrato() {
-  if (!confirm('Limpar extrato? O saldo voltará a $ 0.')) return;
-  S.extrato = []; save(); renderBanco(); toast('Extrato limpo.');
-}
+function renderDeliveries() {
+  const tbody = document.getElementById('delivery-tbody');
+  const empty = document.getElementById('delivery-empty');
+  tbody.innerHTML = '';
 
-function abrirParcelar() { document.getElementById('modal-p').classList.add('show'); }
-function fecharModal()   { document.getElementById('modal-p').classList.remove('show'); }
-
-function confirmarParcelar() {
-  var desc  = document.getElementById('p-desc').value.trim();
-  var total = parseFloat(document.getElementById('p-total').value);
-  var n     = parseInt(document.getElementById('p-num').value);
-  if (!desc || isNaN(total) || total <= 0) { toast('Preencha todos os campos.'); return; }
-  var vp = Math.ceil(total / n);
-  if (saldo() < vp) { toast('Saldo insuficiente para a 1ª parcela.'); return; }
-  var dv = S.dia + 28, mv = S.mes;
-  if (dv > 28) { dv -= 28; mv++; }
-  S.parcelas.push({ desc:desc, totalVal:total, numParc:n, valParc:vp, pagas:1, paga:n===1, diaVenc:dv, mesVenc:mv });
-  addExtrato(desc + ' (parcela 1/' + n + ')', 'parcela', -vp, S.dia, S.mes, '🔄');
-  save(); fecharModal(); renderBanco();
-  toast('Parcelado em ' + n + '× de $ ' + fmt(vp) + '. 1ª parcela debitada.');
-  document.getElementById('p-desc').value  = '';
-  document.getElementById('p-total').value = '';
-}
-
-// ── INVESTIMENTOS ────────────────────────────────
-function buildTicker() {
-  var items = INV.map(function(inv, i) {
-    var v = VARS[i]; var up = v >= 0;
-    return '<div class="t-item">'
-      + '<span class="t-name">' + inv.name.split(' ').slice(0,2).join(' ').toUpperCase() + '</span>'
-      + '<span>' + (inv.rate*100).toFixed(1) + '% a.a.</span>'
-      + '<span class="' + (up ? 't-up' : 't-dn') + '">' + (up ? '▲' : '▼') + ' ' + Math.abs(v).toFixed(2) + '%</span>'
-      + '</div>';
-  }).join('');
-  var el = document.getElementById('ticker-track');
-  if (el) el.innerHTML = items + items;
-}
-
-function renderInvestimentos() {
-  buildTicker();
-  var tot  = S.inv.reduce(function(a,b) { return a+b; }, 0);
-  var rend = S.inv.reduce(function(a,b,i) { return a + b*INV[i].rate/12; }, 0);
-  document.getElementById('i-total').textContent = '$ ' + fmt(tot);
-  document.getElementById('i-rend').textContent  = '$ ' + fmt(rend);
-  document.getElementById('i-acum').textContent  = '$ ' + fmt(S.invRendAcum||0);
-
-  var tbody = document.getElementById('inv-tbody');
-  if (tbody) tbody.innerHTML = INV.map(function(inv, i) {
-    var v = VARS[i]; var up = v >= 0;
-    var rendM = S.inv[i] * inv.rate / 12;
-    var pct   = tot > 0 ? Math.round(S.inv[i]/tot*100) : 0;
-    var spark = [3,5,4,7,6,8,5,7].map(function(h) {
-      return '<span style="height:' + h + 'px;background:' + (up?'var(--grn)':'var(--red)') + ';border-radius:1px"></span>';
-    }).join('');
-    var riskClass = inv.risk === 'Baixo' ? 'p-grn' : inv.risk === 'Médio' ? 'p-cop' : 'p-red';
-    return '<tr>'
-      + '<td><div style="font-size:12px;font-weight:400;color:var(--ink)">' + inv.name + '</div>'
-      + '<div class="mini-prog"><div class="mini-f" style="width:' + pct + '%;background:' + (up?'var(--grn)':'var(--red)') + '"></div></div></td>'
-      + '<td><span class="pill p-def" style="font-size:8px">' + inv.type + '</span></td>'
-      + '<td><span class="pill ' + riskClass + '" style="font-size:8px">' + inv.risk + '</span></td>'
-      + '<td class="r">' + (inv.rate*100).toFixed(1) + '%</td>'
-      + '<td class="r">$ ' + fmt(S.inv[i]) + '</td>'
-      + '<td class="r ' + (rendM>0?'td-up':'') + '">$ ' + fmt(rendM) + '</td>'
-      + '<td class="r ' + (up?'td-up':'td-dn') + '">' + (up?'▲':'▼') + ' ' + Math.abs(v).toFixed(2) + '%'
-      + '<div class="spark">' + spark + '</div></td>'
-      + '</tr>';
-  }).join('');
-
-  var sel = document.getElementById('inv-sel');
-  if (sel) sel.innerHTML = INV.map(function(inv,i) {
-    return '<option value="' + i + '">' + inv.name + '</option>';
-  }).join('');
-}
-
-function movInv(aportar) {
-  var idx = parseInt(document.getElementById('inv-sel').value);
-  var val = parseFloat(document.getElementById('inv-val').value);
-  var msg = document.getElementById('inv-msg');
-  if (isNaN(val) || val <= 0) { toast('Informe um valor válido.'); return; }
-  if (aportar) {
-    if (saldo() < val) { toast('Saldo insuficiente.'); return; }
-    S.inv[idx] += val;
-    addExtrato('Aporte — ' + INV[idx].name, 'rendimento', -val, S.dia, S.mes, '📈');
-    if (msg) { msg.style.display='block'; msg.style.color='var(--grn)'; msg.textContent='✓ Aporte de $ ' + fmt(val) + ' em ' + INV[idx].name + '.'; }
-    toast('Aporte confirmado.');
-  } else {
-    if (S.inv[idx] < val) { toast('Saldo investido insuficiente.'); return; }
-    var rend = Math.round(val * INV[idx].rate / 12);
-    S.inv[idx] -= val; S.invRendAcum = (S.invRendAcum||0) + rend;
-    addExtrato('Resgate — ' + INV[idx].name, 'rendimento', val+rend, S.dia, S.mes, '📈');
-    if (msg) { msg.style.display='block'; msg.style.color='var(--grn)'; msg.textContent='✓ Resgate de $ ' + fmt(val+rend) + ' (rend. $ ' + fmt(rend) + ').'; }
-    toast('Resgate confirmado.');
+  if(STATE.deliveries.length === 0) {
+    empty.style.display = '';
+    return;
   }
-  save(); renderInvestimentos(); renderBanco();
-  document.getElementById('inv-val').value = '';
-  setTimeout(function() { if(msg) msg.style.display='none'; }, 5000);
+  empty.style.display = 'none';
+
+  let totalRevenue = 0, totalComm = 0, onTimeCount = 0;
+
+  STATE.deliveries.forEach(d => {
+    const dist = DISTRICTS.find(x => x.id === d.district);
+    totalRevenue += d.payment + d.rt;
+    totalComm += d.commission;
+    if(d.ontime) onTimeCount++;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-weight:600">${d.project}</td>
+      <td>${dist ? dist.name : d.district}</td>
+      <td>${d.date}</td>
+      <td>${d.deadline || '—'}</td>
+      <td>${d.ontime ? '<span class="badge badge-green">No Prazo</span>' : '<span class="badge badge-gray">Normal</span>'}</td>
+      <td style="font-family:'Cormorant',serif;font-size:18px">§${(d.payment+d.rt).toLocaleString('pt-BR')}</td>
+      <td style="color:${d.commission>0?'#4a7c59':'var(--warm-gray)'}">§${d.commission.toLocaleString('pt-BR')}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('delivered-count').textContent = STATE.deliveries.length;
+  document.getElementById('on-time-count').textContent = onTimeCount;
+  document.getElementById('commissions-total').textContent = '§'+totalComm.toLocaleString('pt-BR');
+  document.getElementById('projects-revenue').textContent = '§'+totalRevenue.toLocaleString('pt-BR');
 }
 
-async function analisarFinancas() {
-  var btn = document.getElementById('btn-analise');
-  var out = document.getElementById('analise-out');
-  btn.disabled = true; btn.textContent = 'Analisando…';
-  out.style.display = 'block';
-  out.innerHTML = '<span style="color:var(--muted)">Processando análise da carteira…</span>';
-  var tot  = S.inv.reduce(function(a,b){return a+b;},0);
-  var rend = S.inv.reduce(function(a,b,i){return a+b*INV[i].rate/12;},0);
-  var prompt = 'Você é um consultor financeiro especializado em pequenos escritórios criativos. Analise a situação financeira da Arckie Co., escritório boutique de arquitetura de Valdison Viana:\n\nSaldo disponível: $ ' + fmt(saldo()) + '\nPró-labore: $ 4.800 / 28 dias\nTotal investido: $ ' + fmt(tot) + '\nRendimento mensal projetado: $ ' + fmt(rend) + '\nParcelas ativas: ' + S.parcelas.filter(function(p){return !p.paga;}).length + '\nProjetos entregues: ' + S.projetos + '\nDia ' + S.dia + ', Mês ' + S.mes + '\n\nDê 3 sugestões práticas, diretas e personalizadas para fortalecer as finanças do escritório nesta fase. Responda em português, máximo 200 palavras.';
-  try {
-    var res  = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json','x-api-key':'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','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}, body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:400, messages:[{role:'user',content:prompt}] }) });
-    var data = await res.json();
-    out.innerHTML = (data.content[0].text||'').replace(/\n/g,'<br>');
-  } catch(e) { out.innerHTML = '<span style="color:var(--red)">Erro de conexão. Tente novamente.</span>'; }
-  btn.disabled = false; btn.textContent = 'Solicitar análise';
-}
-
-// ── CHAT IA ──────────────────────────────────────
-async function sendMsg() {
-  var inp  = document.getElementById('chat-in');
-  var text = inp.value.trim(); if (!text) return;
-  inp.value = '';
-  var area = document.getElementById('chat-msgs');
-  area.innerHTML += '<div class="msg-eu"><div class="mw">Você</div><div class="mb">' + text.replace(/</g,'&lt;') + '</div></div>';
-  area.scrollTop = area.scrollHeight;
-  document.getElementById('typing').style.display = 'flex';
-  var tot      = S.inv.reduce(function(a,b){return a+b;},0);
-  var planoPub = pubAtivo ? (PUB.find(function(p){return p.id===pubAtivo;})||{}).name||'nenhum' : 'nenhum';
-  var sys = 'Você é o assistente de gestão da Arckie Co., escritório boutique de arquitetura em San Myshuno (The Sims 4), fundado e operado por Valdison Viana. O escritório valoriza projetos com alma e identidade autoral — não quantidade. Ajude com: briefings de projetos em San Myshuno, análise financeira, estratégia de crescimento, captação de clientes, feedback criativo e planejamento de publicidade. Contexto: saldo $ ' + fmt(saldo()) + ', ' + S.projetos + ' projetos entregues, $ ' + fmt(tot) + ' investido, Dia ' + S.dia + ' Mês ' + S.mes + ', plano de publicidade: ' + planoPub + '. Seja objetivo, criativo e alinhado com a identidade boutique. Máximo 180 palavras. Responda em português.';
-  try {
-    var res  = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'Content-Type':'application/json','x-api-key':'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','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}, body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:350, system:sys, messages:[{role:'user',content:text}] }) });
-    var data = await res.json();
-    var reply = (data.content[0].text||'Sem resposta.').replace(/\n/g,'<br>');
-    document.getElementById('typing').style.display = 'none';
-    area.innerHTML += '<div class="msg-ia"><div class="mw">Assistente Arckie</div><div class="mb">' + reply + '</div></div>';
-  } catch(e) {
-    document.getElementById('typing').style.display = 'none';
-    area.innerHTML += '<div class="msg-ia"><div class="mw">Assistente Arckie</div><div class="mb">Erro de conexão. Tente novamente.</div></div>';
-  }
-  area.scrollTop = area.scrollHeight;
-}
-
-// ── RELATÓRIO ─────────────────────────────────────
-function renderSelectProjetos() {
-  var sel  = document.getElementById('e-proj'); if (!sel) return;
-  var disp = S.demandas.filter(function(d){return !d.entregue;});
-  sel.innerHTML = disp.length === 0
-    ? '<option>Nenhuma demanda pendente</option>'
-    : disp.map(function(dm) {
-        return '<option value="' + S.demandas.indexOf(dm) + '">#' + dm.id + ' — ' + dm.titulo + ' ($ ' + fmt(dm.receita) + ')</option>';
-      }).join('');
-}
-
-function enviarRelatorio() {
-  var idx    = parseInt(document.getElementById('e-proj').value);
-  var estru  = document.getElementById('e-estru').value.trim();
-  var deco   = document.getElementById('e-deco').value.trim();
-  var orc    = parseFloat(document.getElementById('e-orc').value);
-  var noPraz = document.getElementById('e-prazo').value === '0';
-  if (!estru || !deco || isNaN(orc)) { toast('Preencha todos os campos.'); return; }
-  var d = S.demandas[idx];
-  if (!d || d.entregue) { toast('Projeto inválido ou já entregue.'); return; }
-  var rec = noPraz ? 0 : d.receita;
-  if (rec > 0) addExtrato('Receita — #' + d.id + ' ' + d.titulo, 'receita', rec, S.dia, S.mes, '📐');
-  d.entregue = true; S.projetos++;
-  save();
-  var ok = document.getElementById('e-ok');
-  ok.style.display = 'block';
-  ok.innerHTML = rec > 0
-    ? '✓ Projeto entregue. Receita de <strong>$ ' + fmt(rec) + '</strong> creditada.'
-    : '⚠ Entregue fora do prazo. Sem receita nesta entrega.';
-  ['e-estru','e-deco'].forEach(function(id) { document.getElementById(id).value=''; });
-  document.getElementById('e-orc').value = '';
-  renderSelectProjetos(); renderTudo();
-  toast(rec > 0 ? 'Receita de $ ' + fmt(rec) + ' creditada!' : 'Entrega registrada.');
-  setTimeout(function(){ ok.style.display='none'; }, 7000);
-}
-
-// ── PUBLICIDADE ───────────────────────────────────
+// ════════════════════════════════════════
+// PUBLICIDADE
+// ════════════════════════════════════════
 function renderPublicidade() {
-  var el = document.getElementById('pub-plans'); if (!el) return;
-  el.innerHTML = PUB.map(function(p) {
-    return '<div class="pub-plan ' + (pubAtivo===p.id?'on':'') + '" onclick="assinarPlano(\'' + p.id + '\')">'
-      + '<div class="pub-badge">' + (pubAtivo===p.id?'<span class="pill p-cop">Ativo</span>':'') + '</div>'
-      + '<div class="pub-name">' + p.name + '</div>'
-      + '<div class="pub-price">$ ' + fmt(p.price) + ' / mês</div>'
-      + '<div class="pub-desc">' + p.desc + '</div>'
-      + '<div class="pub-tags">' + p.tags + '</div>'
-      + '</div>';
-  }).join('');
-  var st = document.getElementById('pub-status');
-  if (pubAtivo) {
-    var p = PUB.find(function(x){return x.id===pubAtivo;});
-    if (p && st) {
-      st.style.display = 'block';
-      document.getElementById('pub-nome').textContent    = p.name + ' — Plano ativo';
-      document.getElementById('pub-desc-st').textContent = p.tags;
-    }
-  } else { if(st) st.style.display = 'none'; }
-}
-
-function assinarPlano(id) {
-  var p = PUB.find(function(x){return x.id===id;}); if (!p) return;
-  if (pubAtivo === id) { pubAtivo=null; save(); renderPublicidade(); toast('Plano cancelado.'); return; }
-  if (saldo() < p.price) { toast('Saldo insuficiente para assinar o plano.'); return; }
-  addExtrato('Publicidade — Plano ' + p.name, 'gasto', -p.price, S.dia, S.mes, '📣');
-  pubAtivo = id; save(); renderBanco(); renderPublicidade();
-  toast('Plano ' + p.name + ' ativado! $ ' + fmt(p.price) + ' debitado.');
-}
-
-// ── FASES & REQUISITOS ────────────────────────────
-function renderFases() {
-  var el = document.getElementById('fase-track'); if (!el) return;
-  el.innerHTML = FASES.map(function(f,i) {
-    var cls = i===0?'curr':i===1?'next':'lock';
-    return '<div class="fase ' + cls + '">'
-      + '<div class="fase-n">' + f.n + '</div>'
-      + '<div class="fase-info">'
-      + '<div class="fase-t">' + f.t + (i===0?' <span style="font-size:8px;letter-spacing:2px;text-transform:uppercase;opacity:.4;font-weight:300"> atual</span>':'') + '</div>'
-      + '<div class="fase-d">' + f.d + '</div>'
-      + '</div>'
-      + '<div class="fase-s">' + f.s + '</div>'
-      + '</div>';
-  }).join('');
-}
-
-function dot(ok, half) { return 'req-dot' + (ok?' done':half?' half':''); }
-function lbl(ok, half) { return ok ? '✓' : half ? '◑' : '○'; }
-
-function renderRequisitos() {
-  var sal    = saldo();
-  var r_proj = S.projetos >= 4;
-  var r_ph   = S.projetos > 0 && !r_proj;
-  var r_sal  = sal >= 8000;
-  var r_sh   = sal >= 3000 && !r_sal;
-  var done   = [r_proj, S.reqs.r1, S.reqs.r2, S.reqs.r3, r_sal].filter(Boolean).length;
-
-  var el = document.getElementById('req-list'); if (!el) return;
-  el.innerHTML = [
-    { ok:r_proj, half:r_ph,       n:'4 projetos entregues',                        h:S.projetos+' / 4 concluídos' },
-    { ok:S.reqs.r1, half:false,   n:'5 conteúdos publicados — Rumo à Fama',        h:'Vídeos, posts e reels sobre arquitetura' },
-    { ok:S.reqs.r2, half:false,   n:'Fama nível 2 no jogo',                        h:'Continue publicando e interagindo com fãs' },
-    { ok:S.reqs.r3, half:false,   n:'10 mil seguidores — Rumo à Fama',             h:'Engajamento orgânico + plano de publicidade' },
-    { ok:r_sal,  half:r_sh,       n:'Saldo bancário ≥ $ 8.000',                    h:'Atual: $ ' + fmt(sal) },
-  ].map(function(r, i) {
-    return '<div class="req-r' + (i===4?'" style="border:none':'"') + '"><div class="' + dot(r.ok,r.half) + '">' + lbl(r.ok,r.half) + '</div><div><div class="req-n">' + r.n + '</div><div class="req-h">' + r.h + '</div></div></div>';
-  }).join('');
-
-  var pct = document.getElementById('promo-pct');
-  var bar = document.getElementById('promo-bar');
-  if (pct) pct.textContent = done + ' / 5';
-  if (bar) bar.style.width = Math.round(done/5*100) + '%';
-  var pb = document.getElementById('proj-bar');
-  var pl = document.getElementById('proj-lbl');
-  if (pb) pb.style.width = Math.min(100, S.projetos/4*100) + '%';
-  if (pl) pl.textContent = S.projetos + ' de 4';
-}
-
-function marcarReq() {
-  var r = document.getElementById('req-sel').value;
-  S.reqs[r] = true; save(); renderRequisitos(); renderFases();
-  toast('Conquista registrada!');
-}
-
-// ── CANDIDATOS ────────────────────────────────────
-function renderCandidatos() {
-  var wrap = document.getElementById('candidatos'); if (!wrap) return;
-  if (!candSlots || !candSlots.length) candSlots = [0,1,2];
-  wrap.innerHTML = candSlots.map(function(ci, slot) {
-    var c = CANDS[ci % CANDS.length];
-    return '<div class="cand">'
-      + '<div class="cand-area">' + c.area + '</div>'
-      + '<div class="cand-name">' + c.name + '</div>'
-      + '<div class="cand-spec">' + c.spec + '</div>'
-      + '<div class="cand-sal">' + c.sal + ' · ' + c.exp + ' de experiência</div>'
-      + '<div class="cand-bio">' + c.bio + '</div>'
-      + '<div style="display:flex;gap:8px;flex-wrap:wrap">'
-      + '<button class="btn btn-ink btn-sm" onclick="contratarCand(' + slot + ')">Contratar</button>'
-      + '<button class="btn btn-sm" onclick="recusarCand(' + slot + ')">Dispensar</button>'
-      + '</div></div>';
-  }).join('');
-}
-
-function proxCandIdx() {
-  var mx = Math.max.apply(null, candSlots);
-  var n  = (mx+1) % CANDS.length;
-  for (var i=0; i<CANDS.length; i++) {
-    if (candSlots.indexOf(n) === -1) break;
-    n = (n+1) % CANDS.length;
-  }
-  return n;
-}
-
-function novaRodada() {
-  var c = Math.max.apply(null, candSlots);
-  candSlots = [(c+1)%CANDS.length, (c+2)%CANDS.length, (c+3)%CANDS.length];
-  S.candSlots = candSlots; save(); renderCandidatos(); toast('Candidatos atualizados.');
-}
-
-function contratarCand(slot) {
-  var c = CANDS[candSlots[slot] % CANDS.length];
-  var expList = document.getElementById('exp-list');
-  if (expList) {
-    var div = document.createElement('div'); div.className = 'exp-item';
-    div.innerHTML = '<div style="display:flex;gap:12px"><div class="exp-ico">👤</div><div>'
-      + '<div class="exp-title">' + c.name + '</div>'
-      + '<div class="exp-co">' + c.spec + ' · ' + c.area + '</div>'
-      + '<div class="exp-period">Mês ' + S.mes + ' — Presente · San Myshuno</div>'
-      + '<div class="exp-desc">' + c.bio + '</div>'
-      + '</div></div>';
-    expList.prepend(div);
-  }
-  candSlots[slot] = proxCandIdx();
-  S.candSlots = candSlots; save(); renderCandidatos();
-  toast(c.name + ' contratado(a)!');
-}
-
-function recusarCand(slot) {
-  candSlots[slot] = proxCandIdx();
-  S.candSlots = candSlots; save(); renderCandidatos();
-  toast('Candidato dispensado.');
-}
-
-
-// Sobrescreve save() para incluir Supabase
-var _localSave = save;
-save = function() {
-  var t = Object.assign({}, S);
-  delete t.saldo;
-  t.candSlots = candSlots;
-  t.pubAtivo  = pubAtivo;
-  localStorage.setItem(KEY, JSON.stringify(t));
-  saveToCloud(t); // persiste na nuvem
-};
-
-// Sobrescreve doLogin() para carregar da nuvem ao logar
-var _localDoLogin = doLogin;
-doLogin = async function() {
-  var u = document.getElementById('uid').value.trim();
-  var p = document.getElementById('pw').value.trim();
-  if (u === 'viana.valdison' && p === '2802') {
-    var lg = document.getElementById('login');
-    lg.style.transition = 'opacity .4s';
-    lg.style.opacity = '0';
-    setTimeout(async function() {
-      lg.style.display = 'none';
-      var app = document.getElementById('app');
-      app.style.display = 'flex';
-
-      // Mostra loading enquanto carrega da nuvem
-      var chip = document.getElementById('daychip');
-      if (chip) chip.textContent = 'Carregando…';
-
-      // Tenta carregar estado da nuvem
-      var cloudData = await loadFromCloud();
-      if (cloudData && cloudData.extrato && cloudData.extrato.length > 0) {
-        // Mescla dados da nuvem no estado local
-        S = cloudData;
-        if (!S.reqs)    S.reqs    = { r1:false, r2:false, r3:false, r4:false };
-        if (!S.inv || S.inv.length !== INV.length) S.inv = INV.map(function(){return 0;});
-        if (S.invRendAcum == null) S.invRendAcum = 0;
-        if (!S.demandas)  S.demandas  = defaultState().demandas;
-        if (!S.parcelas)  S.parcelas  = [];
-        if (!S.candSlots) S.candSlots = [0,1,2];
-        if (S.pubAtivo === undefined) S.pubAtivo = null;
-        delete S.saldo;
-        candSlots = S.candSlots || [0,1,2];
-        pubAtivo  = S.pubAtivo  || null;
-        // Sincroniza localStorage
-        var t = Object.assign({}, S);
-        delete t.saldo;
-        t.candSlots = candSlots;
-        t.pubAtivo  = pubAtivo;
-        localStorage.setItem(KEY, JSON.stringify(t));
-      }
-
-      renderTudo();
-      showSync(true);
-    }, 400);
+  const locked = document.getElementById('pub-locked-msg');
+  const content = document.getElementById('pub-content');
+  if(STATE.fame < 2) {
+    locked.style.display = '';
+    content.style.display = 'none';
   } else {
-    document.getElementById('lerr').style.display = 'block';
-    document.getElementById('pw').value = '';
+    locked.style.display = 'none';
+    content.style.display = '';
   }
-};
-</script>
+  document.getElementById('current-plan-name').textContent = STATE.adPlan ? {starter:'Starter',grow:'Grow',premium:'Premium'}[STATE.adPlan] : 'Nenhum';
+  ['starter','grow','premium'].forEach(p => {
+    document.getElementById('plan-'+p).classList.toggle('selected', STATE.adPlan === p);
+  });
+}
 
+let selectedPlan = null;
+function selectPlan(p) {
+  selectedPlan = p;
+  ['starter','grow','premium'].forEach(x => document.getElementById('plan-'+x).classList.remove('selected'));
+  document.getElementById('plan-'+p).classList.add('selected');
+}
+function subscribePlan() {
+  if(!selectedPlan) { toast('Selecione um plano','error'); return; }
+  const cost = {starter:2000,grow:6000,premium:10000}[selectedPlan];
+  STATE.adPlan = selectedPlan;
+  saveState();
+  renderPublicidade();
+  renderPayroll();
+  toast(`Plano ${selectedPlan} ativado! §${cost.toLocaleString('pt-BR')}/mês`, 'success');
+}
+
+// ════════════════════════════════════════
+// PAYROLL
+// ════════════════════════════════════════
+const PRO_LABORE = {1:4800,2:8500,3:14000,4:22000};
+
+function renderPayroll() {
+  const rows = document.getElementById('payroll-rows');
+  rows.innerHTML = '';
+  let total = 0;
+
+  const items = [];
+
+  // employees
+  STATE.employees.forEach(e => {
+    items.push({ name: e.name, role: e.role, amount: e.salary, type: e.type });
+  });
+
+  // ad plan
+  if(STATE.adPlan) {
+    const cost = {starter:2000,grow:6000,premium:10000}[STATE.adPlan];
+    items.push({ name: 'Agência de Relações Públicas', role: `Plano ${STATE.adPlan}`, amount: cost, type: 'Serviço' });
+  }
+
+  // pro-labore
+  const pl = PRO_LABORE[STATE.phase];
+  items.push({ name: 'Valdison Viana', role: 'Pró-Labore (Fundador)', amount: pl, type: 'Pró-Labore' });
+
+  items.forEach(item => {
+    total += item.amount;
+    const div = document.createElement('div');
+    div.className = 'payroll-row';
+    div.innerHTML = `
+      <div>
+        <div class="name">${item.name}</div>
+        <div style="font-size:10px;color:var(--warm-gray);letter-spacing:0.1em">${item.role} · ${item.type}</div>
+      </div>
+      <div class="amount">§${item.amount.toLocaleString('pt-BR')}</div>
+    `;
+    rows.appendChild(div);
+  });
+
+  document.getElementById('payroll-total').textContent = '§'+total.toLocaleString('pt-BR');
+  STATE.officeBalance = STATE.officeBalance; // keep ref
+  checkCrisis();
+}
+
+function saveEmployee() {
+  const name = document.getElementById('emp-name').value;
+  const role = document.getElementById('emp-role').value;
+  const salary = parseFloat(document.getElementById('emp-salary').value);
+  const type = document.getElementById('emp-type').value;
+  if(!name||!role||!salary) { toast('Preencha todos os campos','error'); return; }
+  STATE.employees.push({ name, role, salary, type });
+  saveState();
+  closeModal('modal-employee');
+  renderPayroll();
+  toast(`${name} adicionado(a) à folha!`, 'success');
+}
+
+function processPayroll() {
+  let total = 0;
+  STATE.employees.forEach(e => total += e.salary);
+  if(STATE.adPlan) total += {starter:2000,grow:6000,premium:10000}[STATE.adPlan];
+  total += PRO_LABORE[STATE.phase];
+
+  STATE.officeBalance -= total;
+  STATE.transactions.push({
+    desc: 'Folha de Pagamento',
+    type: 'debit',
+    category: 'Escritório',
+    amount: total,
+    date: new Date().toISOString().split('T')[0],
+    auto: false
+  });
+  saveState();
+  renderTransactions();
+  checkCrisis();
+  toast(`Folha processada: §${total.toLocaleString('pt-BR')} debitados`, 'success');
+}
+
+// ════════════════════════════════════════
+// INVESTMENTS
+// ════════════════════════════════════════
+function initAssets() {
+  if(!STATE.assets || STATE.assets.length === 0) {
+    STATE.assets = ASSETS_DEF.map(a => ({
+      ...a, applied: 0, units: 0, currentPrice: a.price, monthlyReturn: 0, totalReturn: 0
+    }));
+  }
+}
+
+function renderAssets() {
+  const grid = document.getElementById('assets-grid');
+  grid.innerHTML = '';
+  let totalApplied = 0, totalReturn = 0, monthlyReturn = 0;
+
+  STATE.assets.forEach(a => {
+    totalApplied += a.applied;
+    totalReturn += a.totalReturn;
+    monthlyReturn += a.monthlyReturn;
+
+    const changeAmt = a.currentPrice - a.price;
+    const changePct = ((a.currentPrice / a.price - 1) * 100).toFixed(2);
+    const isUp = changeAmt >= 0;
+    const currentValue = a.units * a.currentPrice;
+
+    const card = document.createElement('div');
+    card.className = 'invest-card';
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="invest-name">${a.name}</div>
+          <div class="invest-ticker">${a.ticker} · ${a.type}</div>
+        </div>
+        <span class="badge ${a.risk==='baixo'?'badge-green':a.risk==='médio'?'badge-copper':'badge-red'}">${a.risk}</span>
+      </div>
+      <div class="invest-price">§${a.currentPrice.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+      <div class="invest-change ${isUp?'up':'down'}">${isUp?'▲':'▼'} ${Math.abs(changePct)}%</div>
+      <div style="height:0.5px;background:var(--sand);margin:12px 0"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><div style="font-size:9px;color:var(--warm-gray);letter-spacing:0.1em">Aplicado</div><div style="font-family:'Cormorant',serif;font-size:18px">§${a.applied.toLocaleString('pt-BR')}</div></div>
+        <div><div style="font-size:9px;color:var(--warm-gray);letter-spacing:0.1em">Valor Atual</div><div style="font-family:'Cormorant',serif;font-size:18px;color:${currentValue>=a.applied?'#4a7c59':'#9e3e38'}">§${Math.round(currentValue).toLocaleString('pt-BR')}</div></div>
+        <div><div style="font-size:9px;color:var(--warm-gray);letter-spacing:0.1em">Rendimento/Mês</div><div style="font-size:13px;color:#4a7c59">§${Math.round(a.monthlyReturn).toLocaleString('pt-BR')}</div></div>
+        <div><div style="font-size:9px;color:var(--warm-gray);letter-spacing:0.1em">Taxa</div><div style="font-size:13px;color:var(--copper)">${(a.rate*100).toFixed(2)}%/mês</div></div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('inv-total').textContent = '§'+Math.round(totalApplied).toLocaleString('pt-BR');
+  document.getElementById('inv-monthly').textContent = '§'+Math.round(monthlyReturn).toLocaleString('pt-BR');
+  document.getElementById('inv-accumulated').textContent = '§'+Math.round(totalReturn).toLocaleString('pt-BR');
+
+  // populate select
+  const sel = document.getElementById('inv-asset');
+  sel.innerHTML = '';
+  STATE.assets.forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a.id;
+    opt.textContent = `${a.name} (${a.ticker})`;
+    sel.appendChild(opt);
+  });
+}
+
+function updateMarket() {
+  STATE.assets.forEach(a => {
+    const volatility = {baixo:0.02, médio:0.05, alto:0.1}[a.risk];
+    const change = 1 + (Math.random() - 0.45) * volatility;
+    a.currentPrice = parseFloat((a.currentPrice * change).toFixed(2));
+    if(a.units > 0) {
+      a.monthlyReturn = a.units * a.currentPrice * a.rate;
+      a.totalReturn += a.monthlyReturn;
+      STATE.accumulatedReturn += a.monthlyReturn;
+    }
+  });
+  STATE.totalInvested = STATE.assets.reduce((s,a) => s + a.applied, 0);
+  saveState();
+  renderAssets();
+  toast('Mercado atualizado!', 'success');
+}
+
+function saveInvestment() {
+  const assetId = document.getElementById('inv-asset').value;
+  const op = document.getElementById('inv-op').value;
+  const value = parseFloat(document.getElementById('inv-value').value);
+  if(!value || value <= 0) { toast('Valor inválido','error'); return; }
+
+  const asset = STATE.assets.find(a => a.id === assetId);
+  if(op === 'aporte') {
+    if(STATE.bankBalance < value) { toast('Saldo insuficiente','error'); return; }
+    const units = value / asset.currentPrice;
+    asset.applied += value;
+    asset.units += units;
+    asset.monthlyReturn = asset.units * asset.currentPrice * asset.rate;
+    STATE.bankBalance -= value;
+    STATE.transactions.push({
+      desc: `Aporte: ${asset.name}`,
+      type: 'debit', category: 'Investimento',
+      amount: value, date: new Date().toISOString().split('T')[0], auto: false
+    });
+    toast(`§${value.toLocaleString('pt-BR')} aportados em ${asset.name}`, 'success');
+  } else {
+    const maxWithdraw = asset.units * asset.currentPrice;
+    if(value > maxWithdraw) { toast('Saldo de resgate insuficiente','error'); return; }
+    const units = value / asset.currentPrice;
+    asset.units -= units;
+    asset.applied = Math.max(0, asset.applied - value);
+    asset.monthlyReturn = asset.units * asset.currentPrice * asset.rate;
+    STATE.bankBalance += value;
+    STATE.transactions.push({
+      desc: `Resgate: ${asset.name}`,
+      type: 'credit', category: 'Investimento',
+      amount: value, date: new Date().toISOString().split('T')[0], auto: false
+    });
+    toast(`§${value.toLocaleString('pt-BR')} resgatados de ${asset.name}`, 'success');
+  }
+
+  STATE.totalInvested = STATE.assets.reduce((s,a) => s + a.applied, 0);
+  saveState();
+  closeModal('modal-invest');
+  renderAssets();
+  renderTransactions();
+  updateBankUI();
+}
+
+// ════════════════════════════════════════
+// BANK
+// ════════════════════════════════════════
+function updateBankUI() {
+  const bal = STATE.bankBalance;
+  const el = document.getElementById('bank-balance');
+  el.textContent = '§' + Math.round(bal).toLocaleString('pt-BR');
+  el.className = 'bank-balance' + (bal < 0 ? ' crisis' : '');
+  checkCrisis();
+}
+
+function checkCrisis() {
+  const banner = document.getElementById('crisis-banner');
+  banner.style.display = STATE.officeBalance < 4800 ? '' : 'none';
+}
+
+function saveTransaction() {
+  const desc = document.getElementById('tx-desc').value;
+  const type = document.getElementById('tx-type').value;
+  const category = document.getElementById('tx-category').value;
+  const amount = parseFloat(document.getElementById('tx-amount').value);
+  const date = document.getElementById('tx-date').value;
+  if(!desc||!amount||!date) { toast('Preencha todos os campos','error'); return; }
+
+  if(type === 'debit') STATE.bankBalance -= amount;
+  else STATE.bankBalance += amount;
+
+  STATE.transactions.push({ desc, type, category, amount, date, auto: false });
+  saveState();
+  closeModal('modal-transaction');
+  renderTransactions();
+  updateBankUI();
+  toast(`Lançamento registrado: §${amount.toLocaleString('pt-BR')}`, 'success');
+}
+
+function renderTransactions() {
+  const list = document.getElementById('transactions-list');
+  const empty = document.getElementById('tx-empty');
+  if(STATE.transactions.length === 0) { empty.style.display = ''; list.innerHTML = ''; return; }
+  empty.style.display = 'none';
+  list.innerHTML = '';
+  [...STATE.transactions].reverse().slice(0,30).forEach(tx => {
+    const div = document.createElement('div');
+    div.className = 'transaction-row';
+    div.innerHTML = `
+      <div>
+        <div class="tx-desc">${tx.desc}</div>
+        <div class="tx-category">${tx.category}</div>
+      </div>
+      <div class="tx-date">${tx.date}</div>
+      <div class="tx-amount ${tx.type}">§${tx.amount.toLocaleString('pt-BR')}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function saveInstallment() {
+  const desc = document.getElementById('inst-desc').value;
+  const total = parseFloat(document.getElementById('inst-total').value);
+  const parcelas = parseInt(document.getElementById('inst-parcelas').value);
+  if(!desc||!total||!parcelas) { toast('Preencha todos os campos','error'); return; }
+  const rate = 0.0299;
+  const monthly = total * (rate * Math.pow(1+rate, parcelas)) / (Math.pow(1+rate, parcelas) - 1);
+  STATE.installments.push({
+    desc, total, parcelas,
+    paid: 0, monthly: parseFloat(monthly.toFixed(2)),
+    startDate: new Date().toISOString().split('T')[0],
+    overdue: false
+  });
+  saveState();
+  closeModal('modal-installment');
+  renderInstallments();
+  toast(`Parcelado em ${parcelas}x de §${monthly.toFixed(2)}`, 'success');
+}
+
+function renderInstallments() {
+  const list = document.getElementById('installments-list');
+  const empty = document.getElementById('inst-empty');
+  if(STATE.installments.length === 0) { empty.style.display = ''; list.innerHTML = ''; return; }
+  empty.style.display = 'none';
+  list.innerHTML = '';
+  let totalOpen = 0, totalDebt = 0;
+
+  STATE.installments.forEach((inst, i) => {
+    const remaining = inst.parcelas - inst.paid;
+    const progress = (inst.paid / inst.parcelas) * 100;
+    totalOpen += inst.monthly;
+    totalDebt += remaining * inst.monthly;
+
+    const div = document.createElement('div');
+    div.className = 'installment-card';
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between">
+        <div class="inst-name">${inst.desc}</div>
+        <button onclick="payInstallment(${i})" style="font-size:9px;padding:5px 12px;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:var(--copper);color:var(--ink);border:none;letter-spacing:0.15em">Pagar Parcela</button>
+      </div>
+      <div class="inst-info">${inst.parcelas}x de §${inst.monthly.toFixed(2)} · ${remaining} restantes</div>
+      ${inst.overdue ? '<div class="inst-overdue">⚠ Em atraso — multa 2% + 1%/dia</div>' : ''}
+      <div class="inst-progress"><div class="inst-progress-bar" style="width:${progress}%"></div></div>
+      <div style="font-size:10px;color:var(--warm-gray);margin-top:4px">${inst.paid}/${inst.parcelas} parcelas pagas</div>
+    `;
+    list.appendChild(div);
+  });
+
+  document.getElementById('card-open').textContent = '§'+totalOpen.toFixed(2);
+  document.getElementById('card-debt').textContent = '§'+Math.round(totalDebt).toLocaleString('pt-BR');
+}
+
+function payInstallment(i) {
+  const inst = STATE.installments[i];
+  if(inst.paid >= inst.parcelas) { toast('Parcelamento quitado','success'); return; }
+  let amount = inst.monthly;
+  if(inst.overdue) {
+    const fine = amount * 0.02 + amount * 0.01 * 3;
+    amount += fine;
+    toast(`Multa aplicada: §${fine.toFixed(2)}`, 'error');
+  }
+  if(STATE.bankBalance < amount) { 
+    inst.overdue = true;
+    toast('Saldo insuficiente — parcela em atraso!', 'error');
+    saveState();
+    renderInstallments();
+    return;
+  }
+  STATE.bankBalance -= amount;
+  inst.paid++;
+  inst.overdue = false;
+  if(inst.paid >= inst.parcelas) {
+    STATE.installments.splice(i, 1);
+    toast('Parcelamento quitado!', 'success');
+  } else {
+    toast(`Parcela ${inst.paid}/${inst.parcelas} paga: §${amount.toFixed(2)}`, 'success');
+  }
+  saveState();
+  renderInstallments();
+  renderTransactions();
+  updateBankUI();
+}
+
+function doRescue() {
+  const amount = parseFloat(document.getElementById('rescue-amount').value);
+  if(!amount || amount <= 0) { toast('Valor inválido','error'); return; }
+  if(STATE.bankBalance < amount) { toast('Saldo pessoal insuficiente','error'); return; }
+  STATE.bankBalance -= amount;
+  STATE.officeBalance += amount;
+  STATE.transactions.push({
+    desc: 'Aporte ao Caixa do Escritório',
+    type: 'debit', category: 'Escritório',
+    amount, date: new Date().toISOString().split('T')[0], auto: false
+  });
+  saveState();
+  closeModal('modal-rescue');
+  renderTransactions();
+  updateBankUI();
+  checkCrisis();
+  toast(`§${amount.toLocaleString('pt-BR')} transferidos ao escritório`, 'success');
+}
+
+// ════════════════════════════════════════
+// UI HELPERS
+// ════════════════════════════════════════
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function showInner(name) {
+  document.querySelectorAll('.inner-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.inner-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('inner-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  if(id === 'modal-transaction') {
+    document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
+  }
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', function(e) {
+    if(e.target === m) m.classList.remove('open');
+  });
+});
+
+let toastTimer;
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ════════════════════════════════════════
+// LOGIN
+// ════════════════════════════════════════
+function doLogin() {
+  const u = document.getElementById('login-user').value;
+  const p = document.getElementById('login-pass').value;
+  if(u === 'viana.valdison' && p === '2802') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    initApp();
+  } else {
+    const err = document.getElementById('login-err');
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+
+function logout() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').classList.remove('visible');
+}
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+async function initApp() {
+  await loadState();
+  initAssets();
+  document.getElementById('fame-select').value = STATE.fame;
+  document.getElementById('stat-phase').textContent = STATE.phase;
+  document.getElementById('stat-stars').textContent = '★'.repeat(STATE.fame) + '☆'.repeat(5-STATE.fame);
+  document.getElementById('stat-projects').textContent = STATE.deliveries.length;
+  document.getElementById('stat-clients').textContent = STATE.deliveries.length;
+
+  refreshCandidates();
+  renderPhases();
+  renderDistricts();
+  renderDeliveries();
+  renderPublicidade();
+  renderPayroll();
+  renderAssets();
+  renderTransactions();
+  renderInstallments();
+  updateBankUI();
+}
+</script>
 </body>
 </html>
