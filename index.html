@@ -2680,12 +2680,12 @@ function toast(msg, type='') {
 // LOGIN
 // ════════════════════════════════════════
 function doLogin() {
-  const u = document.getElementById('login-user').value;
-  const p = document.getElementById('login-pass').value;
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value.trim();
   if(u === 'viana.valdison' && p === '2802') {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').classList.add('visible');
-    initApp();
+    initApp().catch(e => console.log('initApp error:', e));
   } else {
     const err = document.getElementById('login-err');
     err.style.display = 'block';
@@ -2704,28 +2704,29 @@ function logout() {
 // INIT
 // ════════════════════════════════════════
 async function initApp() {
-  await loadState();
-  initAssets();
+  try { await loadState(); } catch(e) { console.log('loadState failed, using defaults'); }
+  try { initAssets(); } catch(e) {}
   const fameLabels = ['','Iniciante','Reconhecido','Influente','Celebridade','Ícone'];
-  document.getElementById('fame-select').value = STATE.fame;
-  const starsEl = document.getElementById('fame-stars-display');
-  const labelEl = document.getElementById('fame-level-label');
-  if(starsEl) starsEl.textContent = '★'.repeat(STATE.fame)+'☆'.repeat(5-STATE.fame);
-  if(labelEl) labelEl.textContent = `Nível ${STATE.fame} — ${fameLabels[STATE.fame]}`;
-  document.getElementById('yt-videos').textContent = STATE.ytVideos || 0;
-  document.getElementById('yt-subs').textContent = (STATE.ytSubs||0).toLocaleString('pt-BR');
-  document.getElementById('yt-responses').textContent = STATE.ytResponses || 0;
-
-  refreshCandidates();
-  renderPhases();
-  renderDistricts();
-  renderDeliveries();
-  renderPublicidade();
-  renderPayroll();
-  renderAssets();
-  renderTransactions();
-  renderInstallments();
-  updateBankUI();
+  try {
+    document.getElementById('fame-select').value = STATE.fame;
+    const starsEl = document.getElementById('fame-stars-display');
+    const labelEl = document.getElementById('fame-level-label');
+    if(starsEl) starsEl.textContent = '★'.repeat(STATE.fame)+'☆'.repeat(5-STATE.fame);
+    if(labelEl) labelEl.textContent = `Nível ${STATE.fame} — ${fameLabels[STATE.fame]}`;
+    document.getElementById('yt-videos').textContent = STATE.ytVideos || 0;
+    document.getElementById('yt-subs').textContent = (STATE.ytSubs||0).toLocaleString('pt-BR');
+    document.getElementById('yt-responses').textContent = STATE.ytResponses || 0;
+  } catch(e) {}
+  try { refreshCandidates(); } catch(e) {}
+  try { renderPhases(); } catch(e) {}
+  try { renderDistricts(); } catch(e) {}
+  try { renderDeliveries(); } catch(e) {}
+  try { renderPublicidade(); } catch(e) {}
+  try { renderPayroll(); } catch(e) {}
+  try { renderAssets(); } catch(e) {}
+  try { renderTransactions(); } catch(e) {}
+  try { renderInstallments(); } catch(e) {}
+  try { updateBankUI(); } catch(e) {}
 }
 </script>
 </body>
