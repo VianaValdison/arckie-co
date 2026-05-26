@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARK — Sistema Interno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1C1914;
+  --cream: #F5F2EC;
+  --copper: #C4A882;
+  --warm-gray: #8C8880;
+  --sand: #D4CFC7;
+  --copper-light: #E8D9C4;
+  --ink-soft: #2E2A25;
+  --cream-dark: #EAE6DF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+
+/* ── LOGIN ── */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+
+.login-box {
+  width: 380px;
+  text-align: center;
+}
+
+.login-logo {
+  font-family: 'Cormorant', serif;
+  font-size: 72px;
+  font-weight: 300;
+  color: var(--cream);
+  letter-spacing: 0.3em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.login-sub {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: var(--copper);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.login-rule {
+  width: 80px;
+  height: 0.5px;
+  background: var(--copper);
+  margin: 0 auto 48px;
+  position: relative;
+}
+.login-rule::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  height: 0.5px;
+  background: var(--copper);
+  opacity: 0.4;
+}
+
+.login-form { display: flex; flex-direction: column; gap: 12px; }
+
+.login-form input {
+  background: transparent;
+  border: 0.5px solid rgba(196,168,130,0.4);
+  color: var(--cream);
+  padding: 14px 18px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.login-form input::placeholder { color: rgba(245,242,236,0.3); }
+.login-form input:focus { border-color: var(--copper); }
+
+.login-btn {
+  margin-top: 8px;
+  background: var(--copper);
+  color: var(--ink);
+  border: none;
+  padding: 14px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.login-btn:hover { background: var(--copper-light); }
+
+.login-error {
+  color: #c4554a;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+  display: none;
+}
+
+/* ── APP SHELL ── */
+#app { display: none; min-height: 100vh; flex-direction: column; }
+#app.visible { display: flex; }
+
+/* ── TOP HEADER ── */
+.app-header {
+  background: var(--ink);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  border-bottom: 0.5px solid rgba(196,168,130,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-logo {
+  font-family: 'Cormorant', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--cream);
+  letter-spacing: 0.4em;
+}
+
+.header-nav { display: flex; gap: 0; }
+
+.nav-tab {
+  padding: 0 28px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(245,242,236,0.45);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-tab:hover { color: var(--cream); }
+.nav-tab.active {
+  color: var(--copper);
+  border-bottom-color: var(--copper);
+}
+
+.header-user {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--warm-gray);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logout-btn {
+  background: none;
+  border: 0.5px solid rgba(196,168,130,0.3);
+  color: var(--copper);
+  padding: 6px 14px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.logout-btn:hover { background: rgba(196,168,130,0.1); }
+
+/* ── MAIN CONTENT ── */
+.app-main { flex: 1; }
+.tab-content { display: none; padding: 48px 40px; max-width: 1200px; margin: 0 auto; }
+.tab-content.active { display: block; }
+
+/* ── SHARED COMPONENTS ── */
+.section-header {
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 0.5px solid var(--sand);
+}
+.section-title {
+  font-family: 'Cormorant', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+}
+.section-sub {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--warm-gray);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.card {
+  background: white;
+  border: 0.5px solid var(--sand);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.card-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 16px;
+}
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+
+.metric-box {
+  background: var(--cream);
+  border: 0.5px solid var(--sand);
+  padding: 20px;
+  text-align: center;
+}
+.metric-label {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  display: block;
+  margin-bottom: 8px;
+}
+.metric-value {
+  font-family: 'Cormorant', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--ink);
+  display: block;
+}
+.metric-value.copper { color: var(--copper); }
+.metric-value.green { color: #4a7c59; }
+.metric-value.red { color: #9e3e38; }
+
+btn-primary, .btn {
+  display: inline-block;
+  padding: 10px 24px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+.btn-copper {
+  background: var(--copper);
+  color: var(--ink);
+}
+.btn-copper:hover { background: var(--copper-light); }
+.btn-outline {
+  background: transparent;
+  border: 0.5px solid var(--copper);
+  color: var(--copper);
+}
+.btn-outline:hover { background: rgba(196,168,130,0.1); }
+.btn-ink {
+  background: var(--ink);
+  color: var(--cream);
+}
+.btn-ink:hover { background: var(--ink-soft); }
+.btn-danger {
+  background: transparent;
+  border: 0.5px solid #9e3e38;
+  color: #9e3e38;
+}
+
+input[type=text], input[type=number], input[type=date], select, textarea {
+  width: 100%;
+  background: var(--cream);
+  border: 0.5px solid var(--sand);
+  padding: 10px 14px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--copper); }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.badge-copper { background: var(--copper-light); color: #7a5c38; }
+.badge-green { background: #d6e8db; color: #2d5e3a; }
+.badge-red { background: #f2d5d4; color: #7a2e2a; }
+.badge-gray { background: var(--sand); color: var(--warm-gray); }
+
+/* ── ABA 1: CARREIRA ── */
+.profile-hero {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-bottom: 32px;
+}
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profile-avatar span {
+  font-family: 'Cormorant', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--copper);
+  letter-spacing: 0.1em;
+}
+.profile-name {
+  font-family: 'Cormorant', serif;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+}
+.profile-role {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--warm-gray);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+.profile-loc {
+  font-size: 11px;
+  color: var(--copper);
+  margin-top: 4px;
+  letter-spacing: 0.1em;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 0.5px solid var(--cream-dark);
+}
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--copper);
+  border-radius: 50%;
+  margin-top: 4px;
+}
+.timeline-title { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; }
+.timeline-org { font-size: 11px; color: var(--copper); letter-spacing: 0.1em; margin: 2px 0; }
+.timeline-period { font-size: 10px; color: var(--warm-gray); letter-spacing: 0.15em; }
+.timeline-desc { font-size: 12px; color: var(--warm-gray); line-height: 1.6; margin-top: 8px; }
+
+/* candidatos */
+.candidates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.candidate-card {
+  background: var(--cream);
+  border: 0.5px solid var(--sand);
+  padding: 18px;
+  transition: border-color 0.2s;
+}
+.candidate-card:hover { border-color: var(--copper); }
+.cand-name { font-size: 14px; font-weight: 600; letter-spacing: 0.05em; }
+.cand-role { font-size: 10px; color: var(--copper); letter-spacing: 0.2em; text-transform: uppercase; margin: 3px 0; }
+.cand-info { font-size: 11px; color: var(--warm-gray); }
+.cand-skill { font-size: 10px; margin-top: 8px; }
+.cand-skill span {
+  display: inline-block;
+  background: var(--sand);
+  padding: 2px 8px;
+  margin: 2px 2px 0 0;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+.cand-salary { font-family: 'Cormorant', serif; font-size: 20px; color: var(--ink); margin-top: 8px; }
+.cand-salary small { font-family: 'Josefin Sans'; font-size: 9px; color: var(--warm-gray); letter-spacing: 0.1em; vertical-align: middle; }
+
+/* ── ABA 2: ESCRITÓRIO ── */
+.tabs-inner { display: flex; gap: 0; border-bottom: 0.5px solid var(--sand); margin-bottom: 32px; }
+.inner-tab {
+  padding: 12px 20px;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--warm-gray);
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.inner-tab.active { color: var(--copper); border-bottom-color: var(--copper); }
+.inner-content { display: none; }
+.inner-content.active { display: block; }
+
+/* crescimento */
+.phase-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 24px; }
+.phase-box {
+  border: 0.5px solid var(--sand);
+  padding: 16px;
+  text-align: center;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.phase-box.active-phase { border-color: var(--copper); background: rgba(196,168,130,0.05); }
+.phase-box.completed-phase { background: var(--cream); border-color: var(--sand); opacity: 0.6; }
+.phase-num { font-family: 'Cormorant', serif; font-size: 36px; color: var(--sand); }
+.phase-name { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink); margin: 4px 0; }
+.phase-stars { color: var(--copper); font-size: 14px; margin-bottom: 8px; }
+.phase-req { font-size: 10px; color: var(--warm-gray); line-height: 1.5; }
+.phase-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--copper);
+  color: var(--ink);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  font-weight: 600;
+}
+
+.conquistas-box { background: var(--cream); border: 0.5px solid var(--sand); padding: 16px; margin-top: 16px; }
+.conquista-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 0.5px solid var(--cream-dark);
+  font-size: 12px;
+}
+.conquista-item:last-child { border-bottom: none; }
+.conquista-check { width: 16px; height: 16px; border: 0.5px solid var(--sand); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.conquista-check.done { background: var(--copper); border-color: var(--copper); color: var(--ink); font-size: 10px; }
+
+/* demandas */
+.district-card {
+  border: 0.5px solid var(--sand);
+  padding: 20px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.district-card.locked { opacity: 0.4; }
+.district-name { font-family: 'Cormorant', serif; font-size: 22px; margin-bottom: 4px; }
+.district-phase { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--copper); margin-bottom: 12px; }
+.projects-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 8px; }
+.project-item {
+  background: var(--cream);
+  border: 0.5px solid var(--sand);
+  padding: 10px 14px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  position: relative;
+}
+.project-item:hover { border-color: var(--copper); }
+.project-item.in-progress { border-color: var(--copper); background: rgba(196,168,130,0.08); }
+.project-item.done { opacity: 0.5; }
+.project-budget { font-family: 'Cormorant', serif; font-size: 18px; color: var(--copper); display: block; }
+.project-payment { font-size: 9px; color: var(--warm-gray); letter-spacing: 0.1em; }
+
+/* relatório */
+table { width: 100%; border-collapse: collapse; }
+th {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 0.5px solid var(--sand);
+}
+td {
+  padding: 12px;
+  font-size: 12px;
+  border-bottom: 0.5px solid var(--cream-dark);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--cream); }
+
+/* publicidade */
+.pub-plan {
+  border: 0.5px solid var(--sand);
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  position: relative;
+}
+.pub-plan:hover { border-color: var(--copper); }
+.pub-plan.selected { border-color: var(--copper); background: rgba(196,168,130,0.05); }
+.pub-plan .plan-name { font-family: 'Cormorant', serif; font-size: 24px; margin-bottom: 8px; }
+.pub-plan .plan-price { font-size: 28px; font-family: 'Cormorant', serif; color: var(--copper); }
+.pub-plan .plan-period { font-size: 9px; color: var(--warm-gray); letter-spacing: 0.2em; }
+.pub-plan .plan-features { font-size: 11px; color: var(--warm-gray); margin-top: 12px; line-height: 1.8; }
+
+/* folha */
+.payroll-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 0.5px solid var(--cream-dark);
+  font-size: 13px;
+}
+.payroll-row .name { font-size: 12px; }
+.payroll-row .amount { font-family: 'Cormorant', serif; font-size: 22px; color: var(--ink); }
+.payroll-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0 0;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  border-top: 1px solid var(--ink);
+  margin-top: 8px;
+}
+.payroll-total .total-amount { font-family: 'Cormorant', serif; font-size: 28px; color: var(--ink); }
+
+/* ── ABA 3: INVESTIMENTOS ── */
+.invest-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+.invest-card {
+  border: 0.5px solid var(--sand);
+  padding: 20px;
+}
+.invest-name { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-gray); margin-bottom: 4px; }
+.invest-ticker { font-size: 9px; color: var(--copper); letter-spacing: 0.15em; }
+.invest-price { font-family: 'Cormorant', serif; font-size: 28px; margin: 8px 0; }
+.invest-change { font-size: 11px; font-weight: 600; }
+.invest-change.up { color: #4a7c59; }
+.invest-change.down { color: #9e3e38; }
+.invest-applied { font-size: 11px; color: var(--warm-gray); margin-top: 4px; }
+
+/* ── ABA 4: BANCO ── */
+.bank-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 0.5px solid var(--sand);
+}
+.bank-name { font-family: 'Cormorant', serif; font-size: 14px; font-style: italic; color: var(--warm-gray); letter-spacing: 0.1em; }
+.bank-balance-label { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm-gray); }
+.bank-balance { font-family: 'Cormorant', serif; font-size: 48px; font-weight: 300; color: var(--ink); line-height: 1; }
+.bank-balance.crisis { color: #9e3e38; }
+
+.transaction-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 0.5px solid var(--cream-dark);
+}
+.tx-desc { font-size: 13px; }
+.tx-category { font-size: 10px; color: var(--warm-gray); letter-spacing: 0.1em; }
+.tx-date { font-size: 10px; color: var(--warm-gray); }
+.tx-amount { font-family: 'Cormorant', serif; font-size: 22px; text-align: right; }
+.tx-amount.credit { color: #4a7c59; }
+.tx-amount.debit { color: #9e3e38; }
+
+.crisis-alert {
+  background: rgba(158,62,56,0.08);
+  border: 0.5px solid rgba(158,62,56,0.4);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.crisis-alert .msg { font-size: 12px; color: #9e3e38; font-weight: 600; letter-spacing: 0.05em; }
+
+/* parcelamento */
+.installment-card {
+  border: 0.5px solid var(--sand);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.inst-name { font-size: 13px; font-weight: 600; }
+.inst-info { font-size: 11px; color: var(--warm-gray); margin-top: 4px; }
+.inst-progress {
+  height: 2px;
+  background: var(--sand);
+  margin-top: 10px;
+  position: relative;
+}
+.inst-progress-bar { height: 100%; background: var(--copper); transition: width 0.3s; }
+.inst-overdue { color: #9e3e38; font-size: 10px; margin-top: 6px; letter-spacing: 0.1em; }
+
+/* modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(28,25,20,0.7);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--cream);
+  border: 0.5px solid var(--copper);
+  padding: 32px;
+  width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-title { font-family: 'Cormorant', serif; font-size: 28px; margin-bottom: 8px; }
+.modal-sub { font-size: 10px; letter-spacing: 0.2em; color: var(--warm-gray); text-transform: uppercase; margin-bottom: 24px; }
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 9px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--warm-gray); display: block; margin-bottom: 6px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+
+/* toast */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 14px 24px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  z-index: 9000;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.3s;
+  max-width: 320px;
+  border-left: 2px solid var(--copper);
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.success { border-left-color: #4a7c59; }
+.toast.error { border-left-color: #9e3e38; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--cream); }
+::-webkit-scrollbar-thumb { background: var(--sand); }
+
+/* responsive helper */
+@media (max-width: 900px) {
+  .grid-2, .grid-3, .grid-4, .phase-grid, .invest-summary { grid-template-columns: 1fr; }
+  .candidates-grid { grid-template-columns: 1fr; }
+  .app-header { padding: 0 16px; }
+  .tab-content { padding: 24px 16px; }
+  .nav-tab { padding: 0 14px; font-size: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">ARK</div>
+    <div class="login-sub">Escritório Boutique de Arquitetura</div>
+    <div class="login-rule"></div>
+    <div class="login-form">
+      <input type="text" id="login-user" placeholder="Usuário" autocomplete="off">
+      <input type="password" id="login-pass" placeholder="Senha">
+      <button class="login-btn" onclick="doLogin()">Acessar Sistema</button>
+      <div class="login-error" id="login-err">Credenciais inválidas</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app">
+  <header class="app-header">
+    <div class="header-logo">ARK</div>
+    <nav class="header-nav">
+      <div class="nav-tab active" onclick="showTab('carreira')">Carreira</div>
+      <div class="nav-tab" onclick="showTab('escritorio')">Escritório</div>
+      <div class="nav-tab" onclick="showTab('investimentos')">Investimentos</div>
+      <div class="nav-tab" onclick="showTab('banco')">Banco SimCity</div>
+    </nav>
+    <div class="header-user">
+      <span>Valdison Viana</span>
+      <button class="logout-btn" onclick="logout()">Sair</button>
+    </div>
+  </header>
+
+  <main class="app-main">
+
+    <!-- ══ ABA CARREIRA ══ -->
+    <div class="tab-content active" id="tab-carreira">
+      <div class="section-header">
+        <div class="section-title">Carreira</div>
+        <div class="section-sub">Perfil Profissional · San Myshuno</div>
+      </div>
+
+      <div class="grid-2" style="align-items:start">
+        <div>
+          <!-- Perfil -->
+          <div class="card">
+            <div class="profile-hero">
+              <div class="profile-avatar"><span>VV</span></div>
+              <div>
+                <div class="profile-name">Valdison Viana</div>
+                <div class="profile-role">Fundador &amp; Arquiteto Principal · Ark</div>
+                <div class="profile-loc">San Myshuno · Arquitetura &amp; Urbanismo</div>
+              </div>
+            </div>
+            <div style="border-top:0.5px solid var(--cream-dark);padding-top:16px;">
+              <div class="card-title">Sobre</div>
+              <p style="font-size:13px;line-height:1.8;color:var(--warm-gray);">Arquiteto e urbanista formado pela Universidade de Britechester, fundador da Ark — escritório boutique de arquitetura com sede em San Myshuno. Cada projeto nasce de uma escuta genuína: entender quem habita o espaço antes de desenhar qualquer linha. A Ark não faz arquitetura em série. Faz arquitetura com nome, com história, com alma. Desde a fundação, o escritório é obra de mãos únicas — e assim cresce, devagar e com propósito.</p>
+            </div>
+          </div>
+
+          <!-- Formação -->
+          <div class="card">
+            <div class="card-title">Formação Acadêmica</div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">Arquitetura e Urbanismo — Bacharelado</div>
+                <div class="timeline-org">Universidade de Britechester</div>
+                <div class="timeline-period">2021 — 2026 · Britechester</div>
+                <div class="timeline-desc">Formação com ênfase em projetos residenciais e espaços urbanos. Participação no escritório-modelo da universidade como estagiário durante os dois últimos anos da graduação — base para a fundação da Ark.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experiência -->
+          <div class="card">
+            <div class="card-title">Experiência Profissional</div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">Estagiário de Arquitetura</div>
+                <div class="timeline-org">Escritório-Modelo — Universidade de Britechester</div>
+                <div class="timeline-period">2024 — 2025 · Britechester</div>
+                <div class="timeline-desc">Estágio curricular no escritório oficial da universidade. Projetos reais sob supervisão de professores-arquitetos. Experiência em reformas, interiores e apresentações a clientes.</div>
+              </div>
+            </div>
+            <div class="timeline-item" style="border-bottom:none">
+              <div class="timeline-dot"></div>
+              <div>
+                <div class="timeline-title">Fundador &amp; Arquiteto Principal</div>
+                <div class="timeline-org">Ark — Escritório Boutique de Arquitetura</div>
+                <div class="timeline-period">Mês 01 — Presente · San Myshuno</div>
+                <div class="timeline-desc">Fundação do escritório boutique independente. Responsável por toda a operação criativa, relação com clientes e gestão financeira. Cada projeto assinado com identidade e intenção.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Candidatos -->
+        <div>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+              <div class="card-title" style="margin-bottom:0">Candidatos Disponíveis</div>
+              <button class="btn-copper" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans',sans-serif;font-weight:600;text-transform:uppercase;border:none;" onclick="refreshCandidates()">↻ Atualizar</button>
+            </div>
+            <div style="font-size:10px;color:var(--warm-gray);letter-spacing:0.1em;margin-bottom:16px;">Exibindo <span id="cand-count">5</span>/1.000 candidatos</div>
+            <div class="candidates-grid" id="candidates-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ABA ESCRITÓRIO ══ -->
+    <div class="tab-content" id="tab-escritorio">
+      <div class="section-header">
+        <div class="section-title">Escritório</div>
+        <div class="section-sub">Gestão Operacional · Ark</div>
+      </div>
+
+      <div class="tabs-inner">
+        <div class="inner-tab active" onclick="showInner('crescimento')">Crescimento</div>
+        <div class="inner-tab" onclick="showInner('demandas')">Demandas</div>
+        <div class="inner-tab" onclick="showInner('relatorio')">Relatório de Entregas</div>
+        <div class="inner-tab" onclick="showInner('publicidade')">Publicidade</div>
+        <div class="inner-tab" onclick="showInner('folha')">Folha de Pagamento</div>
+      </div>
+
+      <!-- Crescimento -->
+      <div class="inner-content active" id="inner-crescimento">
+        <div class="phase-grid" id="phases-grid"></div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Status Atual</div>
+            <div class="grid-2">
+              <div class="metric-box">
+                <span class="metric-label">Fase Atual</span>
+                <span class="metric-value copper" id="stat-phase">1</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Estrelas de Fama</span>
+                <span class="metric-value" id="stat-stars">★ 1</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Projetos Entregues</span>
+                <span class="metric-value" id="stat-projects">0</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Clientes Ativos</span>
+                <span class="metric-value" id="stat-clients">0</span>
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap">
+              <select id="fame-select" style="flex:1">
+                <option value="1">1 Estrela</option>
+                <option value="2">2 Estrelas</option>
+                <option value="3">3 Estrelas</option>
+                <option value="4">4 Estrelas</option>
+                <option value="5">5 Estrelas</option>
+              </select>
+              <button class="btn-copper" style="padding:10px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none" onclick="updateFame()">Atualizar Fama</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Registrar Conquista</div>
+            <div class="conquistas-box" id="conquistas-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demandas -->
+      <div class="inner-content" id="inner-demandas">
+        <div id="districts-list"></div>
+      </div>
+
+      <!-- Relatório -->
+      <div class="inner-content" id="inner-relatorio">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+          <div>
+            <div style="font-size:12px;color:var(--warm-gray);">Projetos em andamento e finalizados</div>
+          </div>
+          <button class="btn-copper" onclick="openModal('modal-delivery')" style="padding:10px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">+ Registrar Entrega</button>
+        </div>
+
+        <div class="grid-4" style="margin-bottom:24px">
+          <div class="metric-box"><span class="metric-label">Total Entregues</span><span class="metric-value" id="delivered-count">0</span></div>
+          <div class="metric-box"><span class="metric-label">No Prazo</span><span class="metric-value green" id="on-time-count">0</span></div>
+          <div class="metric-box"><span class="metric-label">Comissões Recebidas</span><span class="metric-value copper" id="commissions-total">§0</span></div>
+          <div class="metric-box"><span class="metric-label">Receita Projetos</span><span class="metric-value" id="projects-revenue">§0</span></div>
+        </div>
+
+        <div class="card">
+          <table id="delivery-table">
+            <thead><tr>
+              <th>Projeto</th><th>Distrito</th><th>Entrega</th><th>Prazo</th><th>Status</th><th>Valor</th><th>Comissão</th>
+            </tr></thead>
+            <tbody id="delivery-tbody"></tbody>
+          </table>
+          <div style="text-align:center;padding:48px;color:var(--warm-gray);font-size:12px" id="delivery-empty">Nenhuma entrega registrada</div>
+        </div>
+      </div>
+
+      <!-- Publicidade -->
+      <div class="inner-content" id="inner-publicidade">
+        <div id="pub-locked-msg" style="display:none" class="card">
+          <div style="text-align:center;padding:32px">
+            <div style="font-family:'Cormorant',serif;font-size:28px;color:var(--warm-gray);margin-bottom:8px">Bloqueado</div>
+            <div style="font-size:12px;color:var(--warm-gray)">A Agência de Relações Públicas é desbloqueada ao atingir Fama Nível 2 (2 Estrelas).</div>
+          </div>
+        </div>
+        <div id="pub-content">
+          <div style="margin-bottom:24px;font-size:12px;color:var(--warm-gray)">Plano atual: <span id="current-plan-name" style="color:var(--copper);font-weight:600">Nenhum</span></div>
+          <div class="grid-3" style="margin-bottom:32px">
+            <div class="pub-plan" onclick="selectPlan('starter')" id="plan-starter">
+              <div class="plan-name">Starter</div>
+              <div class="plan-price">§2.000</div>
+              <div class="plan-period">/mês</div>
+              <div class="plan-features">Presença básica em redes<br>1 publicação mensal<br>Alcance local</div>
+            </div>
+            <div class="pub-plan" onclick="selectPlan('grow')" id="plan-grow">
+              <div class="plan-name">Grow</div>
+              <div class="plan-price">§6.000</div>
+              <div class="plan-period">/mês</div>
+              <div class="plan-features">Gestão de reputação<br>3 publicações mensais<br>Alcance regional</div>
+            </div>
+            <div class="pub-plan" onclick="selectPlan('premium')" id="plan-premium">
+              <div class="plan-name">Premium</div>
+              <div class="plan-price">§10.000</div>
+              <div class="plan-period">/mês</div>
+              <div class="plan-features">Relações com imprensa<br>Publicações ilimitadas<br>Alcance nacional</div>
+            </div>
+          </div>
+          <div style="text-align:center">
+            <button class="btn-copper" onclick="subscribePlan()" style="padding:12px 32px;font-size:10px;letter-spacing:0.25em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Contratar Plano</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Folha -->
+      <div class="inner-content" id="inner-folha">
+        <div class="card">
+          <div class="card-title">Folha de Pagamento — Mês Atual</div>
+          <div id="payroll-rows"></div>
+          <div class="payroll-total">
+            <span>Total a Pagar</span>
+            <span class="total-amount" id="payroll-total">§0</span>
+          </div>
+          <div style="margin-top:16px;display:flex;gap:12px">
+            <button class="btn-copper" onclick="processPayroll()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Processar Pagamento</button>
+            <button class="btn-outline" onclick="openModal('modal-employee')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent">+ Funcionário</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ABA INVESTIMENTOS ══ -->
+    <div class="tab-content" id="tab-investimentos">
+      <div class="section-header">
+        <div class="section-title">Investimentos</div>
+        <div class="section-sub">SimCity Bolsa · Carteira Pessoal</div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:32px">
+        <div class="metric-box"><span class="metric-label">Total Aplicado</span><span class="metric-value copper" id="inv-total">§0</span></div>
+        <div class="metric-box"><span class="metric-label">Rendimento/Mês</span><span class="metric-value green" id="inv-monthly">§0</span></div>
+        <div class="metric-box"><span class="metric-label">Rendimento Acumulado</span><span class="metric-value green" id="inv-accumulated">§0</span></div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <div class="card-title" style="margin-bottom:0">Carteira de Ativos</div>
+        <div style="display:flex;gap:12px">
+          <button class="btn-outline" onclick="updateMarket()" style="padding:8px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">↻ Atualizar Mercado</button>
+          <button class="btn-copper" onclick="openModal('modal-invest')" style="padding:8px 20px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Movimentar</button>
+        </div>
+      </div>
+
+      <div id="assets-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px"></div>
+    </div>
+
+    <!-- ══ ABA BANCO ══ -->
+    <div class="tab-content" id="tab-banco">
+      <div class="section-header">
+        <div class="section-title">Banco SimCity</div>
+        <div class="section-sub">Conta Corrente Pessoal · Ag. San Myshuno</div>
+      </div>
+
+      <div id="crisis-banner" style="display:none" class="crisis-alert">
+        <div class="msg">⚠ Caixa do Escritório em Crise — Saldo abaixo de §4.800</div>
+        <button class="btn-danger" onclick="openModal('modal-rescue')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent">Socorrer Caixa</button>
+      </div>
+
+      <div class="bank-header">
+        <div>
+          <div class="bank-name">SimCity Bank</div>
+          <div style="font-size:9px;letter-spacing:0.2em;color:var(--warm-gray);margin-top:4px">Ag. 0042 · C/C 88.801-7</div>
+        </div>
+        <div style="text-align:right">
+          <div class="bank-balance-label">Saldo Disponível</div>
+          <div class="bank-balance" id="bank-balance">§0</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:32px;align-items:start">
+        <!-- Transações -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div class="card-title" style="margin-bottom:0">Extrato</div>
+            <button class="btn-copper" onclick="openModal('modal-transaction')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">+ Lançamento</button>
+          </div>
+          <div id="transactions-list"></div>
+          <div style="text-align:center;padding:48px;color:var(--warm-gray);font-size:12px" id="tx-empty">Nenhuma transação registrada</div>
+        </div>
+
+        <!-- Parcelamentos -->
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div class="card-title" style="margin-bottom:0">Cartão &amp; Parcelamentos</div>
+            <button class="btn-outline" onclick="openModal('modal-installment')" style="padding:8px 16px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">+ Parcelar</button>
+          </div>
+          <div class="grid-2" style="margin-bottom:16px">
+            <div class="metric-box"><span class="metric-label">Fatura Aberta</span><span class="metric-value" id="card-open">§0</span></div>
+            <div class="metric-box"><span class="metric-label">Dívida Total</span><span class="metric-value red" id="card-debt">§0</span></div>
+          </div>
+          <div id="installments-list"></div>
+          <div style="text-align:center;padding:32px;color:var(--warm-gray);font-size:12px" id="inst-empty">Sem parcelamentos ativos</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════ MODAIS ═══════════════ -->
+
+<!-- Modal Entrega -->
+<div class="modal-overlay" id="modal-delivery">
+  <div class="modal-box">
+    <div class="modal-title">Registrar Entrega</div>
+    <div class="modal-sub">Relatório de Projetos · Ark</div>
+    <div class="form-group">
+      <label class="form-label">Projeto</label>
+      <select id="del-project"></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Data de Entrega</label>
+        <input type="date" id="del-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Prazo Final</label>
+        <input type="date" id="del-deadline">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" style="display:flex;align-items:center;gap:8px">
+        <input type="checkbox" id="del-ontime"> Entregue antes do prazo (comissão de 10%)
+      </label>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-delivery')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveDelivery()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Confirmar Entrega</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Funcionário -->
+<div class="modal-overlay" id="modal-employee">
+  <div class="modal-box">
+    <div class="modal-title">Novo Funcionário</div>
+    <div class="modal-sub">Folha de Pagamento · Ark</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Nome</label>
+        <input type="text" id="emp-name" placeholder="Nome completo">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cargo</label>
+        <input type="text" id="emp-role" placeholder="Ex: Designer">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Salário Mensal (§)</label>
+        <input type="number" id="emp-salary" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <select id="emp-type">
+          <option value="clt">CLT</option>
+          <option value="pj">PJ</option>
+          <option value="freelance">Freelance</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-employee')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveEmployee()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Investimento -->
+<div class="modal-overlay" id="modal-invest">
+  <div class="modal-box">
+    <div class="modal-title">Movimentar Ativo</div>
+    <div class="modal-sub">SimCity Bolsa · Carteira</div>
+    <div class="form-group">
+      <label class="form-label">Ativo</label>
+      <select id="inv-asset"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Operação</label>
+      <select id="inv-op">
+        <option value="aporte">Aportar</option>
+        <option value="resgate">Resgatar</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Valor (§)</label>
+      <input type="number" id="inv-value" placeholder="0">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-invest')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveInvestment()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Transação -->
+<div class="modal-overlay" id="modal-transaction">
+  <div class="modal-box">
+    <div class="modal-title">Novo Lançamento</div>
+    <div class="modal-sub">Banco SimCity · Extrato</div>
+    <div class="form-group">
+      <label class="form-label">Descrição</label>
+      <input type="text" id="tx-desc" placeholder="Ex: Aluguel do apartamento">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <select id="tx-type">
+          <option value="debit">Débito</option>
+          <option value="credit">Crédito</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Categoria</label>
+        <select id="tx-category">
+          <option>Moradia</option>
+          <option>Alimentação</option>
+          <option>Saúde</option>
+          <option>Transporte</option>
+          <option>Lazer</option>
+          <option>Educação</option>
+          <option>Escritório</option>
+          <option>Aluguel</option>
+          <option>Outro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Valor (§)</label>
+        <input type="number" id="tx-amount" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Data</label>
+        <input type="date" id="tx-date">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-transaction')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveTransaction()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Lançar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Parcelamento -->
+<div class="modal-overlay" id="modal-installment">
+  <div class="modal-box">
+    <div class="modal-title">Novo Parcelamento</div>
+    <div class="modal-sub">Cartão SimCity · Crédito</div>
+    <div class="form-group">
+      <label class="form-label">Descrição</label>
+      <input type="text" id="inst-desc" placeholder="Ex: Novo computador">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Valor Total (§)</label>
+        <input type="number" id="inst-total" placeholder="0">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Parcelas</label>
+        <input type="number" id="inst-parcelas" placeholder="Ex: 12" min="1" max="60">
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--warm-gray);margin-top:8px">Taxa: 2,99%/mês · Multa atraso: 2% + 1%/dia</div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-installment')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="saveInstallment()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Parcelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Rescue -->
+<div class="modal-overlay" id="modal-rescue">
+  <div class="modal-box">
+    <div class="modal-title">Socorrer Caixa</div>
+    <div class="modal-sub">Transferência Pessoal → Escritório</div>
+    <div style="font-size:12px;color:var(--warm-gray);margin-bottom:16px">O caixa do escritório está em crise. Transfira da conta pessoal para cobrir.</div>
+    <div class="form-group">
+      <label class="form-label">Valor a Transferir (§)</label>
+      <input type="number" id="rescue-amount" placeholder="Mínimo §4.800">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal('modal-rescue')" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:transparent;border:0.5px solid var(--copper);color:var(--copper)">Cancelar</button>
+      <button class="btn-copper" onclick="doRescue()" style="padding:10px 24px;font-size:9px;letter-spacing:0.2em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;border:none">Transferir</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
+const STATE = {
+  fame: 1,
+  phase: 1,
+  deliveries: [],
+  employees: [],
+  adPlan: null,
+  assets: [],
+  transactions: [],
+  installments: [],
+  bankBalance: 50000,
+  officeBalance: 8000,
+  totalInvested: 0,
+  accumulatedReturn: 0,
+  conquistas: {}
+};
+
+// Supabase config
+const SB_URL = 'https://hjwrsnorvcrnxwvrnmow.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhqd3Jzbm9ydmNybnh3dnJubW93Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0OTg3MDIsImV4cCI6MjA5NTA3NDcwMn0.tdkviANBYbOtdU7bOBmPIIhog7KdCs_5eViaN3eE4qM';
+
+async function sbGet(table) {
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/${table}?select=*`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    return await r.json();
+  } catch(e) { return []; }
+}
+
+async function sbUpsert(table, data) {
+  try {
+    await fetch(`${SB_URL}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SB_KEY,
+        'Authorization': `Bearer ${SB_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify(data)
+    });
+  } catch(e) {}
+}
+
+async function saveState() {
+  await sbUpsert('ark_state', { id: 1, data: JSON.stringify(STATE) });
+}
+
+async function loadState() {
+  try {
+    const rows = await sbGet('ark_state');
+    if (rows && rows[0] && rows[0].data) {
+      const loaded = JSON.parse(rows[0].data);
+      Object.assign(STATE, loaded);
+    }
+  } catch(e) {}
+}
+
+// ════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════
+const PHASES = [
+  {
+    num: 1, name: 'Mãos Únicas',
+    stars: 1, fameNeeded: 2,
+    reqs: ['Entregar 4 projetos', 'Atingir 1 estrela de fama', 'Atingir fama nível 2'],
+    district: 'Mercado das Especiarias'
+  },
+  {
+    num: 2, name: 'Primeiro Crescimento',
+    stars: 2, fameNeeded: 3,
+    reqs: ['Entregar 8 projetos no total', 'Contratar 1 funcionário', 'Atingir 2 estrelas de fama', 'Adquirir plano de publicidade', 'Atingir fama nível 3'],
+    district: 'Quarteirão das Artes'
+  },
+  {
+    num: 3, name: 'Escritório Estabelecido',
+    stars: 3, fameNeeded: 4,
+    reqs: ['Entregar 15 projetos no total', 'Ter pelo menos 3 funcionários', 'Atingir 3 estrelas de fama', 'Receita acumulada acima de §200.000', 'Atingir fama nível 4'],
+    district: 'Distrito da Moda'
+  },
+  {
+    num: 4, name: 'Referência de Mercado',
+    stars: 4, fameNeeded: 5,
+    reqs: ['Entregar 25 projetos no total', 'Ter pelo menos 6 funcionários', 'Atingir 4 estrelas de fama', 'Portfólio de §100.000 em investimentos', 'Atingir fama nível 5'],
+    district: 'Cidade Alta'
+  }
+];
+
+const DISTRICTS = [
+  {
+    id: 'especiarias', name: 'Mercado das Especiarias', phase: 1,
+    budget: 20000, payment: 8000, rt: 2000, commission: 2000,
+    projects: ['Apartamentos Culpepper 17','Apartamentos Culpepper 18','Apartamentos Culpepper 19','Apartamentos Culpepper 20','Apartamentos da Jasmine 2A','Apartamentos da Jasmine 2B']
+  },
+  {
+    id: 'artes', name: 'Quarteirão das Artes', phase: 2,
+    budget: 50000, payment: 20000, rt: 10000, commission: 5000,
+    projects: ['Estúdio Medina 910','Estúdio Medina 920','Estúdio Medina 930','Casa do Hakim 121','Casa do Hakim 122']
+  },
+  {
+    id: 'moda', name: 'Distrito da Moda', phase: 3,
+    budget: 80000, payment: 32000, rt: 16000, commission: 8000,
+    projects: ['Rua Chique, 1310 – 21','Rua Chique, 1312 – 21','Rua Chique, 1313 – 21','Vista Zen 701','Vista Zen 7012']
+  },
+  {
+    id: 'alta', name: 'Cidade Alta', phase: 4,
+    budget: 500000, payment: 200000, rt: 100000, commission: 50000,
+    projects: ['Quero-Tudo-Que-É-Seu VIII','Quero-Tudo-Que-É-Seu IX','Apartamentos Altos 1.010','Apartamentos Altos 1.020','Apartamentos Pináculo 888']
+  }
+];
+
+const ASSETS_DEF = [
+  { id: 'cdb', name: 'CDB SimCity', ticker: 'CDB-SC', type: 'Renda Fixa', rate: 0.008, price: 1000, risk: 'baixo' },
+  { id: 'tesouro', name: 'Tesouro SimCity IPCA+', ticker: 'TESC-IPCA', type: 'Título Público', rate: 0.009, price: 1050, risk: 'baixo' },
+  { id: 'fii', name: 'FII Imobiliário SC', ticker: 'FISC11', type: 'Fundo Imobiliário', rate: 0.012, price: 120, risk: 'médio' },
+  { id: 'acoes', name: 'SimBolsa SMFS3', ticker: 'SMFS3', type: 'Ações', rate: 0.02, price: 28.5, risk: 'alto' },
+  { id: 'etf', name: 'ETF Global SimCity', ticker: 'ETFG11', type: 'ETF', rate: 0.015, price: 85, risk: 'médio' },
+  { id: 'lci', name: 'LCI/LCA SimCity', ticker: 'LCI-SC', type: 'Renda Fixa', rate: 0.0075, price: 5000, risk: 'baixo' },
+  { id: 'ouro', name: 'Ouro SimCity (Onça-Troy)', ticker: 'OUSC1', type: 'Commodity', rate: 0.005, price: 9800, risk: 'médio' }
+];
+
+// ════════════════════════════════════════
+// CANDIDATES GENERATOR
+// ════════════════════════════════════════
+const FIRST_NAMES = ['Ana','Carlos','Fernanda','Lucas','Mariana','Rafael','Juliana','Bruno','Camila','Diego','Isabela','Thiago','Larissa','Felipe','Amanda','Rodrigo','Beatriz','Gustavo','Leticia','Vinicius','Patricia','Eduardo','Renata','Leonardo','Monique','André','Carla','Henrique','Aline','Ricardo','Natalia','Marcos','Viviane','Paulo','Danielle','Roberto','Priscila','Daniel','Cristina','Mateus','Vanessa','Jorge','Elaine','Fábio','Denise','Alexandre','Luciana','Sergio','Regina','Cláudio'];
+const LAST_NAMES = ['Silva','Santos','Oliveira','Souza','Rodrigues','Ferreira','Alves','Pereira','Lima','Gomes','Costa','Ribeiro','Martins','Carvalho','Almeida','Lopes','Sousa','Fernandes','Vieira','Barbosa','Rocha','Dias','Nascimento','Andrade','Moreira','Nunes','Marques','Machado','Mendes','Freitas','Cardoso','Ramos','Gonçalves','Araújo','Melo','Cavalcanti','Moura','Pinto','Medeiros','Batista','Azevedo','Teixeira','Pires','Castro','Campos','Borges','Cruz','Torres'];
+const ROLES = [
+  ['Arquiteto Jr','Arquitetura',3800,6500],
+  ['Arquiteto Pleno','Arquitetura',5500,8500],
+  ['Arquiteto Sênior','Arquitetura',8000,14000],
+  ['Designer de Interiores','Design',3500,7000],
+  ['Urbanista','Arquitetura',5000,9000],
+  ['Advogado Jr','Jurídico',4500,7000],
+  ['Advogado Pleno','Jurídico',7000,12000],
+  ['Especialista Jurídico','Jurídico',9000,16000],
+  ['Analista de Marketing','Marketing',3500,6000],
+  ['Gerente de Marketing','Marketing',6000,10000],
+  ['Social Media','Marketing',2500,4500],
+  ['Designer Gráfico','Design',3000,5500],
+  ['Fotógrafo de Arquitetura','Criativo',3500,6000],
+  ['Engenheiro Civil','Engenharia',7000,14000],
+  ['Engenheiro Estrutural','Engenharia',8000,15000],
+  ['Modelador 3D','Tecnologia',4000,7000],
+  ['Desenvolvedor BIM','Tecnologia',5500,10000],
+  ['Gestor Financeiro','Financeiro',6000,11000],
+  ['Analista Financeiro','Financeiro',4500,8000],
+  ['Secretária Executiva','Administrativo',2800,4800],
+  ['Assistente Administrativo','Administrativo',2200,3800],
+  ['Recepcionista','Administrativo',2000,3200],
+  ['RH Generalista','Recursos Humanos',4000,7000],
+  ['Gestor de Projetos','Gestão',6500,12000],
+  ['Estagiário de Arquitetura','Estágio',800,1200],
+  ['Estagiário de Marketing','Estágio',700,1000],
+  ['Assessor de Imprensa','Comunicação',5000,9000],
+  ['Produtor de Conteúdo','Comunicação',3000,5500],
+  ['Orçamentista','Engenharia',5000,9000],
+  ['Maqueteiro','Criativo',2500,4500],
+];
+const SKILLS_POOL = ['AutoCAD','Revit','SketchUp','Photoshop','InDesign','Excel','BIM','3ds Max','V-Ray','ArchiCAD','Lumion','Blender','Google Ads','SEO','Marketing Digital','Contrato de Obra','Direito Imobiliário','Direito Empresarial','Gestão de Equipes','Scrum','MS Project','Power BI','SAP','Quickbooks','Figma','Illustrator','Premiere','After Effects','Fotografia','Videomaking'];
+const UNIS = ['Univ. de Britechester','Inst. Técnico SimCity','Univ. San Myshuno','Faculdade Willow Creek','Univ. Strangerville','Escola de Design SC'];
+
+function genName() {
+  return FIRST_NAMES[Math.floor(Math.random()*FIRST_NAMES.length)] + ' ' + LAST_NAMES[Math.floor(Math.random()*LAST_NAMES.length)];
+}
+function genCandidate(seed) {
+  const rng = mulberry32(seed);
+  const roleData = ROLES[Math.floor(rng()*ROLES.length)];
+  const salary = Math.round((roleData[2] + rng()*(roleData[3]-roleData[2]))/100)*100;
+  const exp = Math.floor(rng()*12);
+  const uni = UNIS[Math.floor(rng()*UNIS.length)];
+  const skills = [];
+  const sk = [...SKILLS_POOL];
+  for(let i=0;i<3+Math.floor(rng()*3);i++){
+    const idx = Math.floor(rng()*sk.length);
+    skills.push(sk.splice(idx,1)[0]);
+  }
+  const fn = FIRST_NAMES[Math.floor(rng()*FIRST_NAMES.length)];
+  const ln = LAST_NAMES[Math.floor(rng()*LAST_NAMES.length)];
+  return { name: fn+' '+ln, role: roleData[0], area: roleData[1], salary, exp, uni, skills };
+}
+function mulberry32(a) {
+  return function() {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    var t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  }
+}
+
+let candidateSeedBase = Date.now();
+function refreshCandidates() {
+  candidateSeedBase = Date.now() + Math.random()*999999;
+  renderCandidates();
+}
+function renderCandidates() {
+  const list = document.getElementById('candidates-list');
+  list.innerHTML = '';
+  for(let i=0;i<5;i++) {
+    const seed = Math.floor(candidateSeedBase) + i*1337;
+    const c = genCandidate(seed % 999983 + 1);
+    const card = document.createElement('div');
+    card.className = 'candidate-card';
+    card.innerHTML = `
+      <div class="cand-name">${c.name}</div>
+      <div class="cand-role">${c.role}</div>
+      <div class="cand-info">${c.area} · ${c.exp} anos exp. · ${c.uni}</div>
+      <div class="cand-skill">${c.skills.map(s=>`<span>${s}</span>`).join('')}</div>
+      <div class="cand-salary">§${c.salary.toLocaleString('pt-BR')} <small>/mês</small></div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button onclick="hireCand('${c.name}','${c.role}',${c.salary})" style="flex:1;padding:7px;font-size:9px;letter-spacing:0.15em;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:var(--copper);color:var(--ink);border:none">Contratar</button>
+        <button onclick="this.closest('.candidate-card').remove()" style="padding:7px 12px;font-size:9px;cursor:pointer;font-family:'Josefin Sans';font-weight:600;background:transparent;border:0.5px solid var(--sand);color:var(--warm-gray)">✕</button>
+      </div>
+    `;
+    list.appendChild(card);
+  }
+}
+
+function hireCand(name, role, salary) {
+  STATE.employees.push({ name, role, salary, type: 'CLT' });
+  saveState();
+  renderPayroll();
+  toast(`${name} contratado(a)!`, 'success');
+  refreshCandidates();
+}
+
+// ════════════════════════════════════════
+// PHASES
+// ════════════════════════════════════════
+function renderPhases() {
+  const grid = document.getElementById('phases-grid');
+  grid.innerHTML = '';
+  PHASES.forEach(p => {
+    const isActive = p.num === STATE.phase;
+    const isDone = p.num < STATE.phase;
+    const stars = '★'.repeat(p.stars) + '☆'.repeat(4-p.stars);
+    const div = document.createElement('div');
+    div.className = 'phase-box' + (isActive ? ' active-phase' : '') + (isDone ? ' completed-phase' : '');
+    div.innerHTML = `
+      ${isActive ? '<div class="phase-badge">ATUAL</div>' : ''}
+      ${isDone ? '<div class="phase-badge" style="background:var(--sand);color:var(--warm-gray)">CONCLUÍDA</div>' : ''}
+      <div class="phase-num">${p.num}</div>
+      <div class="phase-name">${p.name}</div>
+      <div class="phase-stars">${stars}</div>
+      <div class="phase-req">${p.reqs.join('<br>')}<br><br><em style="color:var(--copper);font-size:9px">Fama nível ${p.fameNeeded} para avançar</em></div>
+    `;
+    grid.appendChild(div);
+  });
+
+  // conquistas
+  const conquistasList = document.getElementById('conquistas-list');
+  conquistasList.innerHTML = '';
+  const currentPhase = PHASES[STATE.phase - 1];
+  currentPhase.reqs.forEach((req, i) => {
+    const key = `p${STATE.phase}_r${i}`;
+    const done = STATE.conquistas[key];
+    const item = document.createElement('div');
+    item.className = 'conquista-item';
+    item.innerHTML = `
+      <div class="conquista-check ${done?'done':''}" onclick="toggleConquista('${key}',this)">${done?'✓':''}</div>
+      <span style="color:${done?'var(--warm-gray)':'var(--ink)'};text-decoration:${done?'line-through':''}">${req}</span>
+    `;
+    conquistasList.appendChild(item);
+  });
+}
+
+function toggleConquista(key, el) {
+  STATE.conquistas[key] = !STATE.conquistas[key];
+  el.className = 'conquista-check' + (STATE.conquistas[key] ? ' done' : '');
+  el.textContent = STATE.conquistas[key] ? '✓' : '';
+  const span = el.nextElementSibling;
+  span.style.color = STATE.conquistas[key] ? 'var(--warm-gray)' : 'var(--ink)';
+  span.style.textDecoration = STATE.conquistas[key] ? 'line-through' : '';
+  saveState();
+  if(STATE.conquistas[key]) toast('Conquista registrada!', 'success');
+}
+
+function updateFame() {
+  STATE.fame = parseInt(document.getElementById('fame-select').value);
+  document.getElementById('stat-stars').textContent = '★'.repeat(STATE.fame) + '☆'.repeat(5-STATE.fame);
+
+  // check phase advance
+  const cp = PHASES[STATE.phase - 1];
+  if(STATE.fame >= cp.fameNeeded && STATE.phase < 4) {
+    STATE.phase++;
+    toast(`🏆 Avançou para a Fase ${STATE.phase}: ${PHASES[STATE.phase-1].name}!`, 'success');
+  }
+  document.getElementById('stat-phase').textContent = STATE.phase;
+  saveState();
+  renderPhases();
+  renderDistricts();
+  renderPublicidade();
+  renderPayroll();
+}
+
+// ════════════════════════════════════════
+// DISTRICTS
+// ════════════════════════════════════════
+function renderDistricts() {
+  const list = document.getElementById('districts-list');
+  list.innerHTML = '';
+  DISTRICTS.forEach(d => {
+    const locked = d.phase > STATE.phase;
+    const div = document.createElement('div');
+    div.className = 'district-card' + (locked ? ' locked' : '');
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="district-name">${d.name}</div>
+          <div class="district-phase">Fase ${d.phase} · ${locked ? 'Bloqueado' : 'Desbloqueado'}</div>
+          <div style="font-size:11px;color:var(--warm-gray);margin-bottom:12px">
+            Orçamento: <strong>§${d.budget.toLocaleString('pt-BR')}</strong> · 
+            Pagamento: <strong>§${d.payment.toLocaleString('pt-BR')}</strong> + RT §${d.rt.toLocaleString('pt-BR')} · 
+            Comissão: <span style="color:var(--copper)">§${d.commission.toLocaleString('pt-BR')}</span>
+          </div>
+        </div>
+        ${!locked ? `<span class="badge badge-green">Ativo</span>` : `<span class="badge badge-gray">Fase ${d.phase}</span>`}
+      </div>
+      <div class="projects-list">
+        ${d.projects.map(p => {
+          const del = STATE.deliveries.find(x => x.project === p);
+          return `<div class="project-item ${del?'done':''}" onclick="${locked?'':'openDeliveryFor(`'+p+'`,`'+d.id+'`)'}" title="${p}">
+            <div style="font-size:11px;font-weight:600;margin-bottom:4px">${p}</div>
+            <span class="project-budget">§${d.payment.toLocaleString('pt-BR')}</span>
+            <span class="project-payment">+ RT §${d.rt.toLocaleString('pt-BR')}</span>
+            ${del ? '<div style="margin-top:6px"><span class="badge badge-green">Entregue</span></div>' : ''}
+          </div>`;
+        }).join('')}
+      </div>
+    `;
+    list.appendChild(div);
+  });
+
+  // populate delivery select
+  const sel = document.getElementById('del-project');
+  sel.innerHTML = '';
+  DISTRICTS.filter(d => d.phase <= STATE.phase).forEach(d => {
+    d.projects.filter(p => !STATE.deliveries.find(x => x.project === p)).forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p;
+      opt.dataset.district = d.id;
+      opt.textContent = p;
+      sel.appendChild(opt);
+    });
+  });
+}
+
+function openDeliveryFor(project, districtId) {
+  document.getElementById('del-project').value = project;
+  openModal('modal-delivery');
+}
+
+// ════════════════════════════════════════
+// DELIVERIES
+// ════════════════════════════════════════
+function saveDelivery() {
+  const project = document.getElementById('del-project').value;
+  const date = document.getElementById('del-date').value;
+  const deadline = document.getElementById('del-deadline').value;
+  const ontime = document.getElementById('del-ontime').checked;
+  if(!project || !date) { toast('Preencha todos os campos','error'); return; }
+
+  const d = DISTRICTS.find(x => x.projects.includes(project));
+  const commission = ontime ? d.commission : 0;
+  const total = d.payment + d.rt + commission;
+
+  STATE.deliveries.push({ project, date, deadline, ontime, district: d.id, payment: d.payment, rt: d.rt, commission, total });
+
+  // credit bank
+  STATE.bankBalance += total;
+  STATE.transactions.push({
+    desc: `Entrega: ${project}`,
+    type: 'credit',
+    category: 'Escritório',
+    amount: total,
+    date,
+    auto: true
+  });
+
+  saveState();
+  closeModal('modal-delivery');
+  renderDeliveries();
+  renderDistricts();
+  renderTransactions();
+  updateBankUI();
+
+  const count = STATE.deliveries.length;
+  document.getElementById('stat-projects').textContent = count;
+  toast(`Projeto entregue! §${total.toLocaleString('pt-BR')} creditado.`, 'success');
+}
+
+function renderDeliveries() {
+  const tbody = document.getElementById('delivery-tbody');
+  const empty = document.getElementById('delivery-empty');
+  tbody.innerHTML = '';
+
+  if(STATE.deliveries.length === 0) {
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  let totalRevenue = 0, totalComm = 0, onTimeCount = 0;
+
+  STATE.deliveries.forEach(d => {
+    const dist = DISTRICTS.find(x => x.id === d.district);
+    totalRevenue += d.payment + d.rt;
+    totalComm += d.commission;
+    if(d.ontime) onTimeCount++;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-weight:600">${d.project}</td>
+      <td>${dist ? dist.name : d.district}</td>
+      <td>${d.date}</td>
+      <td>${d.deadline || '—'}</td>
+      <td>${d.ontime ? '<span class="badge badge-green">No Prazo</span>' : '<span class="badge badge-gray">Normal</span>'}</td>
+      <td style="font-family:'Cormorant',serif;font-size:18px">§${(d.payment+d.rt).toLocaleString('pt-BR')}</td>
+      <td style="color:${d.commission>0?'#4a7c59':'var(--warm-gray)'}">§${d.commission.toLocaleString('pt-BR')}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('delivered-count').textContent = STATE.deliveries.length;
+  document.getElementById('on-time-count').textContent = onTimeCount;
+  document.getElementById('commissions-total').textContent = '§'+totalComm.toLocaleString('pt-BR');
+  document.getElementById('projects-revenue').textContent = '§'+totalRevenue.toLocaleString('pt-BR');
+}
+
+// ════════════════════════════════════════
+// PUBLICIDADE
+// ════════════════════════════════════════
+function renderPublicidade() {
+  const locked = document.getElementById('pub-locked-msg');
+  const content = document.getElementById('pub-content');
+  if(STATE.fame < 2) {
+    locked.style.display = '';
+    content.style.display = 'none';
+  } else {
+    locked.style.display = 'none';
+    content.style.display = '';
+  }
+  document.getElementById('current-plan-name').textContent = STATE.adPlan ? {starter:'Starter',grow:'Grow',premium:'Premium'}[STATE.adPlan] : 'Nenhum';
+  ['starter','grow','premium'].forEach(p => {
+    document.getElementById('plan-'+p).classList.toggle('selected', STATE.adPlan === p);
+  });
+}
+
+let selectedPlan = null;
+function selectPlan(p) {
+  selectedPlan = p;
+  ['starter','grow','premium'].forEach(x => document.getElementById('plan-'+x).classList.remove('selected'));
+  document.getElementById('plan-'+p).classList.add('selected');
+}
+function subscribePlan() {
+  if(!selectedPlan) { toast('Selecione um plano','error'); return; }
+  const cost = {starter:2000,grow:6000,premium:10000}[selectedPlan];
+  STATE.adPlan = selectedPlan;
+  saveState();
+  renderPublicidade();
+  renderPayroll();
+  toast(`Plano ${selectedPlan} ativado! §${cost.toLocaleString('pt-BR')}/mês`, 'success');
+}
+
+// ════════════════════════════════════════
+// PAYROLL
+// ════════════════════════════════════════
+const PRO_LABORE = {1:4800,2:8500,3:14000,4:22000};
+
+function renderPayroll() {
+  const rows = document.getElementById('payroll-rows');
+  rows.innerHTML = '';
+  let total = 0;
+
+  const items = [];
+
+  // employees
+  STATE.employees.forEach(e => {
+    items.push({ name: e.name, role: e.role, amount: e.salary, type: e.type });
+  });
+
+  // ad plan
+  if(STATE.adPlan) {
+    const cost = {starter:2000,grow:6000,premium:10000}[STATE.adPlan];
+    items.push({ name: 'Agência de Relações Públicas', role: `Plano ${STATE.adPlan}`, amount: cost, type: 'Serviço' });
+  }
+
+  // pro-labore
+  const pl = PRO_LABORE[STATE.phase];
+  items.push({ name: 'Valdison Viana', role: 'Pró-Labore (Fundador)', amount: pl, type: 'Pró-Labore' });
+
+  items.forEach(item => {
+    total += item.amount;
+    const div = document.createElement('div');
+    div.className = 'payroll-row';
+    div.innerHTML = `
+      <div>
+        <div class="name">${item.name}</div>
+        <div style="font-size:10px;color:var(--warm-gray);letter-spacing:0.1em">${item.role} · ${item.type}</div>
+      </div>
+      <div class="amount">§${item.amount.toLocaleString('pt-BR')}</div>
+    `;
+    rows.appendChild(div);
+  });
+
+  document.getElementById('payroll-total').textContent = '§'+total.toLocaleString('pt-BR');
+  STATE.officeBalance = STATE.officeBalance; // keep ref
+  checkCrisis();
+}
+
+function saveEmployee() {
+  const name = document.getElementById('emp-name').value;
+  const role = document.getElementById('emp-role').value;
+  const salary = parseFloat(document.getElementById('emp-salary').value);
+  const type = document.getElementById('emp-type').value;
+  if(!name||!role||!salary) { toast('Preencha todos os campos','error'); return; }
+  STATE.employees.push({ name, role, salary, type });
+  saveState();
+  closeModal('modal-employee');
+  renderPayroll();
+  toast(`${name} adicionado(a) à folha!`, 'success');
+}
+
+function processPayroll() {
+  let total = 0;
+  STATE.employees.forEach(e => total += e.salary);
+  if(STATE.adPlan) total += {starter:2000,grow:6000,premium:10000}[STATE.adPlan];
+  total += PRO_LABORE[STATE.phase];
+
+  STATE.officeBalance -= total;
+  STATE.transactions.push({
+    desc: 'Folha de Pagamento',
+    type: 'debit',
+    category: 'Escritório',
+    amount: total,
+    date: new Date().toISOString().split('T')[0],
+    auto: false
+  });
+  saveState();
+  renderTransactions();
+  checkCrisis();
+  toast(`Folha processada: §${total.toLocaleString('pt-BR')} debitados`, 'success');
+}
+
+// ════════════════════════════════════════
+// INVESTMENTS
+// ════════════════════════════════════════
+function initAssets() {
+  if(!STATE.assets || STATE.assets.length === 0) {
+    STATE.assets = ASSETS_DEF.map(a => ({
+      ...a, applied: 0, units: 0, currentPrice: a.price, monthlyReturn: 0, totalReturn: 0
+    }));
+  }
+}
+
+function renderAssets() {
+  const grid = document.getElementById('assets-grid');
+  grid.innerHTML = '';
+  let totalApplied = 0, totalReturn = 0, monthlyReturn = 0;
+
+  STATE.assets.forEach(a => {
+    totalApplied += a.applied;
+    totalReturn += a.totalReturn;
+    monthlyReturn += a.monthlyReturn;
+
+    const changeAmt = a.currentPrice - a.price;
+    const changePct = ((a.currentPrice / a.price - 1) * 100).toFixed(2);
+    const isUp = changeAmt >= 0;
+    const currentValue = a.units * a.currentPrice;
+
+    const card = document.createElement('div');
+    card.className = 'invest-card';
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="invest-name">${a.name}</div>
+          <div class="invest-ticker">${a.ticker} · ${a.type}</div>
+        </div>
+        <span class="badge ${a.risk==='baixo'?'badge-green':a.risk==='médio'?'badge-copper':'badge-red'}">${a.risk}</span>
+      </div>
+      <div class="invest-price">§${a.currentPrice.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</div>
+      <div class="invest-change ${isUp?'up':'down'}">${isUp?'▲':'▼'} ${Math.abs(changePct)}%</div>
+      <div style="height:0.5px;background:var(--sand);margin:12px 0"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><div style="font-size:9px;color:var(--warm-gray);letter-spacing:0.1em">Aplicado</div><div style="font-family:'Cormorant',serif;font-size:18px">§${a.applied.toLocaleString('pt-BR')}</div></div>
+        <div><div style="font-size:9px;color:var(--warm-gray);letter-spacing:0.1em">Valor Atual</div><div style="font-family:'Cormorant',serif;font-size:18px;color:${currentValue>=a.applied?'#4a7c59':'#9e3e38'}">§${Math.round(currentValue).toLocaleString('pt-BR')}</div></div>
+        <div><div style="font-size:9px;color:var(--warm-gray);letter-spacing:0.1em">Rendimento/Mês</div><div style="font-size:13px;color:#4a7c59">§${Math.round(a.monthlyReturn).toLocaleString('pt-BR')}</div></div>
+        <div><div style="font-size:9px;color:var(--warm-gray);letter-spacing:0.1em">Taxa</div><div style="font-size:13px;color:var(--copper)">${(a.rate*100).toFixed(2)}%/mês</div></div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('inv-total').textContent = '§'+Math.round(totalApplied).toLocaleString('pt-BR');
+  document.getElementById('inv-monthly').textContent = '§'+Math.round(monthlyReturn).toLocaleString('pt-BR');
+  document.getElementById('inv-accumulated').textContent = '§'+Math.round(totalReturn).toLocaleString('pt-BR');
+
+  // populate select
+  const sel = document.getElementById('inv-asset');
+  sel.innerHTML = '';
+  STATE.assets.forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a.id;
+    opt.textContent = `${a.name} (${a.ticker})`;
+    sel.appendChild(opt);
+  });
+}
+
+function updateMarket() {
+  STATE.assets.forEach(a => {
+    const volatility = {baixo:0.02, médio:0.05, alto:0.1}[a.risk];
+    const change = 1 + (Math.random() - 0.45) * volatility;
+    a.currentPrice = parseFloat((a.currentPrice * change).toFixed(2));
+    if(a.units > 0) {
+      a.monthlyReturn = a.units * a.currentPrice * a.rate;
+      a.totalReturn += a.monthlyReturn;
+      STATE.accumulatedReturn += a.monthlyReturn;
+    }
+  });
+  STATE.totalInvested = STATE.assets.reduce((s,a) => s + a.applied, 0);
+  saveState();
+  renderAssets();
+  toast('Mercado atualizado!', 'success');
+}
+
+function saveInvestment() {
+  const assetId = document.getElementById('inv-asset').value;
+  const op = document.getElementById('inv-op').value;
+  const value = parseFloat(document.getElementById('inv-value').value);
+  if(!value || value <= 0) { toast('Valor inválido','error'); return; }
+
+  const asset = STATE.assets.find(a => a.id === assetId);
+  if(op === 'aporte') {
+    if(STATE.bankBalance < value) { toast('Saldo insuficiente','error'); return; }
+    const units = value / asset.currentPrice;
+    asset.applied += value;
+    asset.units += units;
+    asset.monthlyReturn = asset.units * asset.currentPrice * asset.rate;
+    STATE.bankBalance -= value;
+    STATE.transactions.push({
+      desc: `Aporte: ${asset.name}`,
+      type: 'debit', category: 'Investimento',
+      amount: value, date: new Date().toISOString().split('T')[0], auto: false
+    });
+    toast(`§${value.toLocaleString('pt-BR')} aportados em ${asset.name}`, 'success');
+  } else {
+    const maxWithdraw = asset.units * asset.currentPrice;
+    if(value > maxWithdraw) { toast('Saldo de resgate insuficiente','error'); return; }
+    const units = value / asset.currentPrice;
+    asset.units -= units;
+    asset.applied = Math.max(0, asset.applied - value);
+    asset.monthlyReturn = asset.units * asset.currentPrice * asset.rate;
+    STATE.bankBalance += value;
+    STATE.transactions.push({
+      desc: `Resgate: ${asset.name}`,
+      type: 'credit', category: 'Investimento',
+      amount: value, date: new Date().toISOString().split('T')[0], auto: false
+    });
+    toast(`§${value.toLocaleString('pt-BR')} resgatados de ${asset.name}`, 'success');
+  }
+
+  STATE.totalInvested = STATE.assets.reduce((s,a) => s + a.applied, 0);
+  saveState();
+  closeModal('modal-invest');
+  renderAssets();
+  renderTransactions();
+  updateBankUI();
+}
+
+// ════════════════════════════════════════
+// BANK
+// ════════════════════════════════════════
+function updateBankUI() {
+  const bal = STATE.bankBalance;
+  const el = document.getElementById('bank-balance');
+  el.textContent = '§' + Math.round(bal).toLocaleString('pt-BR');
+  el.className = 'bank-balance' + (bal < 0 ? ' crisis' : '');
+  checkCrisis();
+}
+
+function checkCrisis() {
+  const banner = document.getElementById('crisis-banner');
+  banner.style.display = STATE.officeBalance < 4800 ? '' : 'none';
+}
+
+function saveTransaction() {
+  const desc = document.getElementById('tx-desc').value;
+  const type = document.getElementById('tx-type').value;
+  const category = document.getElementById('tx-category').value;
+  const amount = parseFloat(document.getElementById('tx-amount').value);
+  const date = document.getElementById('tx-date').value;
+  if(!desc||!amount||!date) { toast('Preencha todos os campos','error'); return; }
+
+  if(type === 'debit') STATE.bankBalance -= amount;
+  else STATE.bankBalance += amount;
+
+  STATE.transactions.push({ desc, type, category, amount, date, auto: false });
+  saveState();
+  closeModal('modal-transaction');
+  renderTransactions();
+  updateBankUI();
+  toast(`Lançamento registrado: §${amount.toLocaleString('pt-BR')}`, 'success');
+}
+
+function renderTransactions() {
+  const list = document.getElementById('transactions-list');
+  const empty = document.getElementById('tx-empty');
+  if(STATE.transactions.length === 0) { empty.style.display = ''; list.innerHTML = ''; return; }
+  empty.style.display = 'none';
+  list.innerHTML = '';
+  [...STATE.transactions].reverse().slice(0,30).forEach(tx => {
+    const div = document.createElement('div');
+    div.className = 'transaction-row';
+    div.innerHTML = `
+      <div>
+        <div class="tx-desc">${tx.desc}</div>
+        <div class="tx-category">${tx.category}</div>
+      </div>
+      <div class="tx-date">${tx.date}</div>
+      <div class="tx-amount ${tx.type}">§${tx.amount.toLocaleString('pt-BR')}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function saveInstallment() {
+  const desc = document.getElementById('inst-desc').value;
+  const total = parseFloat(document.getElementById('inst-total').value);
+  const parcelas = parseInt(document.getElementById('inst-parcelas').value);
+  if(!desc||!total||!parcelas) { toast('Preencha todos os campos','error'); return; }
+  const rate = 0.0299;
+  const monthly = total * (rate * Math.pow(1+rate, parcelas)) / (Math.pow(1+rate, parcelas) - 1);
+  STATE.installments.push({
+    desc, total, parcelas,
+    paid: 0, monthly: parseFloat(monthly.toFixed(2)),
+    startDate: new Date().toISOString().split('T')[0],
+    overdue: false
+  });
+  saveState();
+  closeModal('modal-installment');
+  renderInstallments();
+  toast(`Parcelado em ${parcelas}x de §${monthly.toFixed(2)}`, 'success');
+}
+
+function renderInstallments() {
+  const list = document.getElementById('installments-list');
+  const empty = document.getElementById('inst-empty');
+  if(STATE.installments.length === 0) { empty.style.display = ''; list.innerHTML = ''; return; }
+  empty.style.display = 'none';
+  list.innerHTML = '';
+  let totalOpen = 0, totalDebt = 0;
+
+  STATE.installments.forEach((inst, i) => {
+    const remaining = inst.parcelas - inst.paid;
+    const progress = (inst.paid / inst.parcelas) * 100;
+    totalOpen += inst.monthly;
+    totalDebt += remaining * inst.monthly;
+
+    const div = document.createElement('div');
+    div.className = 'installment-card';
+    div.innerHTML = `
+      <div style="display:flex;justify-content:space-between">
+        <div class="inst-name">${inst.desc}</div>
+        <button onclick="payInstallment(${i})" style="font-size:9px;padding:5px 12px;cursor:pointer;font-family:'Josefin Sans';font-weight:600;text-transform:uppercase;background:var(--copper);color:var(--ink);border:none;letter-spacing:0.15em">Pagar Parcela</button>
+      </div>
+      <div class="inst-info">${inst.parcelas}x de §${inst.monthly.toFixed(2)} · ${remaining} restantes</div>
+      ${inst.overdue ? '<div class="inst-overdue">⚠ Em atraso — multa 2% + 1%/dia</div>' : ''}
+      <div class="inst-progress"><div class="inst-progress-bar" style="width:${progress}%"></div></div>
+      <div style="font-size:10px;color:var(--warm-gray);margin-top:4px">${inst.paid}/${inst.parcelas} parcelas pagas</div>
+    `;
+    list.appendChild(div);
+  });
+
+  document.getElementById('card-open').textContent = '§'+totalOpen.toFixed(2);
+  document.getElementById('card-debt').textContent = '§'+Math.round(totalDebt).toLocaleString('pt-BR');
+}
+
+function payInstallment(i) {
+  const inst = STATE.installments[i];
+  if(inst.paid >= inst.parcelas) { toast('Parcelamento quitado','success'); return; }
+  let amount = inst.monthly;
+  if(inst.overdue) {
+    const fine = amount * 0.02 + amount * 0.01 * 3;
+    amount += fine;
+    toast(`Multa aplicada: §${fine.toFixed(2)}`, 'error');
+  }
+  if(STATE.bankBalance < amount) { 
+    inst.overdue = true;
+    toast('Saldo insuficiente — parcela em atraso!', 'error');
+    saveState();
+    renderInstallments();
+    return;
+  }
+  STATE.bankBalance -= amount;
+  inst.paid++;
+  inst.overdue = false;
+  if(inst.paid >= inst.parcelas) {
+    STATE.installments.splice(i, 1);
+    toast('Parcelamento quitado!', 'success');
+  } else {
+    toast(`Parcela ${inst.paid}/${inst.parcelas} paga: §${amount.toFixed(2)}`, 'success');
+  }
+  saveState();
+  renderInstallments();
+  renderTransactions();
+  updateBankUI();
+}
+
+function doRescue() {
+  const amount = parseFloat(document.getElementById('rescue-amount').value);
+  if(!amount || amount <= 0) { toast('Valor inválido','error'); return; }
+  if(STATE.bankBalance < amount) { toast('Saldo pessoal insuficiente','error'); return; }
+  STATE.bankBalance -= amount;
+  STATE.officeBalance += amount;
+  STATE.transactions.push({
+    desc: 'Aporte ao Caixa do Escritório',
+    type: 'debit', category: 'Escritório',
+    amount, date: new Date().toISOString().split('T')[0], auto: false
+  });
+  saveState();
+  closeModal('modal-rescue');
+  renderTransactions();
+  updateBankUI();
+  checkCrisis();
+  toast(`§${amount.toLocaleString('pt-BR')} transferidos ao escritório`, 'success');
+}
+
+// ════════════════════════════════════════
+// UI HELPERS
+// ════════════════════════════════════════
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function showInner(name) {
+  document.querySelectorAll('.inner-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.inner-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('inner-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  if(id === 'modal-transaction') {
+    document.getElementById('tx-date').value = new Date().toISOString().split('T')[0];
+  }
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', function(e) {
+    if(e.target === m) m.classList.remove('open');
+  });
+});
+
+let toastTimer;
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ════════════════════════════════════════
+// LOGIN
+// ════════════════════════════════════════
+function doLogin() {
+  const u = document.getElementById('login-user').value;
+  const p = document.getElementById('login-pass').value;
+  if(u === 'viana.valdison' && p === '2802') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').classList.add('visible');
+    initApp();
+  } else {
+    const err = document.getElementById('login-err');
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+document.getElementById('login-user').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+
+function logout() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').classList.remove('visible');
+}
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+async function initApp() {
+  await loadState();
+  initAssets();
+  document.getElementById('fame-select').value = STATE.fame;
+  document.getElementById('stat-phase').textContent = STATE.phase;
+  document.getElementById('stat-stars').textContent = '★'.repeat(STATE.fame) + '☆'.repeat(5-STATE.fame);
+  document.getElementById('stat-projects').textContent = STATE.deliveries.length;
+  document.getElementById('stat-clients').textContent = STATE.deliveries.length;
+
+  refreshCandidates();
+  renderPhases();
+  renderDistricts();
+  renderDeliveries();
+  renderPublicidade();
+  renderPayroll();
+  renderAssets();
+  renderTransactions();
+  renderInstallments();
+  updateBankUI();
+}
+</script>
+</body>
+</html>
